@@ -47,3 +47,43 @@
 - 不允许不同 preprocessing 或不同 split 之间直接比较。
 - 不允许把 validation 调参结果当作 held-out test 结果。
 - 不允许把未跑过的公开模型写成“已超过”。
+
+## v0.2 synthetic baseline smoke benchmark
+
+Experiment ID: `v0.2-synthetic-baseline-smoke`
+
+目的：验证工程 substrate，而不是验证生物学假设。
+
+命令：
+
+```powershell
+python scripts/run_baseline.py --config configs/experiment/synthetic_v02.yaml
+```
+
+数据：`make_synthetic_perturbation_adata()` 生成的 deterministic synthetic AnnData。
+
+聚合：按 `cell_type`、`perturbation`、`donor` 做 pseudobulk mean aggregation。
+
+预测目标：先预测 delta expression，再用 matched control expression 重构 predicted post expression。
+
+baseline：
+
+- `no_change`: delta = 0。
+- `mean_delta`: seen perturbation 使用训练平均 delta，unseen perturbation 使用 global mean fallback。
+- `additive`: global mean delta + perturbation offset + cell-type offset。
+- `ridge`: control expression + perturbation/cell_type/donor one-hot，目标为 delta expression。
+
+split：
+
+- `random_group`: pseudobulk non-control group 随机切分。
+- `heldout_perturbation`: `pert_c` 只在 test 中出现，用于测试 unseen perturbation fallback 是否无泄漏。
+
+指标：
+
+- `mae_delta`
+- `mse_delta`
+- `pearson_delta`
+- `spearman_logfc`
+- per-cell-type 和 per-perturbation breakdown CSV。
+
+解释边界：synthetic benchmark 只能证明 runner、artifact discipline、baseline API 和 metrics plumbing 能跑通。即使某个 baseline 在 synthetic split 上表现好，也不能说明其对真实生物数据有效。

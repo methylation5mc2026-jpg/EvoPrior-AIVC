@@ -11,6 +11,38 @@ import pandas as pd
 SplitName = Literal["train", "val", "test"]
 
 
+def assign_random_group_split(
+    metadata: pd.DataFrame,
+    *,
+    val_fraction: float = 0.2,
+    test_fraction: float = 0.2,
+    seed: int = 0,
+) -> pd.Series:
+    """Assign train/val/test labels to pseudobulk groups at random."""
+    if metadata.empty:
+        raise ValueError("metadata must contain at least one row")
+    if not 0.0 <= val_fraction < 1.0:
+        raise ValueError("val_fraction must be in [0.0, 1.0)")
+    if not 0.0 <= test_fraction < 1.0:
+        raise ValueError("test_fraction must be in [0.0, 1.0)")
+    if val_fraction + test_fraction >= 1.0:
+        raise ValueError("val_fraction + test_fraction must be less than 1.0")
+
+    rng = np.random.default_rng(seed)
+    shuffled = np.array(metadata.index)
+    rng.shuffle(shuffled)
+    n_groups = shuffled.size
+    n_test = int(np.floor(n_groups * test_fraction))
+    n_val = int(np.floor(n_groups * val_fraction))
+
+    labels = pd.Series("train", index=metadata.index, dtype="object")
+    if n_test > 0:
+        labels.loc[shuffled[:n_test]] = "test"
+    if n_val > 0:
+        labels.loc[shuffled[n_test : n_test + n_val]] = "val"
+    return labels.astype("category")
+
+
 def assign_group_holdout_split(
     metadata: pd.DataFrame,
     holdout: Mapping[str, Iterable[object]],

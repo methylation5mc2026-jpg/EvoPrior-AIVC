@@ -19,6 +19,7 @@ outputs/checkpoints/*
 outputs/predictions/*
 outputs/metrics/*
 outputs/logs/*
+outputs/runs/*
 reports/figures/*
 reports/tables/*
 
@@ -29,5 +30,6 @@ reports/tables/*
 !outputs/predictions/.gitkeep
 !outputs/metrics/.gitkeep
 !outputs/logs/.gitkeep
+!outputs/runs/.gitkeep
 !reports/figures/.gitkeep
 !reports/tables/.gitkeep

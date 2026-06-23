@@ -5,6 +5,7 @@ from evoprior_aivc.data.splits import (
     assert_holdout_values_absent,
     assert_no_forbidden_feature_columns,
     assign_group_holdout_split,
+    assign_random_group_split,
 )
 
 
@@ -54,6 +55,16 @@ def test_feature_leakage_check_rejects_post_perturbation_columns():
             ["control_expression", "cell_type_embedding", "post_perturbation_expression"],
             forbidden_columns=["post_perturbation_expression", "target_delta"],
         )
+
+
+def test_random_group_split_assigns_expected_labels_deterministically():
+    metadata = pd.DataFrame({"group": [f"g{i}" for i in range(10)]})
+
+    split_a = assign_random_group_split(metadata, val_fraction=0.2, test_fraction=0.2, seed=123)
+    split_b = assign_random_group_split(metadata, val_fraction=0.2, test_fraction=0.2, seed=123)
+
+    assert split_a.equals(split_b)
+    assert split_a.value_counts().to_dict() == {"train": 6, "test": 2, "val": 2}
 
 
 def test_split_requires_existing_holdout_column():

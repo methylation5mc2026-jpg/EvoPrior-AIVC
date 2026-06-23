@@ -40,3 +40,43 @@ AnnData `.var` 建议字段：
 ## 数据不提交规则
 
 `data/raw/`、`data/interim/`、`data/processed/` 只放本地数据和 `.gitkeep`。真实数据下载脚本、checksum 和版本元数据应写入代码与实验台账。
+
+## v0.2 synthetic fixture
+
+v0.2 新增 `src/evoprior_aivc/data/synthetic.py`，用于生成工程验证专用的 AnnData 对象。该 fixture 包含：
+
+- 3 个 cell types：`t_cell`、`b_cell`、`monocyte`。
+- 4 个 perturbations：`control`、`pert_a`、`pert_b`、`pert_c`。
+- 2 个 donors：`donor_1`、`donor_2`。
+- 至少 20 个 genes。
+- 已知扰动 delta pattern 和少量 cell-type-specific effect。
+- 足够细胞数用于 pseudobulk mean aggregation。
+
+该数据只用于验证 schema、pseudobulk、split、baseline、metrics 和 artifact 保存是否连通。它不能支持任何生物学声称，也不能作为真实 benchmark 结果。
+
+## 未来真实 AnnData/H5AD 期望格式
+
+`.obs` 必需字段：
+
+- `cell_type`
+- `perturbation`
+- `is_control`
+
+`.obs` 推荐字段：
+
+- `donor`
+- `batch`
+- `tissue`
+- `dose`
+- `time`
+
+`.var` 至少应包含：
+
+- `gene_symbol` 或 `gene_id`
+
+`.var` 推荐字段：
+
+- `highly_variable`
+- `gene_biotype`
+
+v0.2 没有下载任何大型公开数据集。下一阶段 v0.3 才会接入真实公开扰动数据，并记录数据版本、checksum、license、schema 适配和 split 定义。

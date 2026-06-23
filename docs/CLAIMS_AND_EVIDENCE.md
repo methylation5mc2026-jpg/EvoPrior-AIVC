@@ -6,7 +6,8 @@
 
 ## 已证明
 
-暂无。当前仓库只完成初始化和玩具测试。
+- `v0.2-synthetic-baseline-smoke`: 仓库可以运行完整 synthetic perturbation baseline loop，包括 schema validation、pseudobulk aggregation、random/heldout split、四个 baseline、metrics JSON、prediction CSV、split assignment 和 markdown report。
+- `v0.2-synthetic-baseline-smoke`: 在 synthetic smoke test 中，四个 baseline 都能产生有限预测和指标。这是工程级证据，不是生物学证据。
 
 ## 消融提示
 
@@ -19,3 +20,9 @@
 - 通路/调控网络先验可能提升 top DE gene recovery。
 
 这些都需要在固定 benchmark、统一 baselines 和多 seed 实验后才能升级为证据性声称。
+
+## 明确不声称
+
+- 不声称任何真实公开数据集性能。
+- 不声称 SOTA 或 near-SOTA。
+- 不声称 lineage/evolutionary prior 已经有效；v0.2 尚未实现这些先验。

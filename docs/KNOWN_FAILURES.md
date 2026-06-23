@@ -7,6 +7,10 @@
 3. 当前指标实现只覆盖最小玩具案例；真实单细胞评测需要补充 per-group breakdown、DE 方法和置信区间。
 4. 当前切分实现只做基础 held-out 标签检查；复杂 context split 需要更严格的组合键审计。
 5. 还没有下载、校验或处理任何 AnnData 文件。
+6. v0.2 只验证 synthetic data pipeline 和 baseline plumbing；真实 benchmark 尚未验证。
+7. v0.2 的 `heldout_perturbation` 只测试 synthetic `pert_c` fallback，不代表真实 unseen perturbation 泛化能力。
+8. 尚未实现 EvoPrior 模块、细胞谱系先验、基因保守性先验或通路网络先验。
+9. 当前 preprocessing 尚未与任何公开论文 baseline 完全对齐。
 
 ## 失败记录模板
 
