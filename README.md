@@ -4,6 +4,7 @@ EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。
 
 当前仓库处于 v0.2-data-pipeline-and-baselines 阶段：已经建立 synthetic AnnData 数据管线、pseudobulk 聚合、四个基础 baseline、固定指标评测、泄漏检查和端到端 synthetic smoke runner。不要在这个阶段实现大型神经网络或声称生物学性能。
 当前第三轮推进到 v0.3-real-benchmark-baselines：新增第一个真实公开 H5AD perturbation dataset 的 registry、prepare CLI、adapter/schema mapping、真实 baseline runner 和报告。v0.3 仍不实现 EvoPrior 神经模型，也不声称 SOTA。
+当前第四轮推进到 v0.4-real-baseline-strengthening-and-benchmark-alignment：新增更强 classical baselines、重复 split 评测、置信区间、perturbation retrieval / DE recovery metrics、预处理敏感性审计和公开 benchmark alignment 文档。v0.4 仍不实现 EvoPrior 或任何演化先验。
 
 ## 科学问题
 
@@ -109,6 +110,34 @@ outputs/data_reports/scperturb_papalexi_2021_arrayed_rna/<timestamp>/schema_repo
 
 原始数据和运行产物都不提交到 git。
 
+## v0.4 Quickstart
+
+运行重复真实 baseline 评测：
+
+```powershell
+python scripts/run_repeated_baselines.py --config configs/experiment/real_v04_repeated_baselines.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.4-real-baseline-strengthening/scperturb_papalexi_2021_arrayed_rna/<timestamp>/
+```
+
+运行小型预处理敏感性审计：
+
+```powershell
+python scripts/run_sensitivity.py --config configs/experiment/real_v04_sensitivity.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.4-real-baseline-sensitivity/scperturb_papalexi_2021_arrayed_rna/<timestamp>/
+```
+
+公开 benchmark 对齐状态记录在 [docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md](docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md)。当前结论是：v0.4 仍是项目自定义真实数据 baseline，不是 public leaderboard 或论文 split。
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -118,12 +147,12 @@ outputs/data_reports/scperturb_papalexi_2021_arrayed_rna/<timestamp>/schema_repo
 
 ## 下一安全里程碑
 
-v0.4 的下一步是增强真实 baseline，并尽量对齐一个公开 benchmark：
+v0.5 的下一步可以开始第一个 lineage-prior module，但必须继续对照 v0.4 baselines：
 
-1. 复核 Papalexi/scPerturb preprocessing 是否与公开工具一致。
-2. 增加更强 classical baselines。
-3. 实现 seed repeats 和 confidence intervals。
-4. 增加 perturbation discrimination score。
-5. 调研可对齐的公开 split，避免自定义 split 过度解释。
+1. 先选择一个最小细胞谱系/扰动层级 prior。
+2. 和 v0.4 classical baselines 在同一 split/metric 下比较。
+3. 做 ablation，不做 SOTA 声称。
+4. 保留 response decomposition 设计，但先实现最小可测版本。
+5. 同时推进 Adamson/Norman/Replogle 的公开 benchmark 对齐。
 
-在真实 benchmark 和 baseline 纪律更稳之前，不实现 EvoPrior 神经模块。
+在没有同 split baseline 对照和 ablation 前，不把任何新 prior 写成有效。

@@ -1,0 +1,121 @@
+experiment_id: v0.4-real-baseline-strengthening
+seed: 44
+output_root: outputs/runs
+output_prefix: v0.4-real-baseline-strengthening
+
+data:
+  dataset:
+    dataset_id: scperturb_papalexi_2021_arrayed_rna
+    display_name: PapalexiSatija2021 ECCITE-seq arrayed RNA
+    source_url: https://zenodo.org/records/13350497/files/PapalexiSatija2021_eccite_arrayed_RNA.h5ad?download=1
+    expected_raw_path: data/raw/PapalexiSatija2021_eccite_arrayed_RNA.h5ad
+    expected_format: h5ad
+    checksum: 843820d48b024348d6132cd53be0da91
+    checksum_algorithm: md5
+    file_size_bytes: 52339395
+    license: CC-BY-4.0 via scPerturb Zenodo record
+    access_notes: Public scPerturb H5AD collection, version 1.4.
+    adapter: generic_h5ad
+    allow_auto_download: true
+    manual_download_note: Download PapalexiSatija2021_eccite_arrayed_RNA.h5ad from Zenodo record 13350497 and place it under data/raw/.
+  prepare:
+    mode: local_or_download
+    local_path:
+  adapter:
+    obs_mapping:
+      perturbation: perturbation
+      cell_type: celltype
+      tissue: tissue_type
+      donor:
+      batch:
+      dose:
+      time:
+    var_mapping:
+      gene_symbol:
+      gene_id: ensembl_id
+    control_labels:
+      - control
+      - ctrl
+      - nt
+      - non-targeting
+    fallback_cell_type: unknown_cell_type
+    preserve_obs_fields:
+      - guide_id
+      - hto
+      - cell_line
+      - perturbation_type
+      - nperts
+
+preprocessing:
+  seed: 44
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - guide_id
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: raise
+
+features:
+  allowed_feature_columns:
+    - control_expression
+    - perturbation
+    - cell_type
+    - guide_id
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+    - 100
+  repeated_random_group:
+    enabled: true
+    n_repeats: 5
+    seed_start: 440
+    val_fraction: 0.2
+    test_fraction: 0.2
+  leave_one_perturbation_suite:
+    enabled: true
+    min_test_groups: 2
+    val_fraction: 0.2
+    seed: 550
+
+baselines:
+  - name: control_mean
+  - name: mean_delta
+    fallback: global
+  - name: perturbation_mean_delta_v2
+    fallback: global
+  - name: hierarchical_additive
+    alpha: 5.0
+  - name: ridge_cv
+    alphas:
+      - 0.1
+      - 1.0
+      - 10.0
+
+reporting:
+  claim_boundary: v0.4 strengthens real-data baseline evaluation and reports underpowered metrics honestly. It does not establish SOTA, biological superiority, or EvoPrior effectiveness.
+  limitations:
+    - The selected dataset has one cell type/cell line and no donor metadata.
+    - Leave-one-perturbation metrics are underpowered for perturbations with only two guide-level groups.
+    - Retrieval metrics use train candidate profiles only; unseen held-out perturbations may be marked not meaningful.
+    - DE recovery metrics are gene-rank plumbing checks and not validated biological discoveries.
+    - The current split is not aligned with a public benchmark.
+

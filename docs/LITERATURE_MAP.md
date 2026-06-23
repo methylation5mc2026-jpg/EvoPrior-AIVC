@@ -19,6 +19,15 @@
 | scPerturb | Harmonized single-cell perturbation data resource，提供多个 `.h5ad` 文件 | v0.3 使用其 Zenodo v1.4 H5AD 文件作为第一真实数据 plumbing 测试 | Project: <https://projects.sanderlab.org/scperturb/>；Zenodo: <https://zenodo.org/records/13350497> |
 | PapalexiSatija2021 ECCITE-seq | stimulated THP-1 cell line 的 11 gRNA ECCITE-seq 数据 | 选择 arrayed RNA H5AD，体量小、control label 清楚；仅用于工程验证 | pertpy note: <https://pertpy.readthedocs.io/en/1.0.6/api/data/pertpy.data.papalexi_2021.html> |
 
+## v0.4 benchmark-alignment notes
+
+| Source | Relevance | Current status |
+| --- | --- | --- |
+| GEARS | Defines perturbation generalization tasks on datasets such as Norman, Adamson, and Replogle | Current Papalexi split is not aligned |
+| CZI Virtual Cells Platform | Provides benchmark-oriented processed datasets such as Adamson and K562 Essential | Current Papalexi split is not aligned |
+| Systema | Recent benchmark stressing simple baselines and standardized splits | Current Papalexi split is not aligned |
+| scPerturb | Provides harmonized data files and perturbation effect analysis resource | Current dataset source is scPerturb, but prediction split is project-defined |
+
 ## 基准与社区评测
 
 | 资源 | 要点 | 本项目使用策略 | 初始来源 |

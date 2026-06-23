@@ -85,3 +85,24 @@ Claim status:
 - Known risks: 单一 cell type、无 donor、held-out `pdl1` pseudobulk groups 很少、未对齐公开 benchmark split、top-variance 3,000 genes 只是本地 smoke 配置。
 - Rollback note: rollback to tag `v0.2-data-pipeline-and-baselines` to remove v0.3 work.
 - Claim status: engineering validation only; no biological, SOTA, or near-SOTA claim.
+
+### EXP-0003: v0.4 real baseline strengthening
+
+- Experiment ID: `v0.4-real-baseline-strengthening`
+- Date: 2026-06-23
+- Status: completed
+- Role: Research lead / Data engineer / Baseline engineer / Evaluation engineer / MLOps / Scientific reviewer
+- Objective: Strengthen real-data classical baselines, repeated evaluation, confidence intervals, perturbation-level and DE-level metrics, preprocessing sensitivity audit, and public benchmark alignment documentation.
+- Dataset: `scperturb_papalexi_2021_arrayed_rna`
+- Dataset version/checksum: scPerturb Zenodo v1.4, md5 `843820d48b024348d6132cd53be0da91`
+- Split ID: `repeated_random_group` and `leave_one_perturbation_suite`
+- Config path: `configs/experiment/real_v04_repeated_baselines.yaml`; sensitivity config `configs/experiment/real_v04_sensitivity.yaml`
+- Git commit: working tree before final v0.4 commit; resolved configs are saved in output dirs
+- Seed(s): repeated random seeds 440-444; leave-one perturbation seeds start at 550; sensitivity seed 45
+- Command: `python scripts/run_repeated_baselines.py --config configs/experiment/real_v04_repeated_baselines.yaml`; `python scripts/run_sensitivity.py --config configs/experiment/real_v04_sensitivity.yaml`
+- Outputs: repeated run `outputs/runs/v0.4-real-baseline-strengthening/scperturb_papalexi_2021_arrayed_rna/20260623T082543Z/`; sensitivity run `outputs/runs/v0.4-real-baseline-sensitivity/scperturb_papalexi_2021_arrayed_rna/20260623T082554Z/`
+- Metrics: repeated_random_group test MAE mean examples: control_mean 0.6507, mean_delta 0.5912, hierarchical_additive 0.6139, ridge_cv 0.5868. Leave-one perturbation suite test MAE values are underpowered with n=2. Sensitivity audit shows random_group MAE ranges are wide across preprocessing settings.
+- Assumptions: v0.4 strengthens baseline/evaluation only; EvoPrior, lineage priors, evolutionary priors, and neural models remain out of scope.
+- Known risks: selected dataset is single-cell-type; leave-one perturbation suite is underpowered; retrieval metrics are not meaningful for held-out perturbations absent from train candidate profiles; public benchmark alignment is explicitly incomplete.
+- Rollback note: rollback to tag `v0.3-real-benchmark-baselines` to remove v0.4 work.
+- Claim status: engineering validation only; no biological, SOTA, or near-SOTA claim.

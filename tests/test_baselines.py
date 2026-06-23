@@ -3,9 +3,13 @@ import pytest
 
 from evoprior_aivc.baselines import (
     AdditiveBaseline,
+    ControlMeanBaseline,
+    HierarchicalAdditiveBaseline,
     MeanDeltaBaseline,
     NoChangeBaseline,
+    PerturbationMeanDeltaBaselineV2,
     RidgeBaseline,
+    RidgeCVBaseline,
     build_delta_dataset,
 )
 from evoprior_aivc.data.pseudobulk import aggregate_pseudobulk
@@ -26,6 +30,10 @@ def _synthetic_delta_dataset(seed: int = 0):
         MeanDeltaBaseline(),
         AdditiveBaseline(),
         RidgeBaseline(alpha=1.0),
+        ControlMeanBaseline(),
+        PerturbationMeanDeltaBaselineV2(),
+        HierarchicalAdditiveBaseline(alpha=2.0),
+        RidgeCVBaseline(alphas=(0.01, 0.1, 1.0)),
     ],
 )
 def test_baselines_fit_and_predict_finite_delta(baseline):
@@ -44,6 +52,16 @@ def test_no_change_baseline_predicts_zero_delta():
     predictions = NoChangeBaseline().fit(dataset).predict_delta(dataset)
 
     assert np.allclose(predictions.to_numpy(), 0.0)
+
+
+def test_control_mean_baseline_predicts_zero_delta_and_records_fallbacks():
+    dataset = _synthetic_delta_dataset(seed=12)
+
+    baseline = ControlMeanBaseline().fit(dataset)
+    predictions = baseline.predict_delta(dataset)
+
+    assert np.allclose(predictions.to_numpy(), 0.0)
+    assert ("cell_type",) in baseline.available_fallbacks_
 
 
 def test_mean_delta_baseline_recovers_simple_perturbation_effect():
@@ -66,6 +84,44 @@ def test_mean_delta_baseline_uses_global_fallback_for_unseen_perturbation():
 
     expected = train.observed_delta.mean(axis=0).to_numpy(dtype=float)
     np.testing.assert_allclose(predictions.iloc[0].to_numpy(dtype=float), expected)
+
+
+def test_perturbation_mean_delta_v2_global_fallback_for_unseen_perturbation():
+    dataset = _synthetic_delta_dataset(seed=13)
+    train_mask = dataset.metadata["perturbation"] != "pert_c"
+    train = _subset_dataset(dataset, train_mask)
+    query = _subset_dataset(dataset, ~train_mask)
+
+    baseline = PerturbationMeanDeltaBaselineV2(fallback="global").fit(train)
+    predictions = baseline.predict_delta(query)
+
+    expected = train.observed_delta.mean(axis=0).to_numpy(dtype=float)
+    np.testing.assert_allclose(predictions.iloc[0].to_numpy(dtype=float), expected)
+
+
+def test_hierarchical_additive_shrinkage_reduces_rare_effect_magnitude():
+    dataset = _synthetic_delta_dataset(seed=14)
+    weak_shrinkage = HierarchicalAdditiveBaseline(alpha=0.0).fit(dataset)
+    strong_shrinkage = HierarchicalAdditiveBaseline(alpha=100.0).fit(dataset)
+    effect_key = "pert_a"
+    weak_norm = np.linalg.norm(
+        weak_shrinkage.effect_tables_["perturbation"].loc[effect_key].to_numpy(dtype=float)
+    )
+    strong_norm = np.linalg.norm(
+        strong_shrinkage.effect_tables_["perturbation"].loc[effect_key].to_numpy(dtype=float)
+    )
+
+    assert strong_norm < weak_norm
+
+
+def test_ridge_cv_selects_alpha_and_predicts_shape():
+    dataset = _synthetic_delta_dataset(seed=15)
+
+    baseline = RidgeCVBaseline(alphas=(0.01, 0.1, 1.0)).fit(dataset)
+    predictions = baseline.predict_delta(dataset)
+
+    assert baseline.selected_alpha_ in {0.01, 0.1, 1.0}
+    assert predictions.shape == dataset.observed_delta.shape
 
 
 def test_ridge_can_overfit_tiny_deterministic_subset():

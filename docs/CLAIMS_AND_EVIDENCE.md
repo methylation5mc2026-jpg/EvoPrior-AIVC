@@ -11,6 +11,10 @@
 - `v0.3-real-benchmark-baselines`: 项目支持一个真实公开 perturbation H5AD 数据集通过 canonical schema。证据：`scperturb_papalexi_2021_arrayed_rna` adapter schema report。
 - `v0.3-real-benchmark-baselines`: baseline evaluation loop 可以在真实数据上端到端运行，并生成 metrics、predictions、split manifest、schema report、failure cases 和 markdown report。
 - `v0.3-real-benchmark-baselines`: selected held-out perturbation split 的 leakage check 通过；`pdl1` 不出现在训练/验证 split 中。
+- `v0.4-real-baseline-strengthening`: repeated real-data baseline evaluation works and writes per-run metrics, metric summaries, confidence intervals, retrieval summaries, DE summaries, skipped perturbations, and a v0.4 report.
+- `v0.4-real-baseline-strengthening`: perturbation-level retrieval metrics and DE recovery metrics are implemented with unit tests.
+- `v0.4-real-baseline-strengthening`: preprocessing sensitivity audit runs over a compact matrix and reports metric fragility.
+- `docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md`: current v0.4 setup has been audited and is explicitly not public-benchmark-aligned.
 
 ## 消融提示
 
@@ -31,3 +35,5 @@
 - 不声称 lineage/evolutionary prior 已经有效；v0.2 尚未实现这些先验。
 - 不声称 v0.3 的 Papalexi split 是公开 leaderboard 或论文 benchmark。
 - 不声称真实数据指标说明生物学发现；它们只说明当前 pipeline 可以运行。
+- 不声称 v0.4 repeated metrics establish model superiority; leave-one perturbation is underpowered.
+- 不声称 retrieval/PDS is meaningful for held-out perturbations absent from train candidate profiles.

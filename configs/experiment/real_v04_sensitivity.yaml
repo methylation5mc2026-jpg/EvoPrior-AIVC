@@ -1,0 +1,26 @@
+experiment_id: v0.4-preprocessing-sensitivity
+seed: 45
+output_root: outputs/runs
+output_prefix: v0.4-real-baseline-sensitivity
+
+base_config: configs/experiment/real_v04_repeated_baselines.yaml
+
+matrix:
+  top_n_genes:
+    - 1000
+    - 3000
+    - 5000
+  min_cells_per_group:
+    - 10
+    - 20
+    - 50
+  split_modes:
+    - random_group
+    - heldout_pdl1
+
+baselines:
+  - control_mean
+  - perturbation_mean_delta_v2
+  - hierarchical_additive
+  - ridge_cv
+

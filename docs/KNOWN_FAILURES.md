@@ -16,6 +16,11 @@
 12. v0.3 使用 project-defined split，没有与 Papalexi、scPerturb、pertpy 或 GEARS 的公开 split 对齐。
 13. v0.3 held-out `pdl1` 只有两个 guide-level pseudobulk groups，其中一个 group 只有 24 cells，指标波动会很大。
 14. v0.3 使用 top-variance 3,000 genes 的本地 smoke 配置，不代表完整基因空间评测。
+15. v0.4 leave-one-perturbation suite is underpowered: only perturbations with at least two guide-level groups are eligible.
+16. v0.4 retrieval metrics are not meaningful for held-out perturbations absent from train candidate profiles; these rows are marked underpowered/not meaningful.
+17. v0.4 confidence intervals use a simple normal approximation and are descriptive only.
+18. v0.4 sensitivity audit shows MAE can move substantially across top-gene and min-cell settings; this setup should not be optimized against test metrics.
+19. Public benchmark alignment remains incomplete; current Papalexi split is not a GEARS/CZI/Systema/CPA/scGen benchmark.
 
 ## 失败记录模板
 

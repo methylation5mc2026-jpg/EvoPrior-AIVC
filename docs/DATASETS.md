@@ -137,3 +137,13 @@ Limitations:
 - `IFNGR2` has only 4 cells and is dropped by the v0.3 pseudobulk threshold.
 - The split is project-defined, not a published benchmark split.
 - This dataset validates real-data plumbing only; it does not test lineage or donor generalization.
+
+## v0.4 preprocessing sensitivity notes
+
+v0.4 audits a compact preprocessing matrix:
+
+- top variance genes: 1000, 3000, 5000
+- min cells per pseudobulk group: 10, 20, 50
+- split modes: random_group and heldout_pdl1
+
+The sensitivity audit is descriptive. It must not be used to choose hyperparameters on test metrics or to claim biological superiority.

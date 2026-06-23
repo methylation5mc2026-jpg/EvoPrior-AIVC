@@ -162,3 +162,68 @@ What this does not test:
 - Lineage, donor, or tissue generalization.
 - EvoPrior or evolutionary priors.
 - Agreement with a published benchmark split.
+
+## v0.4 strengthened real-data baseline evaluation
+
+Experiment ID: `v0.4-real-baseline-strengthening`
+
+Command:
+
+```powershell
+python scripts/run_repeated_baselines.py --config configs/experiment/real_v04_repeated_baselines.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.4-real-baseline-strengthening/scperturb_papalexi_2021_arrayed_rna/<timestamp>/
+```
+
+New baselines:
+
+- `control_mean`: explicit matched-control zero-delta baseline with fallback hierarchy documented.
+- `perturbation_mean_delta_v2`: perturbation mean delta with guide/global/zero fallback options.
+- `hierarchical_additive`: global + perturbation + guide + cell-type + batch effects with shrinkage.
+- `ridge_cv`: ridge baseline with alpha selected from a fixed grid.
+
+Repeated split modes:
+
+- `repeated_random_group`: 5 group-level random splits by default.
+- `leave_one_perturbation_suite`: holds out each perturbation with at least two pseudobulk groups; skipped perturbations are reported.
+
+Confidence intervals:
+
+- v0.4 reports mean, standard deviation, and normal-approximation 95% CI.
+- `underpowered=True` is reported when fewer than 3 values support the interval.
+- For the current dataset, leave-one perturbation CI values are underpowered.
+
+Perturbation retrieval / PDS:
+
+- Candidate perturbation profiles are built from training observed deltas only.
+- If the true held-out perturbation is absent from train candidates, retrieval is marked not meaningful.
+- This conservative design avoids using test target profiles as candidate references.
+
+DE recovery:
+
+- Reports top-k absolute delta overlap precision, Jaccard, signed direction accuracy, and gene-rank Spearman.
+- Configured k values: 20, 50, 100.
+- Metrics are engineering checks over selected genes, not biological discovery claims.
+
+Preprocessing sensitivity:
+
+Command:
+
+```powershell
+python scripts/run_sensitivity.py --config configs/experiment/real_v04_sensitivity.yaml
+```
+
+Audited dimensions:
+
+- top variance genes: 1000, 3000, 5000
+- min cells per pseudobulk group: 10, 20, 50
+- split modes: random_group, heldout_pdl1
+
+Benchmark alignment:
+
+- Current Papalexi/scPerturb v0.4 split is not aligned with GEARS, CPA, scGen, Systema, Virtual Cell Challenge, or CZI platform splits.
+- See `docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md`.
