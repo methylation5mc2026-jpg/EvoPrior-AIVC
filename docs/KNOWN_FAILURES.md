@@ -2,14 +2,14 @@
 
 ## 当前已知风险
 
-1. 尚未锁定第一公开数据集；所有 benchmark 描述都是设计约束，不是已完成实验。
+1. 第一公开真实数据集已锁定为 Papalexi/scPerturb，但它只适合真实数据 plumbing 和 baseline hardening，不适合谱系验证。
 2. 文献地图是初始种子，未完成系统综述。
 3. 当前指标实现只覆盖最小玩具案例；真实单细胞评测需要补充 per-group breakdown、DE 方法和置信区间。
 4. 当前切分实现只做基础 held-out 标签检查；复杂 context split 需要更严格的组合键审计。
-5. 还没有下载、校验或处理任何 AnnData 文件。
-6. v0.2 只验证 synthetic data pipeline 和 baseline plumbing；真实 benchmark 尚未验证。
+5. 目前只下载、校验并处理了一个小型 Papalexi H5AD；尚未接入真实 multi-cell-type perturbation 数据。
+6. v0.2 只验证 synthetic data pipeline 和 baseline plumbing；v0.3/v0.4 才验证真实数据 plumbing 和强化基线。
 7. v0.2 的 `heldout_perturbation` 只测试 synthetic `pert_c` fallback，不代表真实 unseen perturbation 泛化能力。
-8. 尚未实现 EvoPrior 模块、细胞谱系先验、基因保守性先验或通路网络先验。
+8. 尚未实现 EvoPrior 神经模块、基因保守性先验或通路网络先验；v0.5 只实现了第一个非神经细胞谱系先验 baseline。
 9. 当前 preprocessing 尚未与任何公开论文 baseline 完全对齐。
 10. v0.3 选择的 Papalexi/scPerturb 数据只有一个 cell type/cell line，不能测试谱系泛化。
 11. v0.3 数据没有 donor 字段，不能测试 donor split。
@@ -21,6 +21,11 @@
 17. v0.4 confidence intervals use a simple normal approximation and are descriptive only.
 18. v0.4 sensitivity audit shows MAE can move substantially across top-gene and min-cell settings; this setup should not be optimized against test metrics.
 19. Public benchmark alignment remains incomplete; current Papalexi split is not a GEARS/CZI/Systema/CPA/scGen benchmark.
+20. v0.5 synthetic lineage benchmark 是理想化生成过程，不能说明真实生物谱系泛化。
+21. v0.5 Papalexi compatibility run 是 no-op/fallback 检查；Papalexi 当前配置只有一个 cell type/cell line，不能识别 lineage signal。
+22. v0.5 `LineageShrinkageBaseline` 是 non-neural shrinkage baseline，不是 EvoPrior neural model。
+23. v0.5 尚未选择真实 multi-cell-type perturbation benchmark；`docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md` 只是侦察记录。
+24. 如果未来候选数据只有多个 cancer cell lines，而不是明确发育谱系，只能声称 context/cell-line transfer，不能声称 biological lineage validation。
 
 ## 失败记录模板
 

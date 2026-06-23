@@ -15,14 +15,17 @@
 - `v0.4-real-baseline-strengthening`: perturbation-level retrieval metrics and DE recovery metrics are implemented with unit tests.
 - `v0.4-real-baseline-strengthening`: preprocessing sensitivity audit runs over a compact matrix and reports metric fragility.
 - `docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md`: current v0.4 setup has been audited and is explicitly not public-benchmark-aligned.
+- `v0.5-synthetic-lineage-prior`: lineage tree infrastructure, cell-type-to-lineage mapping, lineage distance/features, synthetic multi-cell-type lineage data generation, and one non-neural lineage-aware baseline are implemented with tests.
+- `v0.5-synthetic-lineage-prior`: on a known synthetic lineage-structured generator, `lineage_shrinkage` can be evaluated against v0.4-style classical baselines under held-out cell-type splits. This is synthetic logic validation only.
+- `v0.5-papalexi-lineage-compatibility`: the lineage baseline runs safely on the existing Papalexi real-data plumbing in compatibility/no-op mode, and the report records that lineage signal is not identifiable with one configured cell type.
 
 ## 消融提示
 
-暂无。
+- `v0.5-synthetic-lineage-prior`: synthetic held-out cell-type results can be used as an implementation sanity check for lineage borrowing. They cannot be promoted to real-data biological evidence.
 
 ## 推测/未来工作
 
-- 细胞谱系先验可能提升 held-out cell type 或 held-out context 外推。
+- 细胞谱系先验可能提升真实 held-out cell type 或 held-out context 外推，但还需要 v0.6 真实 multi-cell-type perturbation benchmark 验证。
 - 基因演化/保守性先验可能提升 held-out perturbation 外推。
 - 通路/调控网络先验可能提升 top DE gene recovery。
 
@@ -32,8 +35,10 @@
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。
-- 不声称 lineage/evolutionary prior 已经有效；v0.2 尚未实现这些先验。
+- 不声称 lineage prior 已经在真实生物数据上有效；v0.5 只实现了第一个非神经谱系先验 baseline 和 synthetic sanity check。
+- 不声称 evolutionary prior、pathway prior 或 neural EvoPrior 已经实现。
 - 不声称 v0.3 的 Papalexi split 是公开 leaderboard 或论文 benchmark。
 - 不声称真实数据指标说明生物学发现；它们只说明当前 pipeline 可以运行。
 - 不声称 v0.4 repeated metrics establish model superiority; leave-one perturbation is underpowered.
 - 不声称 retrieval/PDS is meaningful for held-out perturbations absent from train candidate profiles.
+- 不声称 Papalexi v0.5 compatibility metrics 说明谱系先验有效；该数据在当前配置下只有一个 cell type/cell line。

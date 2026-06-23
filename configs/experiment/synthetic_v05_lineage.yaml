@@ -1,0 +1,56 @@
+experiment_id: v0.5-synthetic-lineage-prior
+seed: 55
+output_root: outputs/runs
+output_prefix: v0.5-first-lineage-prior
+dataset_id: synthetic_lineage
+
+synthetic:
+  n_genes: 40
+  cells_per_group: 6
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - donor
+  min_cells: 3
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+    - donor
+
+splits:
+  heldout_cell_types:
+    - myeloid_b
+    - lymphoid_b
+    - epithelial_b
+    - stromal_b
+
+lineage_baseline:
+  tau: 1.5
+  shrinkage: 0.85
+  fallback_mode: global
+  unknown_node:
+  on_unknown: raise
+
+baselines:
+  - name: control_mean
+  - name: mean_delta
+    fallback: global
+  - name: perturbation_mean_delta_v2
+    fallback: global
+  - name: hierarchical_additive
+    alpha: 5.0
+  - name: ridge_cv
+    alphas:
+      - 0.1
+      - 1.0
+      - 10.0
+  - name: lineage_shrinkage
+
+reporting:
+  claim_boundary: Synthetic lineage benchmark validates lineage-prior plumbing under known generated structure only. It is not biological evidence.
+

@@ -2,9 +2,7 @@
 
 EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。目标不是做泛泛的“AI for biology”演示，而是在明确公开数据集、固定切分、统一评测脚本和可复现实验记录之上，检验“细胞谱系先验、基因演化/保守性先验、通路/网络先验是否能提升外推预测”这个窄而严肃的问题。
 
-当前仓库处于 v0.2-data-pipeline-and-baselines 阶段：已经建立 synthetic AnnData 数据管线、pseudobulk 聚合、四个基础 baseline、固定指标评测、泄漏检查和端到端 synthetic smoke runner。不要在这个阶段实现大型神经网络或声称生物学性能。
-当前第三轮推进到 v0.3-real-benchmark-baselines：新增第一个真实公开 H5AD perturbation dataset 的 registry、prepare CLI、adapter/schema mapping、真实 baseline runner 和报告。v0.3 仍不实现 EvoPrior 神经模型，也不声称 SOTA。
-当前第四轮推进到 v0.4-real-baseline-strengthening-and-benchmark-alignment：新增更强 classical baselines、重复 split 评测、置信区间、perturbation retrieval / DE recovery metrics、预处理敏感性审计和公开 benchmark alignment 文档。v0.4 仍不实现 EvoPrior 或任何演化先验。
+当前仓库已推进到 v0.5-first-lineage-prior-module：在 v0.4 强化基线层之上，新增细胞谱系树/映射/特征工具、synthetic multi-cell-type lineage 数据生成器、一个非神经 `LineageShrinkageBaseline`，以及 synthetic lineage sanity benchmark。v0.5 只证明谱系先验基础设施和 synthetic 逻辑验证跑通；Papalexi 真实数据仅做兼容/no-op 检查，不支撑真实生物谱系有效性声称。
 
 ## 科学问题
 
@@ -138,6 +136,39 @@ outputs/runs/v0.4-real-baseline-sensitivity/scperturb_papalexi_2021_arrayed_rna/
 
 公开 benchmark 对齐状态记录在 [docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md](docs/PUBLIC_BENCHMARK_ALIGNMENT_V04.md)。当前结论是：v0.4 仍是项目自定义真实数据 baseline，不是 public leaderboard 或论文 split。
 
+## v0.5 Quickstart
+
+运行 synthetic multi-cell-type lineage sanity benchmark：
+
+```powershell
+python scripts/run_lineage_prior.py --config configs/experiment/synthetic_v05_lineage.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.5-first-lineage-prior/synthetic_lineage/<timestamp>/
+```
+
+运行 Papalexi 真实数据兼容/no-op 检查：
+
+```powershell
+python scripts/run_lineage_prior.py --config configs/experiment/real_v05_lineage_compatibility.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.5-first-lineage-prior/scperturb_papalexi_2021_arrayed_rna/<timestamp>/
+```
+
+v0.5 相关说明：
+
+- 设计边界：[docs/V05_LINEAGE_PRIOR_DESIGN.md](docs/V05_LINEAGE_PRIOR_DESIGN.md)。
+- 未来真实多细胞数据集要求：[docs/V05_MULTICELL_DATASET_REQUIREMENTS.md](docs/V05_MULTICELL_DATASET_REQUIREMENTS.md)。
+- 真实多细胞候选侦察：[docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md](docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md)。
+- Papalexi 只有一个配置内 cell type/cell line，不能验证谱系泛化。
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -147,12 +178,10 @@ outputs/runs/v0.4-real-baseline-sensitivity/scperturb_papalexi_2021_arrayed_rna/
 
 ## 下一安全里程碑
 
-v0.5 的下一步可以开始第一个 lineage-prior module，但必须继续对照 v0.4 baselines：
+v0.6 的下一步应选择一个真实 multi-cell-type perturbation 数据集，并在固定 split/metric 下比较 v0.4 classical baselines 与 v0.5 lineage-aware baseline：
 
-1. 先选择一个最小细胞谱系/扰动层级 prior。
-2. 和 v0.4 classical baselines 在同一 split/metric 下比较。
-3. 做 ablation，不做 SOTA 声称。
-4. 保留 response decomposition 设计，但先实现最小可测版本。
-5. 同时推进 Adamson/Norman/Replogle 的公开 benchmark 对齐。
-
-在没有同 split baseline 对照和 ablation 前，不把任何新 prior 写成有效。
+1. 先锁定数据版本、下载体量、checksum、许可和 schema mapping。
+2. 优先选择支持 held-out cell type、held-out lineage 或 held-out donor/context 的数据。
+3. 保留 v0.4 baseline 对照和 v0.5 lineage ablation，不做 SOTA 声称。
+4. 若真实数据只有 cell line 而非发育谱系，只能称为 context/cell-line transfer，不写成生物谱系验证。
+5. 在真实多细胞结果前，不把 synthetic lineage 结果写成真实生物有效。
