@@ -12,6 +12,13 @@
 | scGPT | 单细胞 foundation model，可微调用于 genetic perturbation prediction | 作为 foundation model 对照或特征提取候选，但必须严控泄漏 | Nature Methods: <https://www.nature.com/articles/s41592-024-02201-0> |
 | Foundation model 扰动评测批评 | 近期研究指出深度/foundation 模型未必稳定优于朴素基线 | 强化本项目“先锁基线与评测”的必要性 | Nature Methods: <https://www.nature.com/articles/s41592-025-02772-6> |
 
+## v0.3 真实数据来源
+
+| 资源 | 要点 | 本项目使用策略 | 初始来源 |
+| --- | --- | --- | --- |
+| scPerturb | Harmonized single-cell perturbation data resource，提供多个 `.h5ad` 文件 | v0.3 使用其 Zenodo v1.4 H5AD 文件作为第一真实数据 plumbing 测试 | Project: <https://projects.sanderlab.org/scperturb/>；Zenodo: <https://zenodo.org/records/13350497> |
+| PapalexiSatija2021 ECCITE-seq | stimulated THP-1 cell line 的 11 gRNA ECCITE-seq 数据 | 选择 arrayed RNA H5AD，体量小、control label 清楚；仅用于工程验证 | pertpy note: <https://pertpy.readthedocs.io/en/1.0.6/api/data/pertpy.data.papalexi_2021.html> |
+
 ## 基准与社区评测
 
 | 资源 | 要点 | 本项目使用策略 | 初始来源 |

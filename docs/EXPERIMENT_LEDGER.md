@@ -64,3 +64,24 @@ Claim status:
 - Known risks: synthetic results do not indicate real biological performance; no public dataset has been ingested; no lineage/evolutionary priors are implemented.
 - Rollback note: rollback to `8b03b1f` to remove all v0.2 code; generated `outputs/runs/` artifacts are local and ignored by git.
 - Claim status: engineering validation only; no SOTA, near-SOTA, or biological claim.
+
+### EXP-0002: v0.3 real benchmark baselines
+
+- Experiment ID: `v0.3-real-benchmark-baselines`
+- Date: 2026-06-23
+- Status: completed
+- Role: Research lead / Data engineer / Baseline engineer / Evaluation engineer / MLOps / Scientific reviewer
+- Objective: 选择第一个真实公开单细胞扰动数据集，映射到 canonical schema，建立小型可复现真实数据 benchmark split，并运行 v0.2 已实现的四个 baseline。
+- Dataset: `scperturb_papalexi_2021_arrayed_rna`
+- Dataset version/checksum: scPerturb Zenodo v1.4, `PapalexiSatija2021_eccite_arrayed_RNA.h5ad`, md5 `843820d48b024348d6132cd53be0da91`
+- Split ID: `random_group` and `heldout_perturbation:pdl1`
+- Config path: `configs/experiment/real_v03_baselines.yaml`
+- Git commit: working tree before final v0.3 commit; resolved config and output artifacts were saved
+- Seed(s): `43`, split seeds `301` and `302`
+- Command: `python scripts/run_real_baseline.py --config configs/experiment/real_v03_baselines.yaml`
+- Outputs: `outputs/runs/v0.3-real-benchmark-baselines/scperturb_papalexi_2021_arrayed_rna/20260623T071714Z/`
+- Metrics: final run wrote 16 metric rows. Test split highlights: random_group no_change MAE 1.2032 / MSE 15.3499; random_group mean_delta MAE 0.6588 / MSE 4.3007; random_group ridge MAE 0.6079 / MSE 3.6526; heldout_perturbation no_change MAE 0.3513 / MSE 3.1896; heldout_perturbation mean_delta MAE 0.5976 / MSE 3.7866; heldout_perturbation ridge MAE 0.6443 / MSE 4.4164.
+- Assumptions: v0.3 只验证真实数据 plumbing，不实现 EvoPrior、谱系先验或演化先验；active `X` 被视作可用表达矩阵；control 按单一 cell type 聚合；guide_id 仅用于构造 pseudobulk groups。
+- Known risks: 单一 cell type、无 donor、held-out `pdl1` pseudobulk groups 很少、未对齐公开 benchmark split、top-variance 3,000 genes 只是本地 smoke 配置。
+- Rollback note: rollback to tag `v0.2-data-pipeline-and-baselines` to remove v0.3 work.
+- Claim status: engineering validation only; no biological, SOTA, or near-SOTA claim.

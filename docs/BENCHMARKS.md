@@ -87,3 +87,78 @@ split：
 - per-cell-type 和 per-perturbation breakdown CSV。
 
 解释边界：synthetic benchmark 只能证明 runner、artifact discipline、baseline API 和 metrics plumbing 能跑通。即使某个 baseline 在 synthetic split 上表现好，也不能说明其对真实生物数据有效。
+
+## v0.3 real benchmark baseline smoke
+
+Experiment ID: `v0.3-real-benchmark-baselines`
+
+Dataset ID: `scperturb_papalexi_2021_arrayed_rna`
+
+Command:
+
+```powershell
+python scripts/run_real_baseline.py --config configs/experiment/real_v03_baselines.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.3-real-benchmark-baselines/scperturb_papalexi_2021_arrayed_rna/<timestamp>/
+```
+
+Data preparation:
+
+```powershell
+python scripts/prepare_dataset.py --config configs/data/real_v03.yaml --dry-run
+python scripts/prepare_dataset.py --config configs/data/real_v03.yaml
+```
+
+Schema mapping:
+
+- `perturbation` -> `perturbation`
+- `celltype` -> `cell_type`
+- `tissue_type` -> `tissue`
+- inferred control mask from `control`
+- `var_names` -> `gene_symbol`
+- `ensembl_id` -> `gene_id`
+
+Pseudobulk:
+
+- Grouping: `cell_type`, `perturbation`, `guide_id`
+- Minimum cells per group: 20
+- Aggregation: mean
+- Matched control: pooled by `cell_type`
+
+Splits:
+
+- `random_group`: group-level engineering sanity split.
+- `heldout_perturbation`: `pdl1` held out from train/val and evaluated as unseen perturbation.
+
+Baselines:
+
+- no-change
+- mean-delta
+- additive
+- ridge
+
+Metrics:
+
+- `mae_delta`
+- `mse_delta`
+- `pearson_delta`
+- `spearman_logfc`
+- per-perturbation and per-cell-type breakdowns
+- top failure cases by group-level MAE
+
+What this tests:
+
+- The project can ingest one real public H5AD perturbation dataset.
+- Canonical schema validation works on messy real metadata.
+- Pseudobulk grouping, split, leakage checks, baselines, metrics, and artifact saving run end-to-end.
+
+What this does not test:
+
+- SOTA or near-SOTA performance.
+- Lineage, donor, or tissue generalization.
+- EvoPrior or evolutionary priors.
+- Agreement with a published benchmark split.

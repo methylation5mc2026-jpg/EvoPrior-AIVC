@@ -8,6 +8,9 @@
 
 - `v0.2-synthetic-baseline-smoke`: 仓库可以运行完整 synthetic perturbation baseline loop，包括 schema validation、pseudobulk aggregation、random/heldout split、四个 baseline、metrics JSON、prediction CSV、split assignment 和 markdown report。
 - `v0.2-synthetic-baseline-smoke`: 在 synthetic smoke test 中，四个 baseline 都能产生有限预测和指标。这是工程级证据，不是生物学证据。
+- `v0.3-real-benchmark-baselines`: 项目支持一个真实公开 perturbation H5AD 数据集通过 canonical schema。证据：`scperturb_papalexi_2021_arrayed_rna` adapter schema report。
+- `v0.3-real-benchmark-baselines`: baseline evaluation loop 可以在真实数据上端到端运行，并生成 metrics、predictions、split manifest、schema report、failure cases 和 markdown report。
+- `v0.3-real-benchmark-baselines`: selected held-out perturbation split 的 leakage check 通过；`pdl1` 不出现在训练/验证 split 中。
 
 ## 消融提示
 
@@ -26,3 +29,5 @@
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。
 - 不声称 lineage/evolutionary prior 已经有效；v0.2 尚未实现这些先验。
+- 不声称 v0.3 的 Papalexi split 是公开 leaderboard 或论文 benchmark。
+- 不声称真实数据指标说明生物学发现；它们只说明当前 pipeline 可以运行。

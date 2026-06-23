@@ -1,0 +1,109 @@
+experiment_id: v0.3-real-benchmark-baselines
+seed: 43
+output_root: outputs/runs
+output_prefix: v0.3-real-benchmark-baselines
+
+data:
+  dataset:
+    dataset_id: scperturb_papalexi_2021_arrayed_rna
+    display_name: PapalexiSatija2021 ECCITE-seq arrayed RNA
+    source_url: https://zenodo.org/records/13350497/files/PapalexiSatija2021_eccite_arrayed_RNA.h5ad?download=1
+    expected_raw_path: data/raw/PapalexiSatija2021_eccite_arrayed_RNA.h5ad
+    expected_format: h5ad
+    checksum: 843820d48b024348d6132cd53be0da91
+    checksum_algorithm: md5
+    file_size_bytes: 52339395
+    license: CC-BY-4.0 via scPerturb Zenodo record
+    access_notes: Public scPerturb H5AD collection, version 1.4.
+    adapter: generic_h5ad
+    allow_auto_download: true
+    manual_download_note: Download PapalexiSatija2021_eccite_arrayed_RNA.h5ad from Zenodo record 13350497 and place it under data/raw/.
+  prepare:
+    mode: local_or_download
+    local_path:
+  adapter:
+    obs_mapping:
+      perturbation: perturbation
+      cell_type: celltype
+      tissue: tissue_type
+      donor:
+      batch:
+      dose:
+      time:
+    var_mapping:
+      gene_symbol:
+      gene_id: ensembl_id
+    control_labels:
+      - control
+      - ctrl
+      - nt
+      - non-targeting
+    fallback_cell_type: unknown_cell_type
+    preserve_obs_fields:
+      - guide_id
+      - hto
+      - cell_line
+      - perturbation_type
+      - nperts
+
+preprocessing:
+  seed: 43
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - guide_id
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: raise
+
+features:
+  allowed_feature_columns:
+    - control_expression
+    - perturbation
+    - cell_type
+    - guide_id
+
+splits:
+  random_group:
+    val_fraction: 0.2
+    test_fraction: 0.2
+    seed: 301
+  heldout_perturbation:
+    holdout:
+      perturbation:
+        - pdl1
+    val_fraction: 0.2
+    seed: 302
+
+baselines:
+  - name: no_change
+  - name: mean_delta
+    fallback: global
+  - name: additive
+  - name: ridge
+    alpha: 1.0
+
+reporting:
+  top_failure_cases: 10
+  assumptions:
+    - The selected H5AD is treated as already harmonized by scPerturb; v0.3 does not reproduce upstream QC.
+    - The active X matrix is used after conservative gene filtering and top-variance gene selection.
+    - Controls are pooled within the single available cell type for matched-control delta construction.
+    - guide_id is used only to create multiple pseudobulk groups, not as a target-derived feature.
+  limitations:
+    - The dataset has one cell type/cell line and no donor metadata, so it cannot test lineage or donor generalization.
+    - The v0.3 split is project-defined and not matched to a published benchmark split.
+    - Held-out PDL1 has few pseudobulk guide groups; metrics are unstable and engineering-oriented.
+    - No EvoPrior model, lineage prior, evolutionary prior, or pathway prior is implemented.
+    - Synthetic and real smoke results must not be interpreted as SOTA or biological discovery.

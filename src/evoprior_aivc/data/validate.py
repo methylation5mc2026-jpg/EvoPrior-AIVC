@@ -77,7 +77,7 @@ def normalize_metadata_labels(adata: AnnData) -> AnnData:
     """Normalize common string metadata labels in place and return ``adata``."""
     for column in ("cell_type", "perturbation", "donor", "batch", "tissue"):
         if column in adata.obs.columns:
-            adata.obs[column] = adata.obs[column].map(_normalize_label)
+            adata.obs[column] = adata.obs[column].astype("object").map(_normalize_label)
 
     if "is_control" in adata.obs.columns:
         adata.obs["is_control"] = adata.obs["is_control"].astype(bool)
@@ -114,4 +114,3 @@ def _normalize_label(value: object) -> str:
     text = re.sub(r"[^a-z0-9]+", "_", text)
     text = re.sub(r"_+", "_", text).strip("_")
     return text
-

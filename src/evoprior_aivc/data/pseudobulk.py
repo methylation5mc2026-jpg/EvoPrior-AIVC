@@ -46,7 +46,7 @@ def aggregate_pseudobulk(
     metadata_rows: list[dict[str, object]] = []
     index: list[str] = []
 
-    grouped = metadata.groupby(list(groupby), sort=True, dropna=False)
+    grouped = metadata.groupby(list(groupby), sort=True, dropna=False, observed=True)
     for group_key, positions in grouped.indices.items():
         if not isinstance(group_key, tuple):
             group_key = (group_key,)
@@ -82,4 +82,3 @@ def _gene_names(adata: AnnData) -> list[str]:
 
 def _group_id(groupby: Sequence[str], group_key: tuple[object, ...]) -> str:
     return "|".join(f"{column}={value}" for column, value in zip(groupby, group_key, strict=True))
-
