@@ -2,7 +2,7 @@
 
 EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。目标不是做泛泛的“AI for biology”演示，而是在明确公开数据集、固定切分、统一评测脚本和可复现实验记录之上，检验“细胞谱系先验、基因演化/保守性先验、通路/网络先验是否能提升外推预测”这个窄而严肃的问题。
 
-当前仓库已推进到 v0.5-first-lineage-prior-module：在 v0.4 强化基线层之上，新增细胞谱系树/映射/特征工具、synthetic multi-cell-type lineage 数据生成器、一个非神经 `LineageShrinkageBaseline`，以及 synthetic lineage sanity benchmark。v0.5 只证明谱系先验基础设施和 synthetic 逻辑验证跑通；Papalexi 真实数据仅做兼容/no-op 检查，不支撑真实生物谱系有效性声称。
+当前仓库已推进到 v0.6-real-multicell-lineage-benchmark：在 v0.5 谱系先验模块之上，新增 Kang 2018 PBMC IFN-beta 真实多细胞类型 benchmark、coarse hematopoietic lineage mapping、held-out cell-type / held-out lineage split、真实数据 runner、tau sensitivity audit 和完整声称边界。v0.6 结果只对这个 PBMC 单刺激数据集和本项目 split 有效，不声称 SOTA 或一般谱系先验有效。
 
 ## 科学问题
 
@@ -169,6 +169,51 @@ v0.5 相关说明：
 - 真实多细胞候选侦察：[docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md](docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md)。
 - Papalexi 只有一个配置内 cell type/cell line，不能验证谱系泛化。
 
+## v0.6 Quickstart
+
+先查看 Kang 2018 PBMC IFN-beta 数据准备计划：
+
+```powershell
+python scripts/prepare_dataset.py --config configs/data/real_multicell_v06.yaml --dry-run
+```
+
+准备真实 multi-cell-type 数据。配置文件记录 Figshare URL、38,356,412 bytes 文件体量和 md5：
+
+```powershell
+python scripts/prepare_dataset.py --config configs/data/real_multicell_v06.yaml
+```
+
+运行 v0.6 real multi-cell-type lineage benchmark：
+
+```powershell
+python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/<timestamp>/
+```
+
+可选运行预设 tau sensitivity audit：
+
+```powershell
+python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_lineage_tau_audit.yaml
+```
+
+输出位置：
+
+```text
+outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/<timestamp>/
+```
+
+v0.6 相关说明：
+
+- 数据选择：[docs/V06_REAL_MULTICELL_DATASET_SELECTION.md](docs/V06_REAL_MULTICELL_DATASET_SELECTION.md)。
+- benchmark 设计：[docs/V06_LINEAGE_REAL_BENCHMARK_DESIGN.md](docs/V06_LINEAGE_REAL_BENCHMARK_DESIGN.md)。
+- 主要输出：`outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z/`。
+- tau audit 输出：`outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/`。
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -178,10 +223,4 @@ v0.5 相关说明：
 
 ## 下一安全里程碑
 
-v0.6 的下一步应选择一个真实 multi-cell-type perturbation 数据集，并在固定 split/metric 下比较 v0.4 classical baselines 与 v0.5 lineage-aware baseline：
-
-1. 先锁定数据版本、下载体量、checksum、许可和 schema mapping。
-2. 优先选择支持 held-out cell type、held-out lineage 或 held-out donor/context 的数据。
-3. 保留 v0.4 baseline 对照和 v0.5 lineage ablation，不做 SOTA 声称。
-4. 若真实数据只有 cell line 而非发育谱系，只能称为 context/cell-line transfer，不写成生物谱系验证。
-5. 在真实多细胞结果前，不把 synthetic lineage 结果写成真实生物有效。
+v0.7 的下一步可以开始 gene-level evolutionary/conservation prior module，但必须继续使用 v0.6 real multicell benchmark 和 v0.4/v0.5 baselines 作为对照，不做 SOTA 声称。

@@ -18,16 +18,21 @@
 - `v0.5-synthetic-lineage-prior`: lineage tree infrastructure, cell-type-to-lineage mapping, lineage distance/features, synthetic multi-cell-type lineage data generation, and one non-neural lineage-aware baseline are implemented with tests.
 - `v0.5-synthetic-lineage-prior`: on a known synthetic lineage-structured generator, `lineage_shrinkage` can be evaluated against v0.4-style classical baselines under held-out cell-type splits. This is synthetic logic validation only.
 - `v0.5-papalexi-lineage-compatibility`: the lineage baseline runs safely on the existing Papalexi real-data plumbing in compatibility/no-op mode, and the report records that lineage signal is not identifiable with one configured cell type.
+- `v0.6-real-multicell-lineage-benchmark`: a real multi-cell-type PBMC IFN-beta benchmark is implemented on `kang_2018_pbmc_ifnb` with documented schema mapping, coarse lineage mapping, held-out cell-type splits, leakage checks, v0.4 baselines, and v0.5 `lineage_shrinkage`.
+- `v0.6-real-multicell-lineage-benchmark`: on this dataset and project-defined held-out cell-type suite, `lineage_shrinkage` improves mean test MAE/MSE/Pearson/Spearman over the configured v0.4 classical baselines. Output: `outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z/`.
+- `v0.6-real-multicell-lineage-tau-audit`: pre-specified tau values were audited as sensitivity only. Output: `outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/`.
 
 ## 消融提示
 
 - `v0.5-synthetic-lineage-prior`: synthetic held-out cell-type results can be used as an implementation sanity check for lineage borrowing. They cannot be promoted to real-data biological evidence.
+- `v0.6-real-multicell-lineage-benchmark`: held-out lineage suite has only n=2 clades and is underpowered; treat it as diagnostic context only.
 
 ## 推测/未来工作
 
 - 细胞谱系先验可能提升真实 held-out cell type 或 held-out context 外推，但还需要 v0.6 真实 multi-cell-type perturbation benchmark 验证。
 - 基因演化/保守性先验可能提升 held-out perturbation 外推。
 - 通路/调控网络先验可能提升 top DE gene recovery。
+- v0.7 可以在 v0.6 benchmark 稳定后探索 gene-level evolutionary/conservation prior。
 
 这些都需要在固定 benchmark、统一 baselines 和多 seed 实验后才能升级为证据性声称。
 
@@ -42,3 +47,6 @@
 - 不声称 v0.4 repeated metrics establish model superiority; leave-one perturbation is underpowered.
 - 不声称 retrieval/PDS is meaningful for held-out perturbations absent from train candidate profiles.
 - 不声称 Papalexi v0.5 compatibility metrics 说明谱系先验有效；该数据在当前配置下只有一个 cell type/cell line。
+- 不声称 v0.6 Kang result generalizes beyond PBMC IFN-beta stimulation.
+- 不声称 v0.6 is public-leaderboard comparable.
+- 不把 tau audit 中测试集表现最好的 tau 当作调参选择结果。

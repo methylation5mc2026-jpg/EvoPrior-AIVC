@@ -1,0 +1,94 @@
+experiment_id: v0.6-real-multicell-lineage-tau-audit
+seed: 61
+output_root: outputs/runs
+output_prefix: v0.6-real-multicell-lineage-tau-audit
+dataset_id: kang_2018_pbmc_ifnb
+data_config: configs/data/real_multicell_v06.yaml
+lineage_config: configs/priors/lineage_real_multicell_v06.yaml
+
+preprocessing:
+  seed: 61
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 2000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - donor
+  min_cells: 5
+  aggregation: mean
+
+delta:
+  control_label: ctrl
+  match_columns:
+    - cell_type
+    - donor
+  control_fallback: raise
+
+features:
+  allowed_feature_columns:
+    - control_expression
+    - perturbation
+    - cell_type
+    - donor
+    - lineage_distance
+
+splits:
+  control_usage: control_observed_ood
+  heldout_cell_type_suite:
+    enabled: true
+    min_test_groups: 3
+    min_control_groups: 1
+    min_train_groups: 3
+    val_fraction: 0.0
+    seed: 601
+  heldout_lineage_suite:
+    enabled: false
+    candidate_clades:
+      - lymphoid
+      - myeloid
+    min_test_groups: 6
+    min_train_groups: 6
+    val_fraction: 0.0
+    seed: 701
+
+lineage_baseline:
+  shrinkage: 0.85
+  fallback_mode: global
+
+baselines:
+  - name: lineage_shrinkage
+    label: lineage_shrinkage_tau_0.5
+    tau: 0.5
+  - name: lineage_shrinkage
+    label: lineage_shrinkage_tau_1.0
+    tau: 1.0
+  - name: lineage_shrinkage
+    label: lineage_shrinkage_tau_2.0
+    tau: 2.0
+  - name: lineage_shrinkage
+    label: lineage_shrinkage_tau_4.0
+    tau: 4.0
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+    - 100
+  retrieval_pds:
+    enabled: false
+    reason: Kang v0.6 has one non-control perturbation, so perturbation retrieval/PDS is not informative.
+
+reporting:
+  claim_boundary: Tau audit over pre-specified values only; do not treat the best test tau as tuned model selection.
+  limitations:
+    - Tau values are pre-specified and reported as sensitivity only.
+    - No validation-selected tau is used.
+    - Kang has one non-control perturbation, stim.

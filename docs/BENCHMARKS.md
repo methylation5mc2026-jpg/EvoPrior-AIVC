@@ -312,3 +312,106 @@ Interpretation:
 
 - Compatibility/no-op only.
 - Metrics from this run are not evidence that lineage priors improve real biological prediction.
+
+## v0.6 real multi-cell-type lineage benchmark
+
+Experiment ID: `v0.6-real-multicell-lineage-benchmark`
+
+Dataset ID: `kang_2018_pbmc_ifnb`
+
+Command:
+
+```powershell
+python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z/
+```
+
+Data:
+
+- Kang 2018 PBMC IFN-beta H5AD.
+- 8 normalized PBMC cell types.
+- `ctrl` and `stim` labels.
+- donor-like `replicate` mapped to canonical `donor`.
+- coarse hematopoietic lineage mapping in `configs/priors/lineage_real_multicell_v06.yaml`.
+
+Split modes:
+
+- `heldout_cell_type_suite`: hold out each eligible cell type's stimulated pseudobulks one at a time.
+- `heldout_lineage_suite`: hold out coarse `lymphoid` or `myeloid` clades when feasible.
+
+Control policy:
+
+- `control_observed_ood`.
+- Held-out cell-type controls may be used as input control state.
+- Held-out cell-type stimulated deltas are test-only and absent from train/validation.
+
+Baselines:
+
+- `control_mean`
+- `mean_delta`
+- `perturbation_mean_delta_v2`
+- `hierarchical_additive`
+- `ridge_cv`
+- `lineage_shrinkage`
+
+Primary held-out cell-type result:
+
+- `lineage_shrinkage` test MAE mean 0.3160 versus 0.4221 `control_mean`, 0.4317 `mean_delta`, 0.4317 `hierarchical_additive`, and 0.4969 `ridge_cv`.
+- `lineage_shrinkage` test MSE mean 4.9515 versus 13.0753 `control_mean`, 9.7610 `mean_delta`, 9.7610 `hierarchical_additive`, and 8.8297 `ridge_cv`.
+- `lineage_shrinkage` test Pearson mean 0.7399 versus 0.6685 `mean_delta` and 0.7190 `ridge_cv`.
+- `lineage_shrinkage` test Spearman logFC mean 0.5887 versus 0.5608 `mean_delta` and 0.4070 `ridge_cv`.
+
+DE recovery:
+
+- In held-out cell-type suite, `lineage_shrinkage` has top-20 precision 0.6295 and top-50 precision 0.6546.
+- This is higher than `mean_delta` / `hierarchical_additive` top-20 precision 0.5795 and top-50 precision 0.6321 in this run.
+
+Underpowered warnings:
+
+- Held-out cell-type suite has n=7 eligible cell types and is the primary result.
+- Held-out lineage suite has n=2 clades and is underpowered; do not draw strong clade-level conclusions.
+- `megakaryocytes` is skipped in held-out cell-type suite because it has too few test groups.
+
+What this tests:
+
+- Real multi-cell-type PBMC IFN-beta held-out cell-type transfer under a documented control policy.
+- Whether the v0.5 non-neural lineage shrinkage baseline helps on this one dataset/split.
+
+What this does not test:
+
+- General lineage-prior superiority.
+- Multiple perturbation identity transfer.
+- Public leaderboard alignment.
+- Neural EvoPrior, evolutionary prior, or pathway prior.
+
+## v0.6 tau sensitivity audit
+
+Experiment ID: `v0.6-real-multicell-lineage-tau-audit`
+
+Command:
+
+```powershell
+python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_lineage_tau_audit.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/
+```
+
+Pre-specified tau values: 0.5, 1.0, 2.0, 4.0.
+
+Held-out cell-type MAE means:
+
+- tau 0.5: 0.2772
+- tau 1.0: 0.2939
+- tau 2.0: 0.3356
+- tau 4.0: 0.3769
+
+This audit is sensitivity-only. The main v0.6 config keeps its pre-specified tau and does not select tau from test results.

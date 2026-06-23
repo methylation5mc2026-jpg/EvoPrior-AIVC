@@ -1,0 +1,66 @@
+lineage_id: kang_2018_pbmc_coarse_hematopoietic
+dataset_id: kang_2018_pbmc_ifnb
+status: operational_prior_for_v06
+description: Coarse PBMC immune lineage tree for Kang 2018 IFN-beta benchmark.
+claim_boundary: Conservative operational mapping for benchmark splits and shrinkage weights; not an ontology-grade lineage assertion.
+
+edges:
+  - parent:
+    child: root
+  - parent: root
+    child: hematopoietic
+  - parent: hematopoietic
+    child: lymphoid
+  - parent: lymphoid
+    child: t_cells
+  - parent: t_cells
+    child: cd4_t_cells
+  - parent: t_cells
+    child: cd8_t_cells
+  - parent: lymphoid
+    child: b_cells
+  - parent: lymphoid
+    child: nk_cells
+  - parent: hematopoietic
+    child: myeloid
+  - parent: myeloid
+    child: monocytes
+  - parent: monocytes
+    child: cd14_monocytes
+  - parent: monocytes
+    child: fcgr3a_monocytes
+  - parent: myeloid
+    child: dendritic_cells
+  - parent: hematopoietic
+    child: megakaryocytic
+  - parent: megakaryocytic
+    child: megakaryocytes
+
+cell_type_mapping:
+  cd4_t_cells: cd4_t_cells
+  cd8_t_cells: cd8_t_cells
+  b_cells: b_cells
+  nk_cells: nk_cells
+  cd14_monocytes: cd14_monocytes
+  fcgr3a_monocytes: fcgr3a_monocytes
+  dendritic_cells: dendritic_cells
+  megakaryocytes: megakaryocytes
+
+candidate_heldout_cell_types:
+  - cd4_t_cells
+  - cd8_t_cells
+  - b_cells
+  - nk_cells
+  - cd14_monocytes
+  - fcgr3a_monocytes
+  - dendritic_cells
+  - megakaryocytes
+
+candidate_heldout_clades:
+  - lymphoid
+  - myeloid
+
+notes:
+  - Kang cell labels are normalized by the adapter before mapping.
+  - Megakaryocytes are represented as a separate coarse hematopoietic branch to avoid forcing them into lymphoid or myeloid transfer claims.
+  - The lineage tree is used for distance-weighted shrinkage and optional clade split diagnostics only.

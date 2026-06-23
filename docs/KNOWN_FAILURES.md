@@ -26,6 +26,12 @@
 22. v0.5 `LineageShrinkageBaseline` 是 non-neural shrinkage baseline，不是 EvoPrior neural model。
 23. v0.5 尚未选择真实 multi-cell-type perturbation benchmark；`docs/V05_REAL_MULTICELL_DATASET_SCOUTING.md` 只是侦察记录。
 24. 如果未来候选数据只有多个 cancer cell lines，而不是明确发育谱系，只能声称 context/cell-line transfer，不能声称 biological lineage validation。
+25. v0.6 Kang benchmark 只有一个非对照 perturbation (`stim`)，不能测试多扰动泛化，也不适合 retrieval/PDS。
+26. v0.6 `megakaryocytes` 在 donor-level pseudobulk 后 test groups 太少，被 held-out cell-type suite 跳过。
+27. v0.6 held-out lineage suite 只有 `lymphoid` 和 `myeloid` 两个 clades，CI 标记 underpowered，不应用于强结论。
+28. v0.6 lineage mapping 是 coarse operational PBMC prior，不是 ontology-grade lineage truth。
+29. v0.6 为保留 donor-matched ctrl/stim pairs 使用 `min_cells_per_group=5`，稀有群体 pseudobulk 噪声可能更高。
+30. v0.6 benchmark 仍是 project-defined split，不是公开 leaderboard 或论文官方 split。
 
 ## 失败记录模板
 

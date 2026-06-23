@@ -148,3 +148,45 @@ Claim status:
 - Known risks: no related cell types exist, so lineage signal is not identifiable; high compatibility metrics reflect all-group fit/no-op plumbing behavior and must not be interpreted as biological improvement.
 - Rollback note: rollback to tag `v0.4-real-baseline-strengthening` to remove v0.5 work.
 - Claim status: compatibility/no-op only; no real biological lineage, SOTA, near-SOTA, neural EvoPrior, evolutionary prior, or pathway-prior claim.
+
+### EXP-0006: v0.6 real multi-cell-type lineage benchmark
+
+- Experiment ID: `v0.6-real-multicell-lineage-benchmark`
+- Date: 2026-06-23
+- Status: completed
+- Role: Research lead / Data engineer / Prior engineer / Baseline engineer / Evaluation engineer / MLOps / Scientific reviewer
+- Objective: Select, prepare, validate, and benchmark a real public multi-cell-type perturbation dataset for lineage-aware held-out cell-type transfer.
+- Dataset: `kang_2018_pbmc_ifnb`
+- Dataset version/checksum: Figshare file `kang.h5ad`, file id `34464122`, 38,356,412 bytes, md5 `adb2246232e8493031c576982c0c02a3`
+- Split ID: `heldout_cell_type_suite` with `control_observed_ood`; optional `heldout_lineage_suite`
+- Config path: `configs/experiment/real_v06_multicell_lineage.yaml`
+- Git commit: working tree before final v0.6 commit; output manifest records pre-commit `68508e5`
+- Seed(s): `60`
+- Command: `python scripts/prepare_dataset.py --config configs/data/real_multicell_v06.yaml --dry-run`; `python scripts/prepare_dataset.py --config configs/data/real_multicell_v06.yaml`; `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
+- Outputs: `outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z/`
+- Metrics: heldout_cell_type_suite mean test MAE: lineage_shrinkage 0.3160, control_mean 0.4221, mean_delta 0.4317, perturbation_mean_delta_v2 0.4317, hierarchical_additive 0.4317, ridge_cv 0.4969. Mean test Pearson: lineage_shrinkage 0.7399, mean_delta 0.6685, ridge_cv 0.7190. DE top-20 precision: lineage_shrinkage 0.6295, mean_delta/hierarchical_additive 0.5795.
+- Assumptions: control-observed OOD allows held-out cell-type controls as input state; held-out stimulated deltas are test-only; lineage mapping is a coarse operational PBMC prior.
+- Known risks: one non-control perturbation; `megakaryocytes` skipped; heldout_lineage_suite n=2 underpowered; project-defined split; min_cells_per_group=5 may increase rare-subset pseudobulk noise.
+- Rollback note: rollback to tag `v0.5-first-lineage-prior-module` to remove v0.6 work.
+- Claim status: preliminary dataset-specific evidence only. On this Kang PBMC IFN-beta split, lineage_shrinkage outperformed the configured classical baselines on mean held-out-cell-type MAE/MSE/Pearson/Spearman and DE top-k precision. No SOTA, public leaderboard, general lineage-prior, neural EvoPrior, evolutionary-prior, or pathway-prior claim.
+
+### EXP-0007: v0.6 lineage tau sensitivity audit
+
+- Experiment ID: `v0.6-real-multicell-lineage-tau-audit`
+- Date: 2026-06-23
+- Status: completed
+- Role: Prior engineer / Evaluation engineer / Scientific reviewer
+- Objective: Report pre-specified `LineageShrinkageBaseline` tau sensitivity without test-set model selection.
+- Dataset: `kang_2018_pbmc_ifnb`
+- Dataset version/checksum: same as EXP-0006
+- Split ID: `heldout_cell_type_suite` with `control_observed_ood`
+- Config path: `configs/experiment/real_v06_lineage_tau_audit.yaml`
+- Git commit: working tree before final v0.6 commit; output manifest records pre-commit `68508e5`
+- Seed(s): `61`
+- Command: `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_lineage_tau_audit.yaml`
+- Outputs: `outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/`
+- Metrics: heldout_cell_type_suite mean test MAE by pre-specified tau: tau 0.5 = 0.2772, tau 1.0 = 0.2939, tau 2.0 = 0.3356, tau 4.0 = 0.3769.
+- Assumptions: tau values are pre-specified; no validation-selected tau is used.
+- Known risks: test-set sensitivity table should not be treated as tuned model selection.
+- Rollback note: rollback to tag `v0.5-first-lineage-prior-module` to remove v0.6 work.
+- Claim status: sensitivity only; no tuned hyperparameter or SOTA claim.

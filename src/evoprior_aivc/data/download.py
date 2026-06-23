@@ -11,6 +11,8 @@ from typing import Any
 
 from evoprior_aivc.data.registry import DatasetRecord, resolve_local_path
 
+MAX_AUTO_DOWNLOAD_BYTES = 2 * 1024 * 1024 * 1024
+
 
 @dataclass(frozen=True)
 class DatasetPreparationResult:
@@ -72,6 +74,14 @@ def prepare_dataset(
 
     if mode not in {"local_or_download", "download"}:
         raise ValueError("prepare.mode must be one of: local_or_download, download, manual")
+    if (
+        record.file_size_bytes is not None
+        and int(record.file_size_bytes) > MAX_AUTO_DOWNLOAD_BYTES
+    ):
+        raise ValueError(
+            "configured dataset is larger than 2GB; manual confirmation is required "
+            f"before download: {record.file_size_bytes} bytes"
+        )
 
     path.parent.mkdir(parents=True, exist_ok=True)
     _download_file(record.source_url, path)
@@ -127,4 +137,3 @@ def _plan_message(record: DatasetRecord, path: Path, mode: str) -> str:
         f"dataset_id={record.dataset_id}; mode={mode}; expected_path={path}; "
         f"source={source}; checksum={checksum}; allow_auto_download={record.allow_auto_download}"
     )
-

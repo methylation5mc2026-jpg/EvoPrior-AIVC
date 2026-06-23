@@ -87,6 +87,98 @@ def assign_group_holdout_split(
     return labels.astype("category")
 
 
+def assign_heldout_cell_type_split(
+    metadata: pd.DataFrame,
+    *,
+    heldout_cell_type: str,
+    val_fraction: float = 0.0,
+    seed: int = 0,
+) -> pd.Series:
+    """Assign train/val/test labels for one held-out cell type."""
+    if "cell_type" not in metadata.columns:
+        raise KeyError("metadata must contain a 'cell_type' column")
+    if heldout_cell_type not in set(metadata["cell_type"].astype(str)):
+        raise ValueError(f"heldout cell type has no groups: {heldout_cell_type}")
+    return assign_group_holdout_split(
+        metadata,
+        {"cell_type": [heldout_cell_type]},
+        val_fraction=val_fraction,
+        seed=seed,
+    )
+
+
+def assign_heldout_lineage_split(
+    metadata: pd.DataFrame,
+    *,
+    heldout_cell_types: Iterable[str],
+    val_fraction: float = 0.0,
+    seed: int = 0,
+) -> pd.Series:
+    """Assign split labels for a held-out lineage/clade represented by cell types."""
+    cell_types = sorted(set(map(str, heldout_cell_types)))
+    if not cell_types:
+        raise ValueError("heldout_cell_types must not be empty")
+    return assign_group_holdout_split(
+        metadata,
+        {"cell_type": cell_types},
+        val_fraction=val_fraction,
+        seed=seed,
+    )
+
+
+def heldout_cell_type_eligibility(
+    pseudobulk_metadata: pd.DataFrame,
+    *,
+    control_label: str,
+    min_test_groups: int = 3,
+    min_control_groups: int = 1,
+    min_train_groups: int = 3,
+) -> pd.DataFrame:
+    """Summarize whether each cell type can support held-out-cell-type evaluation."""
+    required = {"cell_type", "perturbation"}
+    missing = required.difference(pseudobulk_metadata.columns)
+    if missing:
+        raise KeyError(f"pseudobulk metadata missing columns: {', '.join(sorted(missing))}")
+    rows: list[dict[str, object]] = []
+    metadata = pseudobulk_metadata.copy()
+    metadata["cell_type"] = metadata["cell_type"].astype(str)
+    metadata["perturbation"] = metadata["perturbation"].astype(str)
+    non_control = metadata["perturbation"] != control_label
+    all_perturbations = set(metadata.loc[non_control, "perturbation"])
+
+    for cell_type, group in metadata.groupby("cell_type", sort=True, observed=True):
+        control_groups = group[group["perturbation"] == control_label]
+        test_groups = group[group["perturbation"] != control_label]
+        train_candidates = metadata[(metadata["cell_type"] != cell_type) & non_control]
+        heldout_perturbations = set(test_groups["perturbation"])
+        train_perturbations = set(train_candidates["perturbation"])
+        shared = heldout_perturbations.intersection(train_perturbations)
+        reasons = []
+        if len(control_groups) < min_control_groups:
+            reasons.append("too_few_control_groups")
+        if len(test_groups) < min_test_groups:
+            reasons.append("too_few_test_groups")
+        if len(train_candidates) < min_train_groups:
+            reasons.append("too_few_train_groups")
+        if heldout_perturbations and not shared:
+            reasons.append("no_train_overlap_for_heldout_perturbations")
+        if not all_perturbations:
+            reasons.append("no_non_control_perturbations")
+        rows.append(
+            {
+                "cell_type": str(cell_type),
+                "n_control_groups": int(len(control_groups)),
+                "n_test_groups": int(len(test_groups)),
+                "n_train_candidate_groups": int(len(train_candidates)),
+                "n_heldout_perturbations": int(len(heldout_perturbations)),
+                "n_shared_train_perturbations": int(len(shared)),
+                "eligible": not reasons,
+                "reason": "eligible" if not reasons else ";".join(reasons),
+            }
+        )
+    return pd.DataFrame(rows).sort_values("cell_type", kind="mergesort").reset_index(drop=True)
+
+
 def assert_holdout_values_absent(
     metadata: pd.DataFrame,
     split: Sequence[str] | pd.Series,

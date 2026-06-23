@@ -57,3 +57,25 @@ def assert_no_target_derived_features(
         leaked = ", ".join(leaks)
         raise ValueError(f"target-derived feature columns are not allowed: {leaked}")
 
+
+def assert_no_heldout_cell_type_target_leakage(
+    metadata: pd.DataFrame,
+    split: Sequence[str] | pd.Series,
+    *,
+    heldout_cell_type: str,
+    control_usage: str,
+) -> None:
+    """Assert held-out cell-type target rows are test-only.
+
+    The current delta dataset contains non-control target rows only. In
+    ``control_observed_ood`` mode, held-out controls can be used upstream to
+    construct test control expression, but held-out target deltas must still be
+    absent from train/validation.
+    """
+    if control_usage not in {"control_observed_ood", "strict_ood"}:
+        raise ValueError("control_usage must be 'control_observed_ood' or 'strict_ood'")
+    assert_holdout_split_has_no_train_leakage(
+        metadata,
+        split,
+        holdout={"cell_type": [heldout_cell_type]},
+    )

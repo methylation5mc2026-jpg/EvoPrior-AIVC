@@ -8,10 +8,15 @@ from pathlib import Path
 from typing import Any
 
 import anndata as ad
+import numpy as np
 import pandas as pd
 from anndata import AnnData
 
-from evoprior_aivc.data.validate import infer_control_mask, normalize_metadata_labels, validate_adata_schema
+from evoprior_aivc.data.validate import (
+    infer_control_mask,
+    normalize_metadata_labels,
+    validate_adata_schema,
+)
 
 
 @dataclass
@@ -24,12 +29,15 @@ class SchemaMappingReport:
     canonical_mapping: dict[str, str]
     n_cells: int
     n_genes: int
+    n_cell_types: int
     n_perturbations: int
     n_controls: int
     top_perturbation_counts: dict[str, int]
     cell_type_counts: dict[str, int]
     donor_counts: dict[str, int]
     batch_counts: dict[str, int]
+    coverage_summary: dict[str, int | float]
+    cell_type_perturbation_coverage: list[dict[str, int | str]]
     missing_required_fields: list[str] = field(default_factory=list)
     warnings: list[str] = field(default_factory=list)
     final_decision: str = "usable"
@@ -43,6 +51,7 @@ class SchemaMappingReport:
             f"- Final decision: **{self.final_decision}**",
             f"- Cells: {self.n_cells}",
             f"- Genes: {self.n_genes}",
+            f"- Cell types: {self.n_cell_types}",
             f"- Perturbations: {self.n_perturbations}",
             f"- Controls: {self.n_controls}",
             "",
@@ -73,6 +82,14 @@ class SchemaMappingReport:
             "## Batch Counts",
             "",
             *batch_lines,
+            "",
+            "## Cell Type x Perturbation Coverage Summary",
+            "",
+            *_dict_lines(self.coverage_summary),
+            "",
+            "## Cell Type x Perturbation Coverage",
+            "",
+            _coverage_markdown_table(self.cell_type_perturbation_coverage),
             "",
             "## Missing Required Fields",
             "",
@@ -200,10 +217,16 @@ def _make_report(
     canonical_mapping: dict[str, str],
     warnings: list[str],
 ) -> SchemaMappingReport:
+    coverage = _coverage_table(adata)
+    coverage_summary = _coverage_summary(coverage, adata)
     perturbation_counts = adata.obs["perturbation"].value_counts().head(15)
     cell_type_counts = adata.obs["cell_type"].value_counts().head(15)
-    donor_counts = adata.obs["donor"].value_counts().head(15) if "donor" in adata.obs else pd.Series()
-    batch_counts = adata.obs["batch"].value_counts().head(15) if "batch" in adata.obs else pd.Series()
+    donor_counts = (
+        adata.obs["donor"].value_counts().head(15) if "donor" in adata.obs else pd.Series()
+    )
+    batch_counts = (
+        adata.obs["batch"].value_counts().head(15) if "batch" in adata.obs else pd.Series()
+    )
     final_decision = "usable with limitations" if warnings else "usable"
     return SchemaMappingReport(
         dataset_id=dataset_id,
@@ -212,12 +235,15 @@ def _make_report(
         canonical_mapping=canonical_mapping,
         n_cells=adata.n_obs,
         n_genes=adata.n_vars,
+        n_cell_types=int(adata.obs["cell_type"].nunique()),
         n_perturbations=int(adata.obs["perturbation"].nunique()),
         n_controls=int(adata.obs["is_control"].sum()),
         top_perturbation_counts=_series_to_int_dict(perturbation_counts),
         cell_type_counts=_series_to_int_dict(cell_type_counts),
         donor_counts=_series_to_int_dict(donor_counts),
         batch_counts=_series_to_int_dict(batch_counts),
+        coverage_summary=coverage_summary,
+        cell_type_perturbation_coverage=coverage.head(100).to_dict(orient="records"),
         warnings=warnings,
         final_decision=final_decision,
     )
@@ -237,3 +263,43 @@ def _list_lines(items: list[str]) -> list[str]:
     if not items:
         return ["- none"]
     return [f"- {item}" for item in items]
+
+
+def _coverage_table(adata: AnnData) -> pd.DataFrame:
+    coverage = (
+        adata.obs.groupby(["cell_type", "perturbation"], observed=True)
+        .size()
+        .reset_index(name="n_cells")
+        .sort_values(["cell_type", "perturbation"], kind="mergesort")
+    )
+    coverage["cell_type"] = coverage["cell_type"].astype(str)
+    coverage["perturbation"] = coverage["perturbation"].astype(str)
+    coverage["n_cells"] = coverage["n_cells"].astype(int)
+    return coverage
+
+
+def _coverage_summary(coverage: pd.DataFrame, adata: AnnData) -> dict[str, int | float]:
+    control_cell_types = set(adata.obs.loc[adata.obs["is_control"], "cell_type"].astype(str))
+    non_control_cell_types = set(adata.obs.loc[~adata.obs["is_control"], "cell_type"].astype(str))
+    pair_counts = coverage["n_cells"].to_numpy(dtype=float)
+    return {
+        "observed_cell_type_perturbation_pairs": int(coverage.shape[0]),
+        "min_cells_per_observed_pair": int(pair_counts.min()) if pair_counts.size else 0,
+        "median_cells_per_observed_pair": (
+            float(np.median(pair_counts)) if pair_counts.size else 0.0
+        ),
+        "cell_types_with_control": len(control_cell_types),
+        "cell_types_with_non_control": len(non_control_cell_types),
+    }
+
+
+def _coverage_markdown_table(rows: list[dict[str, int | str]]) -> str:
+    if not rows:
+        return "No observed cell_type x perturbation pairs."
+    lines = [
+        "| cell_type | perturbation | n_cells |",
+        "| --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(f"| {row['cell_type']} | {row['perturbation']} | {row['n_cells']} |")
+    return "\n".join(lines)

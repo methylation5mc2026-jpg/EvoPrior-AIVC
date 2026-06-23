@@ -38,6 +38,16 @@ def test_prepare_dataset_rejects_missing_manual_file(tmp_path):
         prepare_dataset(config)
 
 
+def test_prepare_dataset_blocks_large_auto_download(tmp_path):
+    config = _config(tmp_path)
+    config["dataset"]["source_url"] = "https://example.invalid/large.h5ad"
+    config["dataset"]["allow_auto_download"] = True
+    config["dataset"]["file_size_bytes"] = 2 * 1024 * 1024 * 1024 + 1
+
+    with pytest.raises(ValueError, match="larger than 2GB"):
+        prepare_dataset(config)
+
+
 def _config(tmp_path: Path, checksum: str = ""):
     return {
         "dataset": {
@@ -56,4 +66,3 @@ def _config(tmp_path: Path, checksum: str = ""):
         },
         "prepare": {"mode": "local_or_download", "local_path": None},
     }
-

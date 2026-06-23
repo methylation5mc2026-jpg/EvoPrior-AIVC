@@ -39,16 +39,26 @@ def spearman_logfc_correlation(
     observed_post_expression: np.ndarray,
     predicted_post_expression: np.ndarray,
 ) -> float:
-    """Spearman correlation between observed and predicted log1p fold-change."""
+    """Spearman correlation between observed and predicted log1p fold-change.
+
+    Linear baselines can produce negative reconstructed expression values.
+    For log-space ranking, expression values are clipped at zero before log1p.
+    """
     control_expression, observed_post_expression = _paired_arrays(
         control_expression, observed_post_expression
     )
     control_expression, predicted_post_expression = _paired_arrays(
         control_expression, predicted_post_expression
     )
-    observed_logfc = np.log1p(observed_post_expression) - np.log1p(control_expression)
-    predicted_logfc = np.log1p(predicted_post_expression) - np.log1p(control_expression)
-    return _pearson(_rankdata_average(observed_logfc.ravel()), _rankdata_average(predicted_logfc.ravel()))
+    control_log = np.log1p(np.clip(control_expression, a_min=0.0, a_max=None))
+    observed_logfc = np.log1p(np.clip(observed_post_expression, a_min=0.0, a_max=None))
+    observed_logfc = observed_logfc - control_log
+    predicted_logfc = np.log1p(np.clip(predicted_post_expression, a_min=0.0, a_max=None))
+    predicted_logfc = predicted_logfc - control_log
+    return _pearson(
+        _rankdata_average(observed_logfc.ravel()),
+        _rankdata_average(predicted_logfc.ravel()),
+    )
 
 
 def top_k_de_overlap_precision(

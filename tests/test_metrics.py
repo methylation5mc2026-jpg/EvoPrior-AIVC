@@ -44,6 +44,14 @@ def test_constant_delta_correlation_returns_nan():
     assert math.isnan(pearson_delta_correlation(control, observed, predicted))
 
 
+def test_spearman_logfc_clips_negative_predicted_expression():
+    control = np.array([1.0, 1.0, 1.0, 1.0])
+    observed = np.array([2.0, 3.0, 4.0, 5.0])
+    predicted = np.array([-2.0, 2.5, 4.0, 4.5])
+
+    assert math.isfinite(spearman_logfc_correlation(control, observed, predicted))
+
+
 def test_metric_shape_mismatch_raises():
     with pytest.raises(ValueError, match="shape mismatch"):
         mean_absolute_error(np.array([1.0, 2.0]), np.array([[1.0, 2.0]]))

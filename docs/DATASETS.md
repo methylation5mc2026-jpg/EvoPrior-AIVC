@@ -1,6 +1,6 @@
 # 数据集
 
-状态：候选清单。v0.1 尚未下载任何大型数据，也未锁定最终 benchmark。
+状态：v0.6 已接入一个小型真实 multi-cell-type benchmark；候选清单继续保留用于后续扩展。
 
 ## 候选数据集
 
@@ -147,3 +147,57 @@ v0.4 audits a compact preprocessing matrix:
 - split modes: random_group and heldout_pdl1
 
 The sensitivity audit is descriptive. It must not be used to choose hyperparameters on test metrics or to claim biological superiority.
+
+## v0.6 selected real multi-cell-type dataset
+
+Dataset ID: `kang_2018_pbmc_ifnb`
+
+Display name: Kang et al. 2018 PBMC IFN-beta stimulation
+
+Source:
+
+- Figshare article: <https://figshare.com/articles/dataset/Kang_HM_Subramaniam_M_Targ_S_Nguyen_M_et_al_2017/19397624>
+- Direct file configured in `configs/data/real_multicell_v06.yaml`
+- pertpy loader documentation: <https://pertpy.readthedocs.io/en/latest/api/data/pertpy.data.kang_2018.html>
+
+Access:
+
+- Expected local path: `data/raw/kang_2018_pbmc_ifnb.h5ad`
+- File size: 38,356,412 bytes
+- md5: `adb2246232e8493031c576982c0c02a3`
+- Format: H5AD
+- Auto-download allowed because the file is well below 2 GB and checksum is configured.
+
+Observed raw shape after adapter load:
+
+- Cells: 24,673
+- Genes: 15,706
+- Cell types: 8
+- Perturbation labels: `ctrl`, `stim`
+- Controls: 12,315 cells
+
+Raw obs fields used:
+
+- `label` -> canonical `perturbation`
+- `cell_type` -> canonical `cell_type`
+- `replicate` -> canonical `donor`
+- `nCount_RNA`, `nFeature_RNA`, `cluster`, `seurat_clusters` preserved as auxiliary metadata
+
+Raw var fields used:
+
+- `name` -> canonical `gene_symbol`
+
+v0.6 preprocessing:
+
+- Active `X` is used.
+- Genes expressed in fewer than 10 cells are filtered.
+- Top 2,000 genes by variance are retained.
+- Pseudobulk grouping uses `cell_type`, `perturbation`, and `donor`.
+- Minimum cells per pseudobulk group is 5 to preserve donor-matched control/stim pairs for rare PBMC subsets.
+
+Suitability result:
+
+- Pass for first real multi-cell-type held-out cell-type lineage benchmark.
+- 7 cell types are eligible after pseudobulk filtering.
+- `megakaryocytes` is skipped because it has too few test groups.
+- Only one non-control perturbation exists, so retrieval/PDS is not meaningful and general multi-perturbation claims are not allowed.
