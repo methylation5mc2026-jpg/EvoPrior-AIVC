@@ -201,3 +201,14 @@ Suitability result:
 - 7 cell types are eligible after pseudobulk filtering.
 - `megakaryocytes` is skipped because it has too few test groups.
 - Only one non-control perturbation exists, so retrieval/PDS is not meaningful and general multi-perturbation claims are not allowed.
+
+## v0.7 Kang gene-prior compatibility note
+
+The v0.7 Kang gene-prior runner reuses `kang_2018_pbmc_ifnb` for engineering compatibility only.
+
+- Config: `configs/experiment/real_v07_kang_gene_prior.yaml`
+- Gene-prior config: `configs/priors/gene_prior_kang_v07.yaml`
+- Current source mode: `synthetic_gene_prior`
+- Latest compatibility output: `outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z/`
+
+Because the configured prior is synthetic/placeholder, this dataset run does not test real evolutionary-prior benefit.

@@ -32,6 +32,10 @@
 28. v0.6 lineage mapping 是 coarse operational PBMC prior，不是 ontology-grade lineage truth。
 29. v0.6 为保留 donor-matched ctrl/stim pairs 使用 `min_cells_per_group=5`，稀有群体 pseudobulk 噪声可能更高。
 30. v0.6 benchmark 仍是 project-defined split，不是公开 leaderboard 或论文官方 split。
+31. v0.7 synthetic gene-prior benchmark uses a known synthetic prior-modulated generator; it validates plumbing and ablation logic only.
+32. v0.7 strong bases such as `mean_delta` and `lineage_shrinkage` may already capture synthetic global gene modulation, so correction over those bases is not required to improve for the sanity check.
+33. v0.7 Kang gene-prior source mode is `synthetic_gene_prior`; the run is compatibility-only and does not test real evolutionary-prior benefit.
+34. v0.7 `GenePriorCorrectionBaseline` is non-neural residual correction, not an EvoPrior neural model.
 
 ## 失败记录模板
 

@@ -214,6 +214,42 @@ v0.6 相关说明：
 - 主要输出：`outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z/`。
 - tau audit 输出：`outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/`。
 
+## v0.7 Quickstart
+
+v0.7 adds a non-neural gene-prior substrate and residual-correction baseline. It does not implement neural EvoPrior and does not establish real evolutionary-prior benefit.
+
+Run the synthetic gene-prior sanity benchmark:
+
+```powershell
+python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/<timestamp>/
+```
+
+Run the Kang gene-prior compatibility benchmark:
+
+```powershell
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_v07.yaml --dry-run
+python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/<timestamp>/
+```
+
+v0.7 claim boundary:
+
+- synthetic results validate plumbing and ablation logic only;
+- Kang currently uses an engineering-only synthetic/placeholder gene prior;
+- Kang v0.7 is compatibility-only and does not test real evolutionary-prior benefit;
+- no SOTA, public leaderboard, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -223,4 +259,4 @@ v0.6 相关说明：
 
 ## 下一安全里程碑
 
-v0.7 的下一步可以开始 gene-level evolutionary/conservation prior module，但必须继续使用 v0.6 real multicell benchmark 和 v0.4/v0.5 baselines 作为对照，不做 SOTA 声称。
+v0.8 才能考虑引入真实、版本化的 gene-prior source 或更复杂模型；在此之前，v0.7 的 Kang 结果保持 compatibility-only，不做真实 evolutionary-prior benefit 或 SOTA 声称。

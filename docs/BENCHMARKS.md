@@ -415,3 +415,59 @@ Held-out cell-type MAE means:
 - tau 4.0: 0.3769
 
 This audit is sensitivity-only. The main v0.6 config keeps its pre-specified tau and does not select tau from test results.
+
+## v0.7 synthetic gene-prior sanity benchmark
+
+Experiment ID: `v0.7-synthetic-gene-prior`
+
+Command:
+
+```powershell
+python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/20260624T004215Z/
+```
+
+What this tests:
+
+- `GenePriorTable` alignment and coverage behavior.
+- `GenePriorCorrectionBaseline` plumbing over weak and strong base baselines.
+- Prior audit, shuffled negative control, and prior-modulated subset reporting.
+
+What this does not test:
+
+- Real biological gene-prior utility.
+- General evolutionary-prior effectiveness.
+- SOTA, public leaderboard alignment, pathway priors, or neural EvoPrior.
+
+## v0.7 Kang gene-prior compatibility benchmark
+
+Experiment ID: `v0.7-kang-gene-prior-compatibility`
+
+Commands:
+
+```powershell
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_v07.yaml --dry-run
+python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z/
+```
+
+Source mode:
+
+- `synthetic_gene_prior`
+- engineering-only placeholder table generated from the Kang gene list
+
+Interpretation:
+
+- compatibility-only;
+- real evolutionary-prior benefit was not tested;
+- metrics must not be interpreted as biological discovery or general gene-prior effectiveness.

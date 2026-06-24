@@ -1,0 +1,59 @@
+experiment_id: v0.7-synthetic-gene-prior
+mode: synthetic_gene_prior
+seed: 70
+output_root: outputs/runs
+output_prefix: v0.7-gene-evolutionary-prior
+dataset_id: synthetic_gene_prior
+
+synthetic:
+  n_genes: 120
+  cells_per_group: 6
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - donor
+  min_cells: 3
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+    - donor
+
+splits:
+  heldout_cell_types:
+    - cd8_like
+    - b_like
+    - nk_like
+    - mono_like
+    - dc_like
+
+lineage_baseline:
+  tau: 1.5
+  shrinkage: 0.85
+  fallback_mode: global
+
+gene_prior_correction:
+  mode: residual_additive
+  alpha: 0.1
+  impute_strategy: median
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+    - 100
+  prior_modulated_gene_prefixes:
+    - SGENE000
+    - SGENE001
+
+reporting:
+  claim_boundary: Synthetic gene-prior structure validates v0.7 plumbing and ablation logic only. It is not biological evidence.

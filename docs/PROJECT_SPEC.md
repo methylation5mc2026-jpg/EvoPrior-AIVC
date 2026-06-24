@@ -50,8 +50,9 @@ response_delta =
 - v0.4: 更强 classical baselines、重复 split、置信区间、perturbation retrieval、DE recovery、预处理敏感性审计和公开 benchmark alignment。
 - v0.5: 第一个细胞谱系先验基础设施模块，包括 lineage tree、cell-type mapping、lineage features、synthetic multi-cell-type lineage benchmark 和 non-neural `LineageShrinkageBaseline`。
 - v0.6: 第一个真实 multi-cell-type lineage benchmark，使用 Kang 2018 PBMC IFN-beta、coarse hematopoietic lineage mapping、held-out cell-type split 和 v0.4/v0.5 baseline comparison。
+- v0.7: 第一个 gene-prior substrate，包括 `GenePriorTable`、gene-prior feature validation、synthetic gene-prior benchmark、non-neural `GenePriorCorrectionBaseline` 和 Kang compatibility-only runner。
 
-v0.6 仍不包含 EvoPrior 神经模型、演化先验或通路先验。下一阶段 v0.7 可以探索 gene-level evolutionary/conservation prior，但必须继续保留 v0.6 benchmark 对照和严格声称边界。
+v0.7 仍不包含 EvoPrior 神经模型或通路先验。当前 Kang gene-prior source 是 engineering-only synthetic/placeholder prior，所以 Kang v0.7 只验证兼容性，不验证真实 evolutionary-prior benefit。
 
 ## 内部角色
 
@@ -106,7 +107,7 @@ Gate F 科学有效性：
 - 没有直接基准证据时不声称 SOTA。
 - 可解释性声称必须给出具体基因、通路或细胞类型。
 
-## 当前 v0.6 完成标准
+## 当前 v0.7 完成标准
 
 - 项目文档和目录结构存在。
 - 最小指标测试通过。
@@ -114,5 +115,6 @@ Gate F 科学有效性：
 - v0.2/v0.3/v0.4 baseline loop 保持可运行。
 - v0.5 lineage prior infrastructure 和 synthetic lineage sanity benchmark 有测试和 runner。
 - v0.6 real multi-cell-type PBMC IFN-beta benchmark 有数据配置、schema report、lineage mapping、split manifest、metrics、DE summary 和 report。
+- v0.7 gene-prior table, source preparation, synthetic generator, correction baseline, prior audit, synthetic runner, and Kang compatibility runner have tests or run artifacts.
 - Papalexi compatibility run 继续明确记录 single-cell-type/no-op 限制。
-- 不声称一般真实生物谱系有效性、SOTA、near-SOTA、public leaderboard alignment 或 EvoPrior neural model。
+- 不声称一般真实生物谱系有效性、真实 evolutionary-prior benefit、SOTA、near-SOTA、public leaderboard alignment 或 EvoPrior neural model。
