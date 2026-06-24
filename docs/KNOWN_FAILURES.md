@@ -46,6 +46,9 @@
 42. v0.10 benchmark alignment does not import external public benchmark data or official external split definitions; public benchmark alignment remains blocked.
 43. v0.10 evidence tables can show same-project split comparability, but they do not make outputs from different datasets or different split policies directly comparable.
 44. v0.10 treats n=0 blank metric means as missing values; they should not be interpreted as finite performance values.
+45. v0.11 metadata registration is not benchmark evidence; successful planning does not imply a model was run.
+46. v0.11 example public benchmark records remain blocked because no large external data or official public split was imported.
+47. v0.11 local-fixture validation count is zero in the current run; future smoke runs need a small legally usable local fixture or already prepared local dataset.
 
 ## 失败记录模板
 

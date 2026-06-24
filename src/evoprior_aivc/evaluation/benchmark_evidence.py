@@ -11,7 +11,13 @@ from typing import Any
 import pandas as pd
 import yaml
 
+from evoprior_aivc.evaluation.benchmark_registry import BenchmarkRegistryValidation
+
 DEFAULT_CLAIM_BOUNDARY = "No strong claim is supported by this record without manual review."
+REGISTRY_CANDIDATE_CLAIM_BOUNDARY = (
+    "Metadata registration is not benchmark evidence; performance evidence requires a model "
+    "run plus a benchmark evidence record."
+)
 
 
 @dataclass
@@ -50,6 +56,9 @@ def collect_run_evidence(
 ) -> list[BenchmarkEvidenceRecord]:
     """Collect evidence records for every model in a run directory."""
     run_path = Path(run_dir)
+    existing_records = _load_existing_evidence_records(run_path)
+    if existing_records:
+        return existing_records
     manifest = _load_json(run_path / "run_manifest.json")
     config = _load_yaml(run_path / "resolved_config.yaml")
     metric_frame, metric_missing = _load_metric_frame(run_path)
@@ -157,6 +166,48 @@ def records_to_dataframe(records: list[BenchmarkEvidenceRecord]) -> pd.DataFrame
     return pd.DataFrame(rows)
 
 
+def registry_validation_to_evidence_candidates(
+    validation: BenchmarkRegistryValidation,
+    *,
+    config_path: str | None = None,
+) -> list[BenchmarkEvidenceRecord]:
+    """Convert public benchmark registry records into blocked/not-run evidence candidates."""
+    records: list[BenchmarkEvidenceRecord] = []
+    for registry_record in validation.records:
+        status = _registry_candidate_status(registry_record.evidence_status)
+        warnings = [
+            f"registry_ingestion_status={registry_record.ingestion_status}",
+            f"registry_evidence_status={registry_record.evidence_status}",
+            "metadata registration is not performance evidence",
+        ]
+        records.append(
+            BenchmarkEvidenceRecord(
+                record_id=(
+                    f"registry::{registry_record.normalized_benchmark_id}"
+                    "::public_benchmark_candidate"
+                ),
+                run_dir=str(validation.registry_path),
+                dataset_id=registry_record.normalized_benchmark_id,
+                split_id=str(registry_record.raw.get("split_policy", "not_run")),
+                model_id="public_benchmark_candidate",
+                config_path=config_path,
+                metrics={},
+                metrics_finite=True,
+                coverage_manifest=None,
+                component_audit=None,
+                leakage_checks={
+                    "leakage_risks": registry_record.raw.get("leakage_risks", []),
+                },
+                claim_boundary=REGISTRY_CANDIDATE_CLAIM_BOUNDARY,
+                evidence_status=status,
+                missing_artifacts=["model_run", "benchmark_evidence_record"],
+                warnings=warnings + registry_record.errors,
+                same_split_group=f"{registry_record.normalized_benchmark_id}:not_run",
+            )
+        )
+    return records
+
+
 def write_evidence_outputs(
     records: list[BenchmarkEvidenceRecord],
     output_dir: str | Path,
@@ -179,6 +230,14 @@ def write_evidence_outputs(
     )
 
 
+def _registry_candidate_status(evidence_status: str | None) -> str:
+    if evidence_status in {"SAME_SPLIT_COMPARABLE", "CROSS_DATASET_COMPARABLE"}:
+        return "missing"
+    if evidence_status == "SMOKE_ONLY":
+        return "weak"
+    return "blocked"
+
+
 def _load_metric_frame(run_path: Path) -> tuple[pd.DataFrame, list[str]]:
     metric_summary = run_path / "metric_summary.csv"
     metrics = run_path / "metrics.csv"
@@ -189,6 +248,20 @@ def _load_metric_frame(run_path: Path) -> tuple[pd.DataFrame, list[str]]:
         frame = pd.read_csv(metrics)
         return _normalize_metrics(frame), ["metric_summary.csv"]
     return pd.DataFrame(), ["metric_summary.csv", "metrics.csv"]
+
+
+def _load_existing_evidence_records(run_path: Path) -> list[BenchmarkEvidenceRecord]:
+    evidence_path = run_path / "benchmark_evidence.json"
+    if not evidence_path.exists():
+        return []
+    payload = json.loads(evidence_path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        return []
+    records = []
+    for item in payload:
+        if isinstance(item, dict):
+            records.append(BenchmarkEvidenceRecord(**item))
+    return records
 
 
 def _normalize_metric_summary(frame: pd.DataFrame) -> pd.DataFrame:

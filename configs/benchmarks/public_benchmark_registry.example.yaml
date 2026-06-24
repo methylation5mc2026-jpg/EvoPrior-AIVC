@@ -1,0 +1,40 @@
+benchmarks:
+  - benchmark_id: kang_2018_pbmc_ifnb_metadata_only
+    dataset_name: Kang 2018 PBMC IFN-beta
+    source_type: paper_and_project_existing_data
+    source_url_or_reference: Kang et al. 2018 PBMC IFN-beta; project v0.6 local data config
+    source_version_or_access_date: metadata-only-2026-06-24
+    license_or_terms: Do not redistribute raw data from this registry record.
+    citation: Kang et al. 2018
+    organism: human
+    modality: scRNA-seq
+    perturbation_type: IFN-beta stimulation
+    cell_type_or_context: PBMC
+    split_policy: project-defined held-out cell type; no official public split imported
+    leakage_risks:
+      - External public benchmark split is not imported.
+      - Existing project split allows held-out controls under control_observed_ood.
+    local_path_status: missing
+    ingestion_status: REGISTERED_METADATA_ONLY
+    evidence_status: NOT_RUN
+    notes: Metadata registration only; not public benchmark evidence.
+
+  - benchmark_id: scperturb_papalexi_metadata_only
+    dataset_name: Papalexi/Satija 2021 ECCITE-seq arrayed RNA
+    source_type: scperturb_project_existing_data
+    source_url_or_reference: Project v0.3 local data config references the original source.
+    source_version_or_access_date: metadata-only-2026-06-24
+    license_or_terms: Do not redistribute raw data from this registry record.
+    citation: Papalexi and Satija 2021
+    organism: human
+    modality: ECCITE-seq RNA
+    perturbation_type: antibody and perturbation panel
+    cell_type_or_context: monocyte-like configured context
+    split_policy: project-defined smoke split; public split not imported
+    leakage_risks:
+      - Single configured cell type limits lineage claims.
+      - Official external split is not imported.
+    local_path_status: missing
+    ingestion_status: BLOCKED_MISSING_DATA
+    evidence_status: BLOCKED
+    notes: External benchmark alignment remains blocked.

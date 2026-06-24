@@ -339,6 +339,29 @@ v0.10 claim boundary:
 - component audit shows the gene-prior component is inspectable and not collapsed, but mostly lineage-dominated;
 - public external benchmark alignment remains blocked until external splits/data are imported and versioned.
 
+## v0.11 Quickstart
+
+v0.11 adds manifest-driven external public benchmark ingestion planning. It registers benchmark metadata, validates registry records, builds adapter-level ingestion plans, and writes auditable JSON/CSV/Markdown planning artifacts. It does not download large external data, commit raw data, train models, or produce performance evidence.
+
+Run the ingestion planner:
+
+```powershell
+python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.11-external-public-benchmark-ingestion/<timestamp>/
+```
+
+v0.11 claim boundary:
+
+- metadata registration is not benchmark evidence;
+- successful ingestion planning is not performance evidence;
+- public benchmark claims remain blocked until local data ingestion, split validation, model runs, and v0.10 evidence records exist;
+- v0.9/v0.10 claim boundaries remain unchanged.
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -348,4 +371,4 @@ v0.10 claim boundary:
 
 ## 下一安全里程碑
 
-v0.11 可以考虑 external public benchmark ingestion、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype；神经 prototype 必须在 benchmark evidence harness 稳定后另开分支。
+v0.12 可以考虑 local public benchmark smoke run only if a small legally usable local fixture or already prepared local dataset exists. Otherwise, continue external data acquisition documentation and do not start neural modeling.

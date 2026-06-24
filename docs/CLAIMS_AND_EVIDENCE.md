@@ -28,6 +28,7 @@
 - `v0.9-kang-evoprior-additive`: a transparent non-neural additive model runs on the Kang held-out-cell-type suite and improves over `lineage_shrinkage` on mean MAE/MSE for this split. Output: `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z/`.
 - `v0.10-kang-benchmark-alignment`: benchmark evidence collector aligns v0.6-v0.9 Kang records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z/`.
 - `v0.10-synthetic-benchmark-alignment`: benchmark evidence collector aligns synthetic v0.7/v0.9 records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z/`.
+- `v0.11-public-benchmark-ingestion-plan`: registry validation, adapter planning, and ingestion-plan reporting run end-to-end without downloading external data or training models. Output: `outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z/`.
 
 ## 消融提示
 
@@ -38,13 +39,14 @@
 - `v0.8-kang-real-gene-metadata-prior`: HGNC metadata coverage is 93.75% over evaluated Kang genes, but gene-prior correction does not improve over `lineage_shrinkage`; shuffled lineage correction matches the same metrics.
 - `v0.9-kang-evoprior-additive`: the HGNC gene-prior additive variant does not beat the no-gene-prior additive variant on MAE; the component audit is mostly lineage-dominated, so do not attribute the integrated improvement to a true gene evolutionary prior.
 - `v0.10-kang-benchmark-alignment`: evidence alignment confirms same-split comparability for Kang project splits, but it also confirms public external benchmark alignment is still blocked.
+- `v0.11-public-benchmark-ingestion-plan`: metadata registration is not performance evidence; both example public benchmark records remain blocked for benchmarking.
 
 ## 推测/未来工作
 
 - 细胞谱系先验可能提升真实 held-out cell type 或 held-out context 外推，但还需要 v0.6 真实 multi-cell-type perturbation benchmark 验证。
 - 基因演化/保守性先验可能提升 held-out perturbation 外推。
 - 通路/调控网络先验可能提升 top DE gene recovery。
-- v0.11 可以考虑 external public benchmark ingestion、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype。
+- v0.12 可以考虑 local public benchmark smoke run only if a small legally usable local fixture or already prepared local dataset exists.
 
 这些都需要在固定 benchmark、统一 baselines 和多 seed 实验后才能升级为证据性声称。
 
@@ -54,6 +56,7 @@
 - Do not claim the v0.9 Kang improvement is caused by the HGNC gene-prior component; the no-gene-prior additive variant is slightly better on MAE.
 - Do not claim v0.9 implements a neural EvoPrior model.
 - Do not claim v0.10 establishes public benchmark alignment; it only creates the evidence harness over existing project-defined runs.
+- Do not claim v0.11 produces performance evidence; it only registers metadata and plans ingestion.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

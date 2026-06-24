@@ -598,3 +598,40 @@ Interpretation:
 - v0.9 integrated additive variants are comparable to `lineage_shrinkage` on the same Kang split;
 - `evoprior_additive_hgnc_gene_prior` trails `evoprior_additive_no_gene_prior` on MAE, so HGNC gene-prior benefit is weak/not established;
 - external public benchmark alignment remains blocked.
+
+## v0.11 external public benchmark ingestion planning
+
+Experiment ID: `v0.11-public-benchmark-ingestion-plan`
+
+Command:
+
+```powershell
+python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z/
+```
+
+Artifacts:
+
+- `public_benchmark_ingestion_plan.json`
+- `public_benchmark_ingestion_table.csv`
+- `public_benchmark_ingestion_report.md`
+
+Summary:
+
+- registered benchmark records: 2;
+- blocked records: 2;
+- local-fixture validated records: 0;
+- no model was trained;
+- no performance claim was produced;
+- no external data was committed.
+
+Interpretation:
+
+- v0.11 creates a safe ingestion planning layer only;
+- metadata-only records are not benchmark evidence;
+- public benchmark claims remain blocked until data, split validation, model runs, and v0.10 evidence records exist.

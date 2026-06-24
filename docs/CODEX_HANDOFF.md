@@ -344,3 +344,44 @@ git status --short
 - Required alignment runners passed:
   - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`
   - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
+
+## v0.11 kickoff status
+
+- Branch before kickoff: `feat/public-benchmark-alignment-v010`
+- Rollback point: `v0.10-public-benchmark-alignment`
+- Latest v0.10 commit: `7ee93ea chore: align benchmark evidence for v0.10`
+- New branch: `feat/external-public-benchmark-ingestion-v011`
+- Working tree at branch creation: clean.
+- Goal: add manifest-driven external public benchmark ingestion planning without downloading large datasets, committing raw data, training neural models, or making new performance claims.
+- Required boundary: metadata registration is not benchmark evidence; public benchmark claims remain blocked until local data ingestion, split validation, model runs, and v0.10 evidence records exist.
+
+## v0.11 implementation update
+
+- Added docs: `docs/V11_EXTERNAL_PUBLIC_BENCHMARK_INGESTION_PLAN.md`, `docs/V11_PUBLIC_BENCHMARK_DATA_CONTRACT.md`.
+- Added registry layer: `src/evoprior_aivc/evaluation/benchmark_registry.py`.
+- Added adapter contract: `src/evoprior_aivc/data/public_benchmark_adapter.py`.
+- Added ingestion planner: `scripts/plan_public_benchmark_ingestion.py`.
+- Added configs: `configs/benchmarks/public_benchmark_registry.example.yaml`, `configs/experiment/v11_public_benchmark_ingestion_plan.yaml`.
+- Added tests: `tests/test_benchmark_registry.py`, `tests/test_public_benchmark_adapter.py`, `tests/test_public_benchmark_registry_to_evidence.py`.
+- v0.10 evidence compatibility: `collect_run_evidence` can now read existing `benchmark_evidence.json` artifacts.
+
+## v0.11 ingestion planning run
+
+- Command: `python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml`
+- Result: passed.
+- Output directory: `outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z`
+- Registered benchmark records: 2.
+- Blocked records: 2.
+- Local-fixture validated records: 0.
+- No model was trained, no performance claim was produced, and no external data was committed.
+- Current strongest evidence remains the v0.9 integrated additive result on the Kang project split.
+- Current weak evidence remains HGNC real gene-prior underperformance against the no-gene-prior control.
+- Claim boundary: public benchmark claims remain blocked until actual local data ingestion, split validation, model runs, and v0.10 evidence records exist.
+
+## v0.11 final regression update
+
+- Targeted ruff: `python -m ruff check scripts/plan_public_benchmark_ingestion.py src/evoprior_aivc/evaluation/benchmark_registry.py src/evoprior_aivc/data/public_benchmark_adapter.py tests/test_benchmark_registry.py tests/test_public_benchmark_adapter.py tests/test_public_benchmark_registry_to_evidence.py` passed.
+- Targeted tests: `python -m pytest tests/test_benchmark_registry.py tests/test_public_benchmark_adapter.py tests/test_public_benchmark_registry_to_evidence.py` passed with `16 passed`.
+- Full test suite: `python -m pytest` passed with `125 passed, 2 warnings`.
+- Required ingestion planner command passed:
+  - `python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml`

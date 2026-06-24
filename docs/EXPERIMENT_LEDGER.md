@@ -324,3 +324,24 @@ Claim status:
 - Known risks: alignment uses project-defined run outputs, not external public benchmark splits.
 - Rollback note: rollback to tag `v0.9-integrated-evoprior-additive-model` to remove v0.10 work.
 - Claim status: evidence hardening only; no SOTA, public benchmark alignment, neural EvoPrior effectiveness, or real evolutionary/conservation-prior benefit claim.
+
+### EXP-0014: v0.11 external public benchmark ingestion planning
+
+- Experiment ID: `v0.11-public-benchmark-ingestion-plan`
+- Date: 2026-06-24
+- Status: completed
+- Role: MLOps / Evaluation engineer / Data engineer / Scientific reviewer / Documentation engineer
+- Objective: Add a manifest-driven public benchmark ingestion planning layer without downloading external datasets or training models.
+- Dataset: metadata-only public benchmark registry examples.
+- Dataset version/checksum: no raw external data imported; registry config is `configs/benchmarks/public_benchmark_registry.example.yaml`.
+- Split ID: no model split evaluated; registry records document planned or blocked split policies.
+- Config path: `configs/experiment/v11_public_benchmark_ingestion_plan.yaml`
+- Git commit: working tree before final v0.11 commit; output manifest records pre-commit `7ee93ea`
+- Seed(s): no stochastic training or model evaluation.
+- Command: `python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml`
+- Outputs: `outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z/`
+- Metrics: 2 registered benchmark records; 2 blocked records; 0 local-fixture validated records.
+- Assumptions: missing external data is a normal blocked planning status, not a failed model result.
+- Known risks: registry metadata does not prove benchmark readiness, public comparability, or model performance.
+- Rollback note: rollback to tag `v0.10-public-benchmark-alignment` to remove v0.11 work.
+- Claim status: ingestion planning only; no SOTA, public benchmark superiority, neural EvoPrior effectiveness, or real evolutionary/conservation-prior benefit claim.
