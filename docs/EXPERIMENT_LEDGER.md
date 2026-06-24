@@ -345,3 +345,24 @@ Claim status:
 - Known risks: registry metadata does not prove benchmark readiness, public comparability, or model performance.
 - Rollback note: rollback to tag `v0.10-public-benchmark-alignment` to remove v0.11 work.
 - Claim status: ingestion planning only; no SOTA, public benchmark superiority, neural EvoPrior effectiveness, or real evolutionary/conservation-prior benefit claim.
+
+### EXP-0015: v0.12 public benchmark-compatible baseline run
+
+- Experiment ID: `v0.12-public-benchmark-baseline-run`
+- Date: 2026-06-24
+- Status: completed
+- Role: MLOps / Benchmark engineer / Data engineer / Baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Execute the first reproducible public-data, benchmark-compatible baseline run with legal data access, schema validation, split manifest, leakage audit, locked metrics, and a report.
+- Dataset: `scperturb_papalexi_2021_arrayed_rna`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / v1.4 access path, `PapalexiSatija2021_eccite_arrayed_RNA.h5ad`, md5 `843820d48b024348d6132cd53be0da91`, local checksum status `ok`.
+- Split ID: `leave_one_perturbation_suite`; custom benchmark-compatible split over guide-level pseudobulk groups; not official leaderboard aligned.
+- Config path: `configs/experiment/public_benchmark_v012_baseline.yaml`; data config `configs/data/public_benchmark_v012.yaml`.
+- Git commit: working tree before final v0.12 commit; run manifest records `1301381`.
+- Seed(s): `120`, leave-one perturbation seeds start at `1200`.
+- Command: `python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml --dry-run`; `python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml`; `python scripts/run_public_benchmark_baseline.py --config configs/experiment/public_benchmark_v012_baseline.yaml`
+- Outputs: `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`; data reports in `outputs/data_reports/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`.
+- Metrics: leakage audit passed. Test split n=2 held-out perturbations and is underpowered. Test MAE/MSE examples: `no_change` and `control_mean` 0.2388 / 1.7221; `mean_delta`, `perturbation_mean_delta_v2`, `hierarchical_additive`, and `evoprior_additive_no_prior` 0.6922 / 5.7392; `ridge_cv` 0.7152 / 6.0478. Finite test Pearson/Spearman for non-zero delta baselines are about 0.5656-0.5692 / 0.3181-0.3210. Test DE top-20 precision is 0.5125 for non-zero delta baselines and 0.0 for no-change/control.
+- Assumptions: the public H5AD is already harmonized by scPerturb; preprocessing uses active `X`, gene filtering, top 3,000 variance genes, and guide-level pseudobulk groups; the split is custom benchmark-compatible and not official.
+- Known risks: only two perturbations are eligible with at least two guide-level groups; confidence intervals are underpowered; one configured cell type and no donor metadata prevent lineage/donor generalization claims; metrics are internal compatible metrics, not official benchmark metrics.
+- Rollback note: rollback to tag `v0.11-external-public-benchmark-ingestion` to remove v0.12 work.
+- Claim status: reproducible public-data, benchmark-compatible baseline run only; no SOTA, official benchmark, leaderboard comparability, biological discovery, neural EvoPrior, or general EvoPrior superiority claim.

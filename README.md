@@ -362,6 +362,37 @@ v0.11 claim boundary:
 - public benchmark claims remain blocked until local data ingestion, split validation, model runs, and v0.10 evidence records exist;
 - v0.9/v0.10 claim boundaries remain unchanged.
 
+## v0.12 Quickstart
+
+v0.12 runs the first public-data, benchmark-compatible baseline round. The selected dataset is the Papalexi/Satija scPerturb H5AD already used by earlier plumbing work, now with a dedicated v0.12 data config, split report, evidence artifacts, and explicit claim boundary.
+
+Prepare or dry-run the public benchmark data:
+
+```powershell
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml --dry-run
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml
+```
+
+Run the v0.12 baseline:
+
+```powershell
+python scripts/run_public_benchmark_baseline.py --config configs/experiment/public_benchmark_v012_baseline.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/<timestamp>/
+outputs/data_reports/scperturb_papalexi_2021_arrayed_rna_v012/<timestamp>/
+```
+
+v0.12 claim boundary:
+
+- public scPerturb-compatible data, locked checksum, custom leave-one-perturbation split, and internal compatible metrics;
+- not official leaderboard aligned;
+- test metrics are underpowered in the current local split;
+- no SOTA, public leaderboard, biological discovery, neural EvoPrior, or general EvoPrior superiority claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。

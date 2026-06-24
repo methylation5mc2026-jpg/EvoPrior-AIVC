@@ -1,387 +1,103 @@
-# Codex handoff
+# Codex Handoff
 
-## Current state
+## Current State
 
-- Current branch: `feat/real-multicell-lineage-benchmark`
-- Latest stable tag: `v0.6-real-multicell-lineage-benchmark`
-- Latest commit: `b3cdf51 feat: add real multicell lineage benchmark`
-- v0.7 tag: not present. `git tag --list "v0.*"` currently ends at `v0.6-real-multicell-lineage-benchmark`.
+- Current branch: `feat/public-benchmark-baseline-v012`
+- Rollback point: `v0.11-external-public-benchmark-ingestion`
+- Latest completed milestone before this branch: `v0.11-external-public-benchmark-ingestion`
+- v0.12 target tag: `v0.12-public-benchmark-baseline-run`
+- Working tree: dirty with v0.12 source/config/docs/tests plus local generated outputs and `.tmp_pytest/`
 
-## Modified files summary
+## v0.12 Benchmark Decision
 
-- Tracked, unstaged: 2 files
-  - `src/evoprior_aivc/baselines/__init__.py`
-  - `src/evoprior_aivc/priors/__init__.py`
-- Untracked v0.7 paths: 22
-  - `configs/experiment/real_v07_kang_gene_prior.yaml`
-  - `configs/experiment/synthetic_v07_gene_prior.yaml`
-  - `configs/priors/gene_prior_kang_v07.yaml`
-  - `configs/priors/gene_prior_v07.yaml`
-  - `docs/V07_GENE_EVOLUTIONARY_PRIOR_DESIGN.md`
-  - `docs/V07_GENE_PRIOR_ABLATION_PLAN.md`
-  - `docs/V07_GENE_PRIOR_SOURCES.md`
-  - `scripts/prepare_gene_prior.py`
-  - `scripts/run_gene_prior.py`
-  - `src/evoprior_aivc/baselines/gene_prior_correction.py`
-  - `src/evoprior_aivc/data/gene_prior_sources.py`
-  - `src/evoprior_aivc/data/synthetic_gene_prior.py`
-  - `src/evoprior_aivc/evaluation/prior_audit.py`
-  - `src/evoprior_aivc/priors/gene_evolution.py`
-  - `src/evoprior_aivc/priors/gene_features.py`
-  - `src/evoprior_aivc/priors/gene_prior_table.py`
-  - `tests/test_gene_evolution_prior.py`
-  - `tests/test_gene_prior_correction_baseline.py`
-  - `tests/test_gene_prior_sources.py`
-  - `tests/test_gene_prior_table.py`
-  - `tests/test_prior_audit.py`
-  - `tests/test_synthetic_gene_prior.py`
-- Staged changes: none. Both `git diff --cached --stat` and `git diff --cached --name-only` returned empty output.
+- Selected benchmark: `scperturb_papalexi_2021_arrayed_rna_v012`
+- Dataset: Papalexi/Satija 2021 ECCITE-seq RNA from scPerturb Zenodo record 13350497
+- Status: public-data, custom benchmark-compatible split
+- Not official leaderboard aligned
+- Reason selected: legal public H5AD was already local, checksum locked, file is below 2 GB, and existing adapters/baselines support it today
+- Deferred: GEARS/Norman official-style benchmark because no official data/split files are locally registered in v0.11
 
-## Staged and unstaged state
-
-- Working tree is dirty.
-- No files are staged.
-- Dirty paths total: 24, consisting of 2 tracked modified files and 22 untracked files.
-
-## Suspected interruption point
-
-The v0.7 gene evolutionary/conservation prior work appears partially present as untracked files, with two package `__init__.py` files modified to expose the new modules. The current branch is still the v0.6 branch name, not the expected `feat/gene-evolutionary-prior-module`, so continuing should first confirm whether to keep this v0.7 work on the current branch or create/switch to the intended v0.7 branch while preserving all unstaged and untracked files.
-
-Known prompt context says synthetic v0.7 showed strong bases such as `mean_delta` and `lineage_shrinkage` already captured much of the synthetic global gene modulation, and that a `gene_prior_correction_control_mean` weak-base sanity check may have been started. This must still be verified from repository files and targeted tests.
-
-## Commands still required
-
-- Inspect the v0.7 untracked files and the two modified `__init__.py` files.
-- Run v0.7 targeted tests.
-- If targeted tests fail, finish the interrupted weak-base sanity-check fix before running synthetic v0.7.
-- Run synthetic v0.7.
-- Run Kang v0.7 compatibility checks.
-- Update `docs/EXPERIMENT_LEDGER.md`, `docs/CLAIMS_AND_EVIDENCE.md`, `docs/KNOWN_FAILURES.md`, and `docs/CODEX_SESSION_PROTOCOL.md`.
-- Run full regression.
-- Commit only after review and passing checks; tag v0.7 only if evidence supports it.
-
-## Files not to commit
-
-- `data/raw/kang_2018_pbmc_ifnb.h5ad`
-- `outputs/`
-- Python, pytest, and cache artifacts
-- Temporary logs, large derived data, and unreviewed experiment outputs
-
-## Rollback point
-
-- Stable rollback tag: `v0.6-real-multicell-lineage-benchmark`
-- Do not use `git reset --hard`.
-- Do not discard current unstaged or untracked v0.7 work.
-
-## Next exact command
+## Completed Commands
 
 ```powershell
-python -m pytest tests/test_gene_prior_table.py tests/test_gene_evolution_prior.py tests/test_gene_prior_sources.py tests/test_synthetic_gene_prior.py tests/test_gene_prior_correction_baseline.py tests/test_prior_audit.py
+python -m pytest -p no:cacheprovider tests/test_public_benchmark_metrics.py tests/test_public_benchmark_v012_config.py
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml --dry-run
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml
+python scripts/run_public_benchmark_baseline.py --config configs/experiment/public_benchmark_v012_baseline.yaml
+python -m ruff check scripts/prepare_public_benchmark.py scripts/run_public_benchmark_baseline.py src/evoprior_aivc/evaluation/public_benchmark_metrics.py tests/test_public_benchmark_metrics.py tests/test_public_benchmark_v012_config.py
+python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml
+python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml
+python -m pytest -p no:cacheprovider
 ```
 
-## Rescue loop update
+## Current v0.12 Output
 
-- Branch rescue command: `git switch feat/gene-evolutionary-prior-module`
-- Branch rescue result: succeeded without stash.
-- Current branch after rescue: `feat/gene-evolutionary-prior-module`
-- Dirty v0.7 work after rescue: still present.
-- Staged changes after rescue: none; `git diff --cached --name-only` returned empty output.
-- Raw data and `outputs/`: not staged.
+- Run directory: `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`
+- Data report directory: `outputs/data_reports/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`
+- Data checksum: md5 `843820d48b024348d6132cd53be0da91`
+- Checksum status: `ok`
+- Split: custom leave-one-perturbation suite over guide-level pseudobulk groups
+- Held-out perturbations: `etv7`, `pdl1`
+- Leakage audit: passed
+- Test metric caveat: underpowered, `n=2`
 
-## Targeted v0.7 test update
+## Main Metric Snapshot
 
-- Command:
-  ```powershell
-  python -m pytest tests/test_gene_prior_table.py tests/test_gene_evolution_prior.py tests/test_gene_prior_sources.py tests/test_synthetic_gene_prior.py tests/test_gene_prior_correction_baseline.py tests/test_prior_audit.py
-  ```
-- Result: passed.
-- Pytest summary: `19 passed, 2 warnings in 1.75s`.
-- Warnings: two `anndata` deprecation warnings from the local Anaconda environment.
-- Fixes made during this loop: none.
-- Full regression, synthetic v0.7 runner, commits, and tags were not run.
+- `no_change` / `control_mean`: test MAE 0.2388, MSE 1.7221, DE top-20 precision 0.0000
+- `mean_delta` / `perturbation_mean_delta_v2` / `hierarchical_additive` / `evoprior_additive_no_prior`: test MAE 0.6922, MSE 5.7392, Pearson 0.5692, Spearman 0.3210, DE top-20 precision 0.5125
+- `ridge_cv`: test MAE 0.7152, MSE 6.0478, Pearson 0.5656, Spearman 0.3181, DE top-20 precision 0.5125
 
-## Next exact command after this rescue loop
+## Claim Boundary
+
+Allowed: v0.12 executed a reproducible public-data, benchmark-compatible baseline run with documented data, split, metrics, schema report, leakage audit, and evidence artifacts.
+
+Forbidden: SOTA, official benchmark, leaderboard comparability, biological discovery, neural EvoPrior, general EvoPrior superiority, or real evolutionary/conservation-prior benefit.
+
+## Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.tmp_pytest/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## Commands Still Required
+
+```powershell
+git status --short
+git add README.md configs docs src scripts tests pyproject.toml
+git commit -m "feat: run public benchmark baseline"
+git tag v0.12-public-benchmark-baseline-run
+```
+
+## Git Permission Blocker
+
+Codex attempted:
+
+```powershell
+git add README.md configs docs src scripts tests pyproject.toml
+```
+
+Result:
+
+```text
+fatal: Unable to create 'C:/Users/HiC3C/Documents/AIVC/.git/index.lock': Permission denied
+```
+
+The code and regression work are complete, but staging, commit, and tag require a shell with write access to `.git`.
+
+## Next Exact Command
 
 ```powershell
 git status --short
 ```
 
-## v0.7 stabilization status check
+## Final Regression Result
 
-- Command: `git status --short`
-- Command: `git branch --show-current`
-- Command: `git diff --stat`
-- Current branch: `feat/gene-evolutionary-prior-module`
-- Working tree: dirty v0.7 work preserved.
-- Staged changes: none; raw data and `outputs/` are not staged.
-- Diff stat for tracked files: 2 files changed, 4 insertions, 1 deletion.
-
-## Synthetic sanity-check inspection
-
-- Files inspected: `scripts/run_gene_prior.py`, `configs/experiment/synthetic_v07_gene_prior.yaml`.
-- Required weak-base sanity method `gene_prior_correction_control_mean`: present.
-- Strong-base correction methods `gene_prior_correction_mean_delta` and `gene_prior_correction_lineage_shrinkage`: present.
-- Base methods `control_mean`, `mean_delta`, and `lineage_shrinkage`: present.
-- Shuffled negative control: present as `shuffled_gene_prior_correction_lineage`.
-- Code changes for this block: none.
-
-## Synthetic v0.7 run
-
-- Command: `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
-- Result: passed.
-- Output directory: `outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/20260624T004215Z`
-- Confirmed outputs: `report.md`, `metrics.csv`, and `prior_audit.md`.
-- Confirmed methods in `metrics.csv`: `control_mean`, `mean_delta`, `lineage_shrinkage`, `gene_prior_correction_control_mean`, `gene_prior_correction_mean_delta`, `gene_prior_correction_lineage_shrinkage`, and `shuffled_gene_prior_correction_lineage`.
-- Claim boundary: synthetic-only plumbing and ablation logic; not biological evidence.
-
-## Kang v0.7 compatibility run
-
-- Dry-run command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_v07.yaml --dry-run`
-- Dry-run result: passed; source mode reported as `synthetic_gene_prior`.
-- Kang command: `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
-- Kang result: passed.
-- Output directory: `outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z`
-- Confirmed outputs: `report.md`, `prior_audit.md`, and `gene_prior_coverage_report.md`.
-- Gene-prior source mode in `gene_prior_preparation.json`: `synthetic_gene_prior`.
-- Claim boundary: compatibility-only; real evolutionary-prior benefit was not tested.
-
-## Docs sync update
-
-- Updated docs: `README.md`, `docs/PROJECT_SPEC.md`, `docs/DATASETS.md`, `docs/BENCHMARKS.md`, `docs/CLAIMS_AND_EVIDENCE.md`, `docs/EXPERIMENT_LEDGER.md`, `docs/KNOWN_FAILURES.md`, `docs/V07_GENE_EVOLUTIONARY_PRIOR_DESIGN.md`, `docs/V07_GENE_PRIOR_SOURCES.md`, `docs/V07_GENE_PRIOR_ABLATION_PLAN.md`, and this handoff file.
-- Main sync result: v0.7 is documented as non-neural gene-prior infrastructure plus synthetic sanity and Kang compatibility-only runs.
-- Claim boundary scan: no SOTA, biological-discovery, or real evolutionary-prior benefit claim was added.
-- Kang boundary: source mode is `synthetic_gene_prior`; compatibility-only.
-
-## Full regression update
-
-- `python -m pytest`: passed, `93 passed, 2 warnings`.
-- Backward compatibility runners passed:
-  - `python scripts/run_baseline.py --config configs/experiment/synthetic_v02.yaml`
-  - `python scripts/run_real_baseline.py --config configs/experiment/real_v03_baselines.yaml`
-  - `python scripts/run_repeated_baselines.py --config configs/experiment/real_v04_repeated_baselines.yaml`
-  - `python scripts/run_lineage_prior.py --config configs/experiment/synthetic_v05_lineage.yaml`
-  - `python scripts/run_lineage_prior.py --config configs/experiment/real_v05_lineage_compatibility.yaml`
-  - `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
-- New v0.7 commands passed:
-  - `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_v07.yaml --dry-run`
-  - `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
-  - `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
-- Final v0.7 synthetic output: `outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/20260624T004215Z`
-- Final v0.7 Kang output: `outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z`
-- Targeted v0.7 ruff: passed after formatting-only fixes.
-- Kang source mode: `synthetic_gene_prior`; compatibility-only.
-- Commit/tag status at this point: not yet staged, committed, or tagged.
-
-## Staging safety update
-
-- Staging command: `git add README.md configs docs src scripts tests pyproject.toml`
-- Staged files are limited to README, configs, docs, scripts, source, and tests.
-- Safety check: no staged `data/raw`, `outputs`, cache, or egg-info paths.
-- Raw data and generated outputs remain uncommitted.
-
-## v0.8 kickoff status
-
-- Branch before kickoff: `feat/gene-evolutionary-prior-module`
-- Rollback point: `v0.7-gene-evolutionary-prior-module`
-- Baseline test: `python -m pytest` passed with `93 passed, 2 warnings`.
-- New branch: `feat/real-versioned-gene-prior-source`
-- Working tree at branch creation: clean.
-- Goal: add a real, versioned, reproducible gene-prior source path without neural models or SOTA/general-benefit claims.
-
-## v0.8 source selection and adapter update
-
-- Source decision: HGNC complete set is the v0.8 real source for a functional/gene-metadata prior.
-- Claim boundary: no orthology/conservation source is configured, so this is not a real evolutionary/conservation-prior benefit test.
-- Added design doc: `docs/V08_REAL_GENE_PRIOR_SOURCE_DESIGN.md`.
-- Added config: `configs/priors/gene_prior_real_v08.yaml`.
-- Added experiment config: `configs/experiment/real_v08_kang_real_gene_prior.yaml`.
-- Implemented source modes: `hgnc_local_tsv`, `goa_local_gaf`, `local_curated_gene_prior_csv`, `bundled_small_fixture`, `download_hgnc`, and `download_goa`.
-- Targeted tests: `python -m pytest tests/test_gene_prior_sources.py tests/test_gene_prior_table.py` passed with `11 passed, 2 warnings`.
-
-## v0.8 real source preparation
-
-- Dry-run command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run`
-- Prepare command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml`
-- Result: passed.
-- Source mode: `download_hgnc`.
-- Source kind: `real_functional_gene_metadata`.
-- Source is real: `true`.
-- Output directory: `data/interim/gene_priors/real_v08_hgnc_gene_metadata/hgnc_complete_set_20260619`
-- Rows: 44,997.
-- Feature columns: `hgnc_gene_group_count`, `is_immune_related`, `approved_symbol_present`, `gene_biotype`, `locus_group`.
-- Feature table md5: `a4ec5c04c9a597cd548031e89f0d75d1`.
-- Source file md5: `a49771d2d247b54ec606007ed733ae64`.
-- Claim boundary: real HGNC functional/gene-metadata prior; no orthology/conservation source, so not a real evolutionary/conservation-prior test.
-
-## v0.8 Kang HGNC metadata-prior run
-
-- Command: `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
-- Result: passed.
-- Output directory: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z`
-- Data report directory: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z`
-- Coverage: 1,875 / 2,000 Kang genes mapped, 93.75%.
-- Coverage decision: real ablation allowed.
-- Source mode/kind: `download_hgnc` / `real_functional_gene_metadata`.
-- Metrics snapshot: `gene_prior_correction_lineage_shrinkage` matched `lineage_shrinkage` on MAE 0.3160 and MSE 4.9515; shuffled lineage correction also matched, so no HGNC metadata-prior improvement is supported.
-- DE snapshot: lineage and gene-prior-corrected-lineage top-20 precision both 0.6295.
-- Claim boundary: preliminary Kang split-specific functional metadata-prior ablation only; no real evolutionary/conservation benefit, SOTA, or biological discovery claim.
-
-## v0.8 final regression update
-
-- `python -m pytest`: passed, `97 passed, 2 warnings`.
-- Backward compatibility passed:
-  - `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
-  - `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
-  - `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
-- New v0.8 commands passed:
-  - `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run`
-  - `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
-- Final v0.8 output: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z`
-- Final v0.8 coverage report: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md`
-- Targeted ruff: passed on v0.8-modified Python files.
-- Claim scan: no positive SOTA, biological-discovery, or real evolutionary/conservation-prior benefit claim added.
-
-## v0.9 kickoff status
-
-- Branch before kickoff: `feat/real-versioned-gene-prior-source`
-- Rollback point: `v0.8-real-versioned-gene-prior-source`
-- Baseline test: `python -m pytest` passed with `97 passed, 2 warnings`.
-- New branch: `feat/integrated-evoprior-additive-model`
-- Working tree at branch creation: clean.
-- Goal: implement a transparent non-neural integrated additive model combining control/baseline effects, perturbation effects, lineage borrowing, HGNC gene metadata residual correction, and shrinkage.
-
-## v0.9 model implementation update
-
-- Added design docs: `docs/V09_INTEGRATED_EVOPRIOR_ADDITIVE_DESIGN.md`, `docs/V09_ABLATION_PLAN.md`.
-- Added model: `src/evoprior_aivc/models/evoprior_additive.py`.
-- Added component audit: `src/evoprior_aivc/evaluation/component_audit.py`.
-- Added tests: `tests/test_evoprior_additive_model.py`, `tests/test_component_audit.py`.
-- Targeted tests: `python -m pytest tests/test_evoprior_additive_model.py tests/test_component_audit.py` passed with `5 passed`.
-- Claim boundary: model is transparent and non-neural; HGNC-only gene metadata is not true evolutionary/conservation prior evidence.
-
-## v0.9 synthetic integrated run
-
-- Command: `python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml`
-- Result: passed.
-- Output directory: `outputs/runs/v0.9-integrated-evoprior-additive/synthetic_integrated/20260624T015634Z`
-- Key MAE means:
-  - `lineage_shrinkage`: 0.0243054760
-  - `evoprior_additive_synthetic_gene_prior`: 0.0222905244
-  - `evoprior_additive_no_gene_prior`: 0.0222844883
-  - `evoprior_additive_shuffled_gene_prior`: 0.0222857099
-- Component audit summary: gene-prior mean abs 0.0003198981, lineage mean abs 0.0155531850, gene prior not collapsed, mostly lineage, shuffled gene-prior mean abs 0.0003187738.
-- Claim boundary: synthetic plumbing and ablation evidence only; not biological evidence.
-
-## v0.9 Kang integrated run
-
-- Command: `python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml`
-- Result: passed.
-- Output directory: `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z`
-- Gene-prior coverage: 1,875 / 2,000 genes, 93.75%.
-- Key MAE/MSE means:
-  - `lineage_shrinkage`: MAE 0.3160302826, MSE 4.9515264775
-  - `gene_prior_correction_lineage_shrinkage`: MAE 0.3160302826, MSE 4.9515264775
-  - `evoprior_additive_hgnc_gene_prior`: MAE 0.3008222050, MSE 4.5008464618
-  - `evoprior_additive_no_gene_prior`: MAE 0.3005609659, MSE 4.5010923844
-  - `evoprior_additive_shuffled_gene_prior`: MAE 0.3007507323, MSE 4.5011503320
-- Result interpretation: integrated additive model beats `lineage_shrinkage` on this project split, but the HGNC gene-prior component does not beat the no-gene-prior variant on MAE.
-- Component audit summary: gene-prior mean abs 0.0036346149, lineage mean abs 0.2082943659, gene prior not collapsed, mostly lineage, shuffled gene-prior mean abs 0.0024879102.
-- Claim boundary: preliminary Kang split-specific non-neural additive result; HGNC metadata is not true evolutionary/conservation evidence.
-
-## v0.9 final regression update
-
-- Targeted v0.9 tests: `python -m pytest tests/test_evoprior_additive_model.py tests/test_component_audit.py` passed with `5 passed`.
-- Full test suite: `python -m pytest` passed with `102 passed, 2 warnings`.
-- Targeted ruff: passed on v0.9 Python files.
-- Backward compatibility runners passed:
-  - `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
-  - `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
-  - `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
-  - `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
-- Final v0.9 runners passed:
-  - `python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml`
-  - `python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml`
-- Claim scan: no positive SOTA, biological-discovery, neural EvoPrior, or real evolutionary/conservation-prior benefit claim added.
-
-## v0.10 kickoff status
-
-- Branch before kickoff: `feat/integrated-evoprior-additive-model`
-- Rollback point: `v0.9-integrated-evoprior-additive-model`
-- Latest v0.9 commit: `e27d9c0 feat: add integrated EvoPrior additive model`
-- New branch: `feat/public-benchmark-alignment-v010`
-- Working tree at branch creation: clean.
-- Goal: align benchmark evidence from v0.6-v0.9 into a reproducible, auditable, cross-run evidence layer without adding neural models, external benchmark data, or new performance claims.
-- Required boundary: v0.10 is benchmark alignment/evidence hardening only; no SOTA, universal generalization, neural EvoPrior, or real evolutionary/conservation-prior benefit claim.
-
-## v0.10 implementation update
-
-- Added docs: `docs/V10_PUBLIC_BENCHMARK_ALIGNMENT_PLAN.md`, `docs/V10_EVIDENCE_TABLE_SCHEMA.md`.
-- Added collector: `src/evoprior_aivc/evaluation/benchmark_evidence.py`.
-- Added tests: `tests/test_benchmark_evidence.py`.
-- Added runner: `scripts/run_benchmark_alignment.py`.
-- Added configs: `configs/experiment/v10_benchmark_alignment_synthetic.yaml`, `configs/experiment/v10_benchmark_alignment_kang.yaml`.
-- Targeted tests: `python -m pytest tests/test_benchmark_evidence.py` passed with `7 passed`.
-- Targeted ruff: passed on v0.10 Python files.
-
-## v0.10 alignment runs
-
-- Synthetic command: `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`
-- Synthetic result: passed.
-- Synthetic output directory: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z`
-- Kang command: `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
-- Kang result: passed.
-- Kang output directory: `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z`
-- Kang evidence records: 40 records, all `pass`.
-- Current strongest evidence: v0.9 integrated additive variants beat `lineage_shrinkage` on the project Kang held-out cell-type split.
-- Current weak/failed evidence: `evoprior_additive_hgnc_gene_prior` trails `evoprior_additive_no_gene_prior` on MAE, so HGNC gene-prior benefit is not established.
-- Claim boundary: external public benchmark alignment remains blocked; no SOTA, neural EvoPrior, or true evolutionary/conservation-prior benefit claim.
-
-## v0.10 final regression update
-
-- Targeted ruff: `python -m ruff check scripts/run_benchmark_alignment.py src/evoprior_aivc/evaluation/benchmark_evidence.py tests/test_benchmark_evidence.py` passed.
-- Targeted tests: `python -m pytest tests/test_benchmark_evidence.py` passed with `7 passed`.
-- Full test suite: `python -m pytest` passed with `109 passed, 2 warnings`.
-- Required alignment runners passed:
-  - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`
-  - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
-
-## v0.11 kickoff status
-
-- Branch before kickoff: `feat/public-benchmark-alignment-v010`
-- Rollback point: `v0.10-public-benchmark-alignment`
-- Latest v0.10 commit: `7ee93ea chore: align benchmark evidence for v0.10`
-- New branch: `feat/external-public-benchmark-ingestion-v011`
-- Working tree at branch creation: clean.
-- Goal: add manifest-driven external public benchmark ingestion planning without downloading large datasets, committing raw data, training neural models, or making new performance claims.
-- Required boundary: metadata registration is not benchmark evidence; public benchmark claims remain blocked until local data ingestion, split validation, model runs, and v0.10 evidence records exist.
-
-## v0.11 implementation update
-
-- Added docs: `docs/V11_EXTERNAL_PUBLIC_BENCHMARK_INGESTION_PLAN.md`, `docs/V11_PUBLIC_BENCHMARK_DATA_CONTRACT.md`.
-- Added registry layer: `src/evoprior_aivc/evaluation/benchmark_registry.py`.
-- Added adapter contract: `src/evoprior_aivc/data/public_benchmark_adapter.py`.
-- Added ingestion planner: `scripts/plan_public_benchmark_ingestion.py`.
-- Added configs: `configs/benchmarks/public_benchmark_registry.example.yaml`, `configs/experiment/v11_public_benchmark_ingestion_plan.yaml`.
-- Added tests: `tests/test_benchmark_registry.py`, `tests/test_public_benchmark_adapter.py`, `tests/test_public_benchmark_registry_to_evidence.py`.
-- v0.10 evidence compatibility: `collect_run_evidence` can now read existing `benchmark_evidence.json` artifacts.
-
-## v0.11 ingestion planning run
-
-- Command: `python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml`
-- Result: passed.
-- Output directory: `outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z`
-- Registered benchmark records: 2.
-- Blocked records: 2.
-- Local-fixture validated records: 0.
-- No model was trained, no performance claim was produced, and no external data was committed.
-- Current strongest evidence remains the v0.9 integrated additive result on the Kang project split.
-- Current weak evidence remains HGNC real gene-prior underperformance against the no-gene-prior control.
-- Claim boundary: public benchmark claims remain blocked until actual local data ingestion, split validation, model runs, and v0.10 evidence records exist.
-
-## v0.11 final regression update
-
-- Targeted ruff: `python -m ruff check scripts/plan_public_benchmark_ingestion.py src/evoprior_aivc/evaluation/benchmark_registry.py src/evoprior_aivc/data/public_benchmark_adapter.py tests/test_benchmark_registry.py tests/test_public_benchmark_adapter.py tests/test_public_benchmark_registry_to_evidence.py` passed.
-- Targeted tests: `python -m pytest tests/test_benchmark_registry.py tests/test_public_benchmark_adapter.py tests/test_public_benchmark_registry_to_evidence.py` passed with `16 passed`.
-- Full test suite: `python -m pytest` passed with `125 passed, 2 warnings`.
-- Required ingestion planner command passed:
-  - `python scripts/plan_public_benchmark_ingestion.py --config configs/experiment/v11_public_benchmark_ingestion_plan.yaml`
+- Full tests: `129 passed, 2 warnings`
+- v0.12 prepare dry-run: passed
+- v0.12 baseline runner: passed
+- Targeted ruff on v0.12 Python files: passed
+- v0.6 backward compatibility runner: passed, output `outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260624T150540Z/`
+- v0.9 backward compatibility runner: passed, output `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T150550Z/`

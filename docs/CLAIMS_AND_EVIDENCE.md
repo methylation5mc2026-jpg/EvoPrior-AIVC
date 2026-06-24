@@ -29,6 +29,7 @@
 - `v0.10-kang-benchmark-alignment`: benchmark evidence collector aligns v0.6-v0.9 Kang records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z/`.
 - `v0.10-synthetic-benchmark-alignment`: benchmark evidence collector aligns synthetic v0.7/v0.9 records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z/`.
 - `v0.11-public-benchmark-ingestion-plan`: registry validation, adapter planning, and ingestion-plan reporting run end-to-end without downloading external data or training models. Output: `outputs/runs/v0.11-external-public-benchmark-ingestion/20260624T023024Z/`.
+- `v0.12-public-benchmark-baseline-run`: a public scPerturb-compatible Papalexi/Satija H5AD baseline run executes end-to-end with checksum-validated data, schema report, custom leave-one-perturbation split, leakage audit, locked internal metrics, and evidence artifacts. Output: `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`.
 
 ## 消融提示
 
@@ -40,6 +41,7 @@
 - `v0.9-kang-evoprior-additive`: the HGNC gene-prior additive variant does not beat the no-gene-prior additive variant on MAE; the component audit is mostly lineage-dominated, so do not attribute the integrated improvement to a true gene evolutionary prior.
 - `v0.10-kang-benchmark-alignment`: evidence alignment confirms same-split comparability for Kang project splits, but it also confirms public external benchmark alignment is still blocked.
 - `v0.11-public-benchmark-ingestion-plan`: metadata registration is not performance evidence; both example public benchmark records remain blocked for benchmarking.
+- `v0.12-public-benchmark-baseline-run`: the selected split is custom benchmark-compatible rather than official leaderboard aligned, and the test suite is underpowered with n=2 held-out perturbations.
 
 ## 推测/未来工作
 
@@ -57,6 +59,7 @@
 - Do not claim v0.9 implements a neural EvoPrior model.
 - Do not claim v0.10 establishes public benchmark alignment; it only creates the evidence harness over existing project-defined runs.
 - Do not claim v0.11 produces performance evidence; it only registers metadata and plans ingestion.
+- Do not claim v0.12 is an official benchmark result, a leaderboard-comparable result, or evidence of general EvoPrior superiority.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

@@ -635,3 +635,56 @@ Interpretation:
 - v0.11 creates a safe ingestion planning layer only;
 - metadata-only records are not benchmark evidence;
 - public benchmark claims remain blocked until data, split validation, model runs, and v0.10 evidence records exist.
+
+## v0.12 public benchmark-compatible baseline run
+
+Experiment ID: `v0.12-public-benchmark-baseline-run`
+
+Commands:
+
+```powershell
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml --dry-run
+python scripts/prepare_public_benchmark.py --config configs/data/public_benchmark_v012.yaml
+python scripts/run_public_benchmark_baseline.py --config configs/experiment/public_benchmark_v012_baseline.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/
+```
+
+Data report:
+
+```text
+outputs/data_reports/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/
+```
+
+Benchmark status:
+
+- public scPerturb-compatible Papalexi/Satija H5AD;
+- custom leave-one-perturbation suite over guide-level pseudobulk groups;
+- not official leaderboard aligned;
+- internal compatible metrics only.
+
+Baselines:
+
+- `no_change`
+- `control_mean`
+- `mean_delta`
+- `perturbation_mean_delta_v2`
+- `hierarchical_additive`
+- `ridge_cv`
+- `evoprior_additive_no_prior`
+
+Main test metrics:
+
+- `no_change` and `control_mean`: MAE 0.2388, MSE 1.7221, DE top-20 precision 0.0000.
+- `mean_delta`, `perturbation_mean_delta_v2`, `hierarchical_additive`, and `evoprior_additive_no_prior`: MAE 0.6922, MSE 5.7392, Pearson 0.5692, Spearman 0.3210, DE top-20 precision 0.5125.
+- `ridge_cv`: MAE 0.7152, MSE 6.0478, Pearson 0.5656, Spearman 0.3181, DE top-20 precision 0.5125.
+
+Interpretation:
+
+- v0.12 proves the public-data baseline run is executable and auditable.
+- The test suite is underpowered with only two held-out perturbations.
+- Do not claim SOTA, official benchmark alignment, leaderboard comparability, biological discovery, or general EvoPrior superiority.

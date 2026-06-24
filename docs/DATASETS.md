@@ -228,3 +228,40 @@ The v0.8 Kang runner uses a real HGNC complete-set source for functional/gene me
 Coverage over the v0.8 Kang top-variance gene set is 1,875 / 2,000 genes, or 93.75%.
 
 This is a real source ablation for HGNC functional/gene metadata only. It is not a real evolutionary/conservation-prior benefit test.
+
+## v0.12 Papalexi/scPerturb public benchmark-compatible run
+
+Dataset ID: `scperturb_papalexi_2021_arrayed_rna`
+
+Benchmark ID: `scperturb_papalexi_2021_arrayed_rna_v012`
+
+Source:
+
+- scPerturb Zenodo record 13350497
+- File: `PapalexiSatija2021_eccite_arrayed_RNA.h5ad`
+- Config: `configs/data/public_benchmark_v012.yaml`
+- Expected local path: `data/raw/PapalexiSatija2021_eccite_arrayed_RNA.h5ad`
+- File size: 52,339,395 bytes
+- md5: `843820d48b024348d6132cd53be0da91`
+- License: CC-BY-4.0 via scPerturb Zenodo record
+
+v0.12 mapping and split:
+
+- Schema mapping reuses the generic H5AD adapter from v0.3/v0.4.
+- Pseudobulk grouping: `cell_type`, `perturbation`, `guide_id`.
+- Split: custom leave-one-perturbation suite over eligible guide-level pseudobulk groups.
+- Held-out perturbations in the completed run: `etv7`, `pdl1`.
+- Official status: public-data and benchmark-compatible, not official leaderboard aligned.
+
+Completed output:
+
+```text
+outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/
+outputs/data_reports/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/
+```
+
+Limitations:
+
+- One configured cell type/cell line and no donor metadata.
+- Only two held-out perturbations are eligible under the configured minimum group threshold.
+- Metrics are internal compatible metrics, not official benchmark metrics.

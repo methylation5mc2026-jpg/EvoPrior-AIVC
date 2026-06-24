@@ -1,0 +1,90 @@
+experiment_id: v0.12-public-benchmark-baseline-run
+mode: public_benchmark_baseline
+seed: 120
+output_root: outputs/runs
+output_prefix: v0.12-public-benchmark-baseline-run
+benchmark_id: scperturb_papalexi_2021_arrayed_rna_v012
+dataset_id: scperturb_papalexi_2021_arrayed_rna
+data_config: configs/data/public_benchmark_v012.yaml
+
+benchmark:
+  selected_benchmark: Papalexi/Satija 2021 ECCITE-seq RNA from scPerturb Zenodo
+  official_alignment_status: custom_benchmark_compatible
+  official_alignment_notes: The data source is public and recognized by scPerturb-style perturbation prediction work, but the split is project-defined and not an official leaderboard split.
+  source: https://zenodo.org/records/13350497
+  source_version: scPerturb Zenodo record v1.4 access path, local H5AD checksum locked
+  split_definition: leave-one-perturbation suite over guide-level pseudobulk groups
+  metric_status: internal compatible metrics, not official leaderboard metrics
+
+preprocessing:
+  seed: 120
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - guide_id
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: raise
+
+features:
+  allowed_feature_columns:
+    - control_expression
+    - perturbation
+    - cell_type
+    - guide_id
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+    - 100
+  leave_one_perturbation_suite:
+    enabled: true
+    min_test_groups: 2
+    val_fraction: 0.2
+    seed: 1200
+  generalization_class: unseen_perturbation
+
+baselines:
+  - name: no_change
+  - name: control_mean
+  - name: mean_delta
+    fallback: global
+  - name: perturbation_mean_delta_v2
+    fallback: global
+  - name: hierarchical_additive
+    alpha: 5.0
+  - name: ridge_cv
+    alphas:
+      - 0.1
+      - 1.0
+      - 10.0
+  - name: evoprior_additive_no_prior
+    use_gene_prior: false
+    use_lineage_prior: false
+    alpha_shrinkage: 1.0
+    min_groups_per_effect: 1
+
+reporting:
+  claim_boundary: v0.12 executes a reproducible public-data, benchmark-compatible baseline run on Papalexi/Satija scPerturb data with a custom leave-one-perturbation split and internal compatible metrics. It is not an official leaderboard result, SOTA claim, biological discovery, or general EvoPrior superiority claim.
+  limitations:
+    - The split is custom and benchmark-compatible, not official leaderboard aligned.
+    - The dataset has one configured cell type/cell line and no donor metadata, so lineage and donor generalization are not tested.
+    - Metrics are internal compatible metrics and should not be presented as official benchmark metrics.
+    - EvoPrior-specific priors are disabled for the transparent additive baseline because this dataset lacks multicell lineage context and a relevant real gene-prior claim.

@@ -49,6 +49,10 @@
 45. v0.11 metadata registration is not benchmark evidence; successful planning does not imply a model was run.
 46. v0.11 example public benchmark records remain blocked because no large external data or official public split was imported.
 47. v0.11 local-fixture validation count is zero in the current run; future smoke runs need a small legally usable local fixture or already prepared local dataset.
+48. v0.12 Papalexi/scPerturb run is public-data and benchmark-compatible, but its split is custom and not official leaderboard aligned.
+49. v0.12 leave-one-perturbation suite is underpowered: only `etv7` and `pdl1` have at least two guide-level pseudobulk test groups under the configured threshold.
+50. v0.12 metrics are internal compatible metrics, not official GEARS/scPerturb leaderboard metrics.
+51. v0.12 `evoprior_additive_no_prior` disables lineage and gene priors because Papalexi has one configured cell type and no relevant real prior claim; it must not be presented as a full EvoPrior prior-benefit result.
 
 ## 失败记录模板
 

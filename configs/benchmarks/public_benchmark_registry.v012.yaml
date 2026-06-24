@@ -1,0 +1,33 @@
+benchmarks:
+  - benchmark_id: scperturb_papalexi_2021_arrayed_rna_v012
+    dataset_name: Papalexi/Satija 2021 ECCITE-seq arrayed RNA
+    source_type: scperturb_public_h5ad
+    source_url_or_reference: https://zenodo.org/records/13350497
+    source_version_or_access_date: scPerturb Zenodo record v1.4; accessed locally for v0.12
+    license_or_terms: CC-BY-4.0 via scPerturb Zenodo; raw data is not redistributed by this repo.
+    citation: Papalexi and Satija 2021; scPerturb Zenodo record 13350497
+    organism: human
+    modality: ECCITE-seq RNA
+    perturbation_type: perturbation panel with guide-level groups
+    cell_type_or_context: monocyte-like THP-1 configured context
+    split_policy: custom leave-one-perturbation suite; not official leaderboard aligned
+    leakage_risks:
+      - Official external benchmark split is not imported.
+      - Single configured cell type prevents lineage or donor generalization claims.
+      - Held-out perturbation labels must be absent from train and validation for each suite member.
+    local_path_status: local_or_download_configured
+    ingestion_status: REGISTERED_METADATA_ONLY
+    evidence_status: NOT_RUN
+    expected_files:
+      - h5ad
+    local_paths:
+      h5ad: data/raw/PapalexiSatija2021_eccite_arrayed_RNA.h5ad
+    expected_columns:
+      obs:
+        - perturbation
+        - celltype
+        - guide_id
+        - tissue_type
+      var:
+        - ensembl_id
+    notes: v0.12 config converts this record into a local executable benchmark-compatible run when the H5AD is present or downloadable.
