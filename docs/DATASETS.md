@@ -212,3 +212,19 @@ The v0.7 Kang gene-prior runner reuses `kang_2018_pbmc_ifnb` for engineering com
 - Latest compatibility output: `outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z/`
 
 Because the configured prior is synthetic/placeholder, this dataset run does not test real evolutionary-prior benefit.
+
+## v0.8 Kang HGNC metadata-prior note
+
+The v0.8 Kang runner uses a real HGNC complete-set source for functional/gene metadata.
+
+- Config: `configs/experiment/real_v08_kang_real_gene_prior.yaml`
+- Gene-prior config: `configs/priors/gene_prior_real_v08.yaml`
+- Source mode: `download_hgnc`
+- Source kind: `real_functional_gene_metadata`
+- Source cache path: `data/interim/gene_priors/_source_cache/hgnc_complete_set.txt`
+- Prepared feature table: `data/interim/gene_priors/real_v08_hgnc_gene_metadata/hgnc_complete_set_20260619/gene_prior_features.csv`
+- Coverage report: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md`
+
+Coverage over the v0.8 Kang top-variance gene set is 1,875 / 2,000 genes, or 93.75%.
+
+This is a real source ablation for HGNC functional/gene metadata only. It is not a real evolutionary/conservation-prior benefit test.

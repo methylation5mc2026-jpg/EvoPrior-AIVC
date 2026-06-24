@@ -2,7 +2,7 @@
 
 EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。目标不是做泛泛的“AI for biology”演示，而是在明确公开数据集、固定切分、统一评测脚本和可复现实验记录之上，检验“细胞谱系先验、基因演化/保守性先验、通路/网络先验是否能提升外推预测”这个窄而严肃的问题。
 
-当前仓库已推进到 v0.6-real-multicell-lineage-benchmark：在 v0.5 谱系先验模块之上，新增 Kang 2018 PBMC IFN-beta 真实多细胞类型 benchmark、coarse hematopoietic lineage mapping、held-out cell-type / held-out lineage split、真实数据 runner、tau sensitivity audit 和完整声称边界。v0.6 结果只对这个 PBMC 单刺激数据集和本项目 split 有效，不声称 SOTA 或一般谱系先验有效。
+当前仓库已推进到 v0.8-real-versioned-gene-prior-source：在 v0.7 gene-prior infrastructure 之上，新增 HGNC complete-set 真实功能/基因元数据源、版本化 manifest/checksum、Kang coverage report 和一次 Kang held-out cell-type ablation。v0.8 不包含 neural EvoPrior，不声称 SOTA，不声称真实 evolutionary/conservation-prior benefit，因为当前真实源不含 orthology、conservation score 或 gene-age 特征。
 
 ## 科学问题
 
@@ -250,6 +250,37 @@ v0.7 claim boundary:
 - Kang v0.7 is compatibility-only and does not test real evolutionary-prior benefit;
 - no SOTA, public leaderboard, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
 
+## v0.8 Quickstart
+
+v0.8 replaces the v0.7 Kang placeholder prior with a real HGNC functional/gene-metadata source. This is not a real evolutionary/conservation-prior test because no orthology, conservation score, or gene-age source is configured.
+
+Prepare the real source:
+
+```powershell
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml
+```
+
+Run the Kang HGNC metadata-prior ablation:
+
+```powershell
+python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/<timestamp>/
+outputs/data_reports/kang_2018_pbmc_ifnb/<timestamp>/real_gene_prior_v08_coverage_report.md
+```
+
+v0.8 claim boundary:
+
+- source mode is `download_hgnc`;
+- source kind is `real_functional_gene_metadata`;
+- Kang v0.8 is preliminary and dataset/split-specific;
+- no real evolutionary/conservation-prior benefit, SOTA, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -259,4 +290,4 @@ v0.7 claim boundary:
 
 ## 下一安全里程碑
 
-v0.8 才能考虑引入真实、版本化的 gene-prior source 或更复杂模型；在此之前，v0.7 的 Kang 结果保持 compatibility-only，不做真实 evolutionary-prior benefit 或 SOTA 声称。
+v0.9 才能考虑 integrated EvoPrior additive model；在此之前，v0.8 只证明真实 HGNC metadata source plumbing 和一次 Kang split-specific ablation。

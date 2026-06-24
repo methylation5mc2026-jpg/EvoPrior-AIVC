@@ -1,0 +1,76 @@
+experiment_id: v0.8-kang-real-gene-metadata-prior
+mode: real_kang_gene_prior
+seed: 81
+output_root: outputs/runs
+output_prefix: v0.8-real-versioned-gene-prior-source
+dataset_id: kang_2018_pbmc_ifnb
+data_config: configs/data/real_multicell_v06.yaml
+lineage_config: configs/priors/lineage_real_multicell_v06.yaml
+gene_prior_config: configs/priors/gene_prior_real_v08.yaml
+require_real_source: true
+
+coverage_report:
+  output_root: outputs/data_reports
+  report_name: real_gene_prior_v08_coverage_report.md
+
+preprocessing:
+  seed: 81
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 2000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - donor
+  min_cells: 5
+  aggregation: mean
+
+delta:
+  control_label: ctrl
+  match_columns:
+    - cell_type
+    - donor
+  control_fallback: raise
+
+splits:
+  control_usage: control_observed_ood
+  heldout_cell_type_suite:
+    min_test_groups: 3
+    min_control_groups: 1
+    min_train_groups: 3
+    val_fraction: 0.0
+    seed: 811
+
+lineage_baseline:
+  tau: 1.5
+  shrinkage: 0.85
+  fallback_mode: global
+
+gene_prior_correction:
+  mode: residual_additive
+  alpha: 1.0
+  impute_strategy: median
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+    - 100
+
+reporting:
+  audit_title: v0.8 Real Gene Metadata Prior Audit
+  claim_boundary: Kang v0.8 uses a real HGNC functional/gene-metadata prior. No orthology or conservation source is configured, so this is not a real evolutionary/conservation-prior benefit test. Results are preliminary and dataset/split-specific.
+  interpretation_notes:
+    - This run tests real versioned source plumbing and a functional/gene-metadata prior, not a neural EvoPrior model.
+    - Metrics must not be interpreted as SOTA, biological discovery, or general evolutionary-prior effectiveness.
+  limitations:
+    - HGNC metadata provides approved symbols, locus group/type, and gene group-derived features.
+    - No real orthology, conservation score, or gene age source is configured in this v0.8 run.
+    - Kang remains a single-stimulus PBMC IFN-beta dataset with project-defined held-out cell-type splits.

@@ -103,6 +103,10 @@ def run_real_kang(config: dict[str, Any]) -> Path:
     gene_prior_config = _load_yaml(Path(config["gene_prior_config"]))
     prepare_dataset(data_config)
     prior_result = prepare_gene_prior(gene_prior_config)
+    if config.get("require_real_source") and not prior_result.source_is_real:
+        raise RuntimeError(
+            "configured gene prior is not a real source; refusing scientific real ablation"
+        )
     prior = GenePriorTable.from_csv(prior_result.feature_table_path)
     adata, schema_report = load_real_dataset(data_config)
     adata = preprocess_adata(adata, config)
@@ -136,6 +140,15 @@ def run_real_kang(config: dict[str, Any]) -> Path:
     _write_json(run_dir / "gene_prior_preparation.json", prior_result.to_dict())
     _write_json(run_dir / "schema_report.json", schema_report.__dict__)
     eligibility.to_csv(run_dir / "heldout_cell_type_eligibility.csv", index=False)
+    external_coverage_path = _coverage_report_path(config)
+    if external_coverage_path is not None:
+        _write_gene_prior_coverage_report(
+            external_coverage_path,
+            dataset,
+            prior,
+            prior_result.to_dict(),
+            config["reporting"]["claim_boundary"],
+        )
 
     metrics, de_rows, subset_rows, split_manifest, corrections = _evaluate_heldout_cell_types(
         config,
@@ -384,7 +397,7 @@ def _write_prior_audit(run_dir, config, prior, shuffled, corrections) -> None:
     correction = next(iter(corrections.values()), pd.Series(dtype=float))
     write_prior_audit_report(
         run_dir / "prior_audit.md",
-        title="v0.7 Gene Prior Audit",
+        title=config["reporting"].get("audit_title", "Gene Prior Audit"),
         source_summary={
             "source_values": ",".join(prior.validate().source_values),
             "source_versions": ",".join(prior.validate().source_versions),
@@ -399,9 +412,21 @@ def _write_prior_audit(run_dir, config, prior, shuffled, corrections) -> None:
 
 
 def _write_gene_prior_coverage_report(path, dataset, prior, preparation, claim_boundary) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
     coverage = prior.coverage_for_genes(dataset.gene_names)
+    manifest = _read_manifest(preparation.get("manifest_path"))
+    validation = prior.validate()
+    source_is_real = bool(preparation.get("source_is_real"))
+    source_kind = str(preparation.get("source_kind") or "unknown")
+    decision = (
+        "real ablation allowed"
+        if source_is_real and not source_kind.endswith("fixture")
+        else "compatibility only"
+    )
+    missingness = validation.missing_fraction
+    source_files = manifest.get("source_files", []) if isinstance(manifest, dict) else []
     report = [
-        "# v0.7 Gene Prior Coverage Report",
+        "# Gene Prior Coverage Report",
         "",
         claim_boundary,
         "",
@@ -411,6 +436,29 @@ def _write_gene_prior_coverage_report(path, dataset, prior, preparation, claim_b
         f"- Coverage fraction: {coverage.coverage_fraction:.4f}",
         f"- Feature table checksum: {preparation.get('checksum')}",
         f"- Source mode: {preparation.get('source_mode')}",
+        f"- Source kind: {source_kind}",
+        f"- Source is real: {source_is_real}",
+        f"- Source manifest path: {preparation.get('manifest_path')}",
+        f"- Decision: {decision}",
+        "",
+        "## Feature Columns",
+        "",
+        ", ".join(map(str, preparation.get("feature_columns", []))) or "none",
+        "",
+        "## Missingness By Feature",
+        "",
+        _markdown_table(
+            pd.DataFrame(
+                [
+                    {"feature": feature, "missing_fraction": fraction}
+                    for feature, fraction in sorted(missingness.items())
+                ]
+            )
+        ),
+        "",
+        "## Source Files",
+        "",
+        _markdown_table(pd.DataFrame(source_files)) if source_files else "none",
         "",
         "## Missing Genes Preview",
         "",
@@ -452,14 +500,11 @@ def _write_real_report(run_dir, config, metrics, subset_rows) -> None:
     (run_dir / "report.md").write_text(
         "\n".join(
             [
-                "# v0.7 Real Kang Gene Prior Ablation Report",
+                f"# {config['experiment_id']} Gene Prior Ablation Report",
                 "",
                 config["reporting"]["claim_boundary"],
                 "",
-                (
-                    "This run is compatibility-only because the configured Kang prior is "
-                    "synthetic/placeholder."
-                ),
+                *config["reporting"].get("interpretation_notes", []),
                 "",
                 "## Metric Summary",
                 "",
@@ -545,6 +590,15 @@ def _make_run_dir(config: dict[str, Any]) -> Path:
     return Path(config["output_root"]) / config["output_prefix"] / config["dataset_id"] / timestamp
 
 
+def _coverage_report_path(config: dict[str, Any]) -> Path | None:
+    coverage_config = config.get("coverage_report")
+    if not coverage_config:
+        return None
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    report_name = coverage_config.get("report_name", "gene_prior_coverage_report.md")
+    return Path(coverage_config["output_root"]) / config["dataset_id"] / timestamp / report_name
+
+
 def _load_yaml(path: Path) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         return yaml.safe_load(handle)
@@ -557,6 +611,15 @@ def _write_yaml(path: Path, payload: dict[str, Any]) -> None:
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+
+def _read_manifest(path: str | None) -> dict[str, Any]:
+    if not path:
+        return {}
+    manifest_path = Path(path)
+    if not manifest_path.exists():
+        return {}
+    return json.loads(manifest_path.read_text(encoding="utf-8"))
 
 
 def _git_commit() -> str:

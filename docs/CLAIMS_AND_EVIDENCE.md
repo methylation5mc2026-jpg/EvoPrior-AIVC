@@ -23,6 +23,7 @@
 - `v0.6-real-multicell-lineage-tau-audit`: pre-specified tau values were audited as sensitivity only. Output: `outputs/runs/v0.6-real-multicell-lineage-tau-audit/kang_2018_pbmc_ifnb/20260623T092131Z/`.
 - `v0.7-synthetic-gene-prior`: `GenePriorTable`, synthetic gene-prior data generation, `GenePriorCorrectionBaseline`, prior audit, shuffled negative control, and v0.7 runner plumbing are implemented and tested. Output: `outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/20260624T004215Z/`.
 - `v0.7-kang-gene-prior-compatibility`: Kang gene-prior feature mapping, coverage, correction runner, and report generation run end-to-end with an engineering-only synthetic/placeholder prior. Output: `outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z/`.
+- `v0.8-kang-real-gene-metadata-prior`: HGNC complete-set source preparation, manifest checksums, feature construction, Kang coverage reporting, and Kang ablation run end-to-end with a real functional/gene-metadata source. Output: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z/`.
 
 ## 消融提示
 
@@ -30,13 +31,14 @@
 - `v0.6-real-multicell-lineage-benchmark`: held-out lineage suite has only n=2 clades and is underpowered; treat it as diagnostic context only.
 - `v0.7-synthetic-gene-prior`: synthetic prior-modulated effects validate plumbing and ablation logic only.
 - `v0.7-kang-gene-prior-compatibility`: because the source mode is `synthetic_gene_prior`, Kang v0.7 is compatibility-only and does not test real evolutionary-prior benefit.
+- `v0.8-kang-real-gene-metadata-prior`: HGNC metadata coverage is 93.75% over evaluated Kang genes, but gene-prior correction does not improve over `lineage_shrinkage`; shuffled lineage correction matches the same metrics.
 
 ## 推测/未来工作
 
 - 细胞谱系先验可能提升真实 held-out cell type 或 held-out context 外推，但还需要 v0.6 真实 multi-cell-type perturbation benchmark 验证。
 - 基因演化/保守性先验可能提升 held-out perturbation 外推。
 - 通路/调控网络先验可能提升 top DE gene recovery。
-- v0.8 可以在 v0.7 工程闭环稳定后引入真实、版本化 gene-prior source。
+- v0.9 可以在 v0.8 工程闭环稳定后探索 integrated EvoPrior additive model。
 
 这些都需要在固定 benchmark、统一 baselines 和多 seed 实验后才能升级为证据性声称。
 
@@ -55,3 +57,4 @@
 - 不声称 v0.6 is public-leaderboard comparable.
 - 不把 tau audit 中测试集表现最好的 tau 当作调参选择结果。
 - 不声称 v0.7 Kang metrics 说明 real evolutionary-prior benefit；当前 prior 是 synthetic/placeholder。
+- 不声称 v0.8 HGNC metadata-prior metrics 说明 real evolutionary/conservation-prior benefit；当前没有 orthology、conservation score 或 gene-age source。

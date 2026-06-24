@@ -16,9 +16,24 @@ NUMERIC_FEATURES: tuple[str, ...] = (
     "ortholog_count",
     "paralog_count",
     "expression_breadth",
+    "hgnc_gene_group_count",
+    "go_annotation_count",
+    "go_bp_count",
+    "go_mf_count",
+    "go_cc_count",
 )
-BINARY_FEATURES: tuple[str, ...] = ("is_housekeeping", "is_immune_related")
-CATEGORICAL_FEATURES: tuple[str, ...] = ("go_slim_category", "pathway_category")
+BINARY_FEATURES: tuple[str, ...] = (
+    "is_housekeeping",
+    "is_immune_related",
+    "approved_symbol_present",
+    "one_to_one_ortholog_flag",
+)
+CATEGORICAL_FEATURES: tuple[str, ...] = (
+    "go_slim_category",
+    "pathway_category",
+    "gene_biotype",
+    "locus_group",
+)
 ID_COLUMNS: tuple[str, ...] = ("gene_symbol", "gene_id")
 METADATA_COLUMNS: tuple[str, ...] = ("source", "source_version")
 IMPUTE_STRATEGY = Literal["median", "zero", "indicator"]
@@ -92,7 +107,16 @@ class GenePriorTable:
                     finite = values.dropna()
                     if ((finite < 0.0) | (finite > 1.0)).any():
                         raise ValueError(f"{column} must be in [0, 1]")
-                if column in {"ortholog_count", "paralog_count", "gene_age_rank"}:
+                if column in {
+                    "ortholog_count",
+                    "paralog_count",
+                    "gene_age_rank",
+                    "hgnc_gene_group_count",
+                    "go_annotation_count",
+                    "go_bp_count",
+                    "go_mf_count",
+                    "go_cc_count",
+                }:
                     finite = values.dropna()
                     if (finite < 0.0).any():
                         raise ValueError(f"{column} must be non-negative")

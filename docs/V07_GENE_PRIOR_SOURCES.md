@@ -85,3 +85,9 @@ Files:
 - `manifest.json`
 
 These are local/interim artifacts and are not committed unless intentionally tiny fixtures.
+
+## v0.8 Superseding Source Path
+
+v0.8 adds `configs/priors/gene_prior_real_v08.yaml`, which prepares a real HGNC complete-set functional/gene-metadata prior through `download_hgnc`.
+
+This supersedes the v0.7 Kang engineering placeholder for source-credibility work, but it still does not establish real evolutionary/conservation-prior benefit because no orthology, conservation score, or gene-age source is configured.

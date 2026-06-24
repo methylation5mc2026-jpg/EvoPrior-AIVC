@@ -178,3 +178,65 @@ git status --short
 - Staged files are limited to README, configs, docs, scripts, source, and tests.
 - Safety check: no staged `data/raw`, `outputs`, cache, or egg-info paths.
 - Raw data and generated outputs remain uncommitted.
+
+## v0.8 kickoff status
+
+- Branch before kickoff: `feat/gene-evolutionary-prior-module`
+- Rollback point: `v0.7-gene-evolutionary-prior-module`
+- Baseline test: `python -m pytest` passed with `93 passed, 2 warnings`.
+- New branch: `feat/real-versioned-gene-prior-source`
+- Working tree at branch creation: clean.
+- Goal: add a real, versioned, reproducible gene-prior source path without neural models or SOTA/general-benefit claims.
+
+## v0.8 source selection and adapter update
+
+- Source decision: HGNC complete set is the v0.8 real source for a functional/gene-metadata prior.
+- Claim boundary: no orthology/conservation source is configured, so this is not a real evolutionary/conservation-prior benefit test.
+- Added design doc: `docs/V08_REAL_GENE_PRIOR_SOURCE_DESIGN.md`.
+- Added config: `configs/priors/gene_prior_real_v08.yaml`.
+- Added experiment config: `configs/experiment/real_v08_kang_real_gene_prior.yaml`.
+- Implemented source modes: `hgnc_local_tsv`, `goa_local_gaf`, `local_curated_gene_prior_csv`, `bundled_small_fixture`, `download_hgnc`, and `download_goa`.
+- Targeted tests: `python -m pytest tests/test_gene_prior_sources.py tests/test_gene_prior_table.py` passed with `11 passed, 2 warnings`.
+
+## v0.8 real source preparation
+
+- Dry-run command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run`
+- Prepare command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml`
+- Result: passed.
+- Source mode: `download_hgnc`.
+- Source kind: `real_functional_gene_metadata`.
+- Source is real: `true`.
+- Output directory: `data/interim/gene_priors/real_v08_hgnc_gene_metadata/hgnc_complete_set_20260619`
+- Rows: 44,997.
+- Feature columns: `hgnc_gene_group_count`, `is_immune_related`, `approved_symbol_present`, `gene_biotype`, `locus_group`.
+- Feature table md5: `a4ec5c04c9a597cd548031e89f0d75d1`.
+- Source file md5: `a49771d2d247b54ec606007ed733ae64`.
+- Claim boundary: real HGNC functional/gene-metadata prior; no orthology/conservation source, so not a real evolutionary/conservation-prior test.
+
+## v0.8 Kang HGNC metadata-prior run
+
+- Command: `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
+- Result: passed.
+- Output directory: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z`
+- Data report directory: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z`
+- Coverage: 1,875 / 2,000 Kang genes mapped, 93.75%.
+- Coverage decision: real ablation allowed.
+- Source mode/kind: `download_hgnc` / `real_functional_gene_metadata`.
+- Metrics snapshot: `gene_prior_correction_lineage_shrinkage` matched `lineage_shrinkage` on MAE 0.3160 and MSE 4.9515; shuffled lineage correction also matched, so no HGNC metadata-prior improvement is supported.
+- DE snapshot: lineage and gene-prior-corrected-lineage top-20 precision both 0.6295.
+- Claim boundary: preliminary Kang split-specific functional metadata-prior ablation only; no real evolutionary/conservation benefit, SOTA, or biological discovery claim.
+
+## v0.8 final regression update
+
+- `python -m pytest`: passed, `97 passed, 2 warnings`.
+- Backward compatibility passed:
+  - `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
+  - `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
+  - `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
+- New v0.8 commands passed:
+  - `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run`
+  - `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
+- Final v0.8 output: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z`
+- Final v0.8 coverage report: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md`
+- Targeted ruff: passed on v0.8-modified Python files.
+- Claim scan: no positive SOTA, biological-discovery, or real evolutionary/conservation-prior benefit claim added.

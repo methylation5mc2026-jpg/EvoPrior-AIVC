@@ -36,6 +36,10 @@
 32. v0.7 strong bases such as `mean_delta` and `lineage_shrinkage` may already capture synthetic global gene modulation, so correction over those bases is not required to improve for the sanity check.
 33. v0.7 Kang gene-prior source mode is `synthetic_gene_prior`; the run is compatibility-only and does not test real evolutionary-prior benefit.
 34. v0.7 `GenePriorCorrectionBaseline` is non-neural residual correction, not an EvoPrior neural model.
+35. v0.8 HGNC metadata is a real functional/gene-metadata source, not an orthology/conservation/gene-age source.
+36. v0.8 HGNC keyword-derived `is_immune_related` is coarse metadata, not biological discovery.
+37. v0.8 Kang ablation does not show improvement over `lineage_shrinkage`; shuffled lineage correction matches lineage metrics.
+38. v0.8 still uses the same single-stimulus Kang PBMC IFN-beta project-defined split, so no public benchmark or multi-perturbation generalization claim is allowed.
 
 ## 失败记录模板
 

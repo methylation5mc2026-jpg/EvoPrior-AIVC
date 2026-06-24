@@ -471,3 +471,48 @@ Interpretation:
 - compatibility-only;
 - real evolutionary-prior benefit was not tested;
 - metrics must not be interpreted as biological discovery or general gene-prior effectiveness.
+
+## v0.8 Kang HGNC metadata-prior ablation
+
+Experiment ID: `v0.8-kang-real-gene-metadata-prior`
+
+Commands:
+
+```powershell
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run
+python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml
+python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z/
+```
+
+Coverage report:
+
+```text
+outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md
+```
+
+Source:
+
+- mode: `download_hgnc`
+- kind: `real_functional_gene_metadata`
+- feature columns: `hgnc_gene_group_count`, `is_immune_related`, `approved_symbol_present`, `gene_biotype`, `locus_group`
+- coverage over evaluated Kang genes: 1,875 / 2,000 = 93.75%
+
+Metric summary:
+
+- `lineage_shrinkage` and `gene_prior_correction_lineage_shrinkage` both have mean held-out-cell-type MAE 0.3160 and MSE 4.9515.
+- `shuffled_gene_prior_correction_lineage` matches the lineage correction metrics.
+- `gene_prior_correction_mean_delta` matches `mean_delta` on MAE 0.4317 and MSE 9.7610.
+- `gene_prior_correction_control_mean` changes control mean metrics but does not improve MAE over `control_mean`.
+- DE top-20 precision is 0.6295 for both `lineage_shrinkage` and `gene_prior_correction_lineage_shrinkage`.
+
+Interpretation:
+
+- real HGNC metadata-prior source and coverage plumbing work;
+- this run does not support a performance gain over `lineage_shrinkage`;
+- because no orthology/conservation source is configured, this is not evidence for real evolutionary/conservation-prior benefit.

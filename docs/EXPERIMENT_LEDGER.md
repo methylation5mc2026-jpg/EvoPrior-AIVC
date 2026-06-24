@@ -232,3 +232,28 @@ Claim status:
 - Known risks: no versioned biological/evolutionary gene-prior source is used; metrics must not be interpreted as real evolutionary-prior benefit.
 - Rollback note: rollback to tag `v0.6-real-multicell-lineage-benchmark` to remove v0.7 work.
 - Claim status: compatibility-only; no real evolutionary-prior benefit, biological discovery, SOTA, public-leaderboard, pathway-prior, or neural EvoPrior claim.
+
+### EXP-0010: v0.8 Kang real HGNC metadata-prior ablation
+
+- Experiment ID: `v0.8-kang-real-gene-metadata-prior`
+- Date: 2026-06-24
+- Status: completed
+- Role: MLOps / Gene-prior engineer / Data engineer / Evaluation engineer / Scientific reviewer
+- Objective: Replace the v0.7 placeholder Kang prior with a real, versioned HGNC functional/gene-metadata prior and rerun the Kang held-out-cell-type ablation.
+- Dataset: `kang_2018_pbmc_ifnb`
+- Dataset version/checksum: same raw H5AD as EXP-0006; md5 `adb2246232e8493031c576982c0c02a3`
+- Gene-prior source: HGNC complete set TSV from `https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt`
+- Source version/checksum: source version note `hgnc_complete_set_current_page_date_2026-06-19`; source md5 `a49771d2d247b54ec606007ed733ae64`; feature table md5 `a4ec5c04c9a597cd548031e89f0d75d1`
+- Split ID: `heldout_cell_type_suite` with `control_observed_ood`
+- Config path: `configs/experiment/real_v08_kang_real_gene_prior.yaml`; gene-prior config `configs/priors/gene_prior_real_v08.yaml`
+- Git commit: working tree before final v0.8 commit; output manifest records pre-commit `41e0b45`
+- Seed(s): `81`
+- Command: `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml --dry-run`; `python scripts/prepare_gene_prior.py --config configs/priors/gene_prior_real_v08.yaml`; `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
+- Outputs: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z/`
+- Coverage report: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md`
+- Coverage: 1,875 / 2,000 evaluated Kang genes mapped to HGNC features, 93.75%.
+- Metrics: `gene_prior_correction_lineage_shrinkage` matched `lineage_shrinkage` on mean held-out-cell-type MAE 0.3160 and MSE 4.9515; shuffled lineage correction also matched. DE top-20 precision was 0.6295 for both lineage and gene-prior-corrected lineage.
+- Assumptions: HGNC metadata features are independent of perturbation response deltas; source files and generated table checksums are recorded.
+- Known risks: HGNC metadata is not an orthology/conservation/gene-age source; no real evolutionary-prior benefit is tested. Keyword-derived immune flags are coarse metadata features.
+- Rollback note: rollback to tag `v0.7-gene-evolutionary-prior-module` to remove v0.8 work.
+- Claim status: real functional/gene-metadata source plumbing and one Kang split-specific ablation only; no SOTA, biological discovery, general gene-prior effectiveness, neural EvoPrior, or real evolutionary/conservation-prior benefit claim.
