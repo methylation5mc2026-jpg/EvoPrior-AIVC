@@ -563,3 +563,38 @@ Interpretation:
 - the HGNC gene-prior component does not improve MAE over the no-gene-prior additive variant;
 - the component audit is mostly lineage-dominated;
 - this is not evidence for true evolutionary/conservation-prior benefit.
+
+## v0.10 benchmark evidence alignment
+
+Experiment IDs:
+
+- `v0.10-synthetic-benchmark-alignment`
+- `v0.10-kang-benchmark-alignment`
+
+Commands:
+
+```powershell
+python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml
+python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml
+```
+
+Latest outputs:
+
+```text
+outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z/
+outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z/
+```
+
+Artifacts:
+
+- `benchmark_evidence.json`
+- `benchmark_evidence_table.csv`
+- `benchmark_evidence_report.md`
+
+Interpretation:
+
+- v0.10 aligns existing evidence records and marks missing artifacts without crashing;
+- Kang alignment collected 40 records and all had finite metric status after n=0 empty metrics were treated as missing values;
+- v0.9 integrated additive variants are comparable to `lineage_shrinkage` on the same Kang split;
+- `evoprior_additive_hgnc_gene_prior` trails `evoprior_additive_no_gene_prior` on MAE, so HGNC gene-prior benefit is weak/not established;
+- external public benchmark alignment remains blocked.

@@ -310,6 +310,35 @@ v0.9 claim boundary:
 - HGNC metadata is not a true evolutionary/conservation prior;
 - no SOTA, public-leaderboard, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
 
+## v0.10 Quickstart
+
+v0.10 adds benchmark evidence alignment. It collects existing v0.6-v0.9 run artifacts into unified JSON/CSV/Markdown evidence tables. It does not train new models or import external benchmark data.
+
+Run synthetic evidence alignment:
+
+```powershell
+python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml
+```
+
+Run Kang evidence alignment:
+
+```powershell
+python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.10-public-benchmark-alignment/<dataset_id>/<timestamp>/
+```
+
+v0.10 claim boundary:
+
+- strongest current evidence: v0.9 integrated additive improves over `lineage_shrinkage` on the project Kang split;
+- weak evidence: HGNC gene-prior additive variant does not beat the no-gene-prior additive control on MAE;
+- component audit shows the gene-prior component is inspectable and not collapsed, but mostly lineage-dominated;
+- public external benchmark alignment remains blocked until external splits/data are imported and versioned.
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -319,4 +348,4 @@ v0.9 claim boundary:
 
 ## 下一安全里程碑
 
-v0.10 可以考虑 public benchmark alignment、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype；在此之前，v0.9 只支持非神经 integrated additive model 和一次 Kang split-specific 结果。
+v0.11 可以考虑 external public benchmark ingestion、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype；神经 prototype 必须在 benchmark evidence harness 稳定后另开分支。

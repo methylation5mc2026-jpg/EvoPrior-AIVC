@@ -1,0 +1,17 @@
+experiment_id: v0.10-synthetic-benchmark-alignment
+mode: benchmark_alignment
+output_root: outputs/runs
+output_prefix: v0.10-public-benchmark-alignment
+dataset_id: synthetic_alignment
+
+runs:
+  - run_dir: outputs/runs/v0.7-gene-evolutionary-prior/synthetic_gene_prior/20260624T004215Z
+    config_path: configs/experiment/synthetic_v07_gene_prior.yaml
+    evidence_role: synthetic_gene_prior_plumbing
+  - run_dir: outputs/runs/v0.9-integrated-evoprior-additive/synthetic_integrated/20260624T015634Z
+    config_path: configs/experiment/synthetic_v09_integrated_evoprior.yaml
+    evidence_role: synthetic_integrated_additive
+
+reporting:
+  title: v0.10 Synthetic Benchmark Evidence Alignment
+  claim_boundary: Synthetic alignment validates benchmark evidence plumbing only. It is not biological evidence.

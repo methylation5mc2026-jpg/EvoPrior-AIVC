@@ -26,6 +26,8 @@
 - `v0.8-kang-real-gene-metadata-prior`: HGNC complete-set source preparation, manifest checksums, feature construction, Kang coverage reporting, and Kang ablation run end-to-end with a real functional/gene-metadata source. Output: `outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z/`.
 - `v0.9-synthetic-integrated-evoprior-additive`: `EvoPriorAdditiveModel`, component audit, negative controls, and integrated additive runner run end-to-end on synthetic data. Output: `outputs/runs/v0.9-integrated-evoprior-additive/synthetic_integrated/20260624T015634Z/`.
 - `v0.9-kang-evoprior-additive`: a transparent non-neural additive model runs on the Kang held-out-cell-type suite and improves over `lineage_shrinkage` on mean MAE/MSE for this split. Output: `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z/`.
+- `v0.10-kang-benchmark-alignment`: benchmark evidence collector aligns v0.6-v0.9 Kang records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z/`.
+- `v0.10-synthetic-benchmark-alignment`: benchmark evidence collector aligns synthetic v0.7/v0.9 records into JSON/CSV/Markdown evidence artifacts. Output: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z/`.
 
 ## 消融提示
 
@@ -35,13 +37,14 @@
 - `v0.7-kang-gene-prior-compatibility`: because the source mode is `synthetic_gene_prior`, Kang v0.7 is compatibility-only and does not test real evolutionary-prior benefit.
 - `v0.8-kang-real-gene-metadata-prior`: HGNC metadata coverage is 93.75% over evaluated Kang genes, but gene-prior correction does not improve over `lineage_shrinkage`; shuffled lineage correction matches the same metrics.
 - `v0.9-kang-evoprior-additive`: the HGNC gene-prior additive variant does not beat the no-gene-prior additive variant on MAE; the component audit is mostly lineage-dominated, so do not attribute the integrated improvement to a true gene evolutionary prior.
+- `v0.10-kang-benchmark-alignment`: evidence alignment confirms same-split comparability for Kang project splits, but it also confirms public external benchmark alignment is still blocked.
 
 ## 推测/未来工作
 
 - 细胞谱系先验可能提升真实 held-out cell type 或 held-out context 外推，但还需要 v0.6 真实 multi-cell-type perturbation benchmark 验证。
 - 基因演化/保守性先验可能提升 held-out perturbation 外推。
 - 通路/调控网络先验可能提升 top DE gene recovery。
-- v0.10 可以考虑 public benchmark alignment、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype。
+- v0.11 可以考虑 external public benchmark ingestion、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype。
 
 这些都需要在固定 benchmark、统一 baselines 和多 seed 实验后才能升级为证据性声称。
 
@@ -50,6 +53,7 @@
 - Do not claim v0.9 proves real evolutionary/conservation-prior benefit; HGNC metadata is not an orthology, conservation-score, or gene-age source.
 - Do not claim the v0.9 Kang improvement is caused by the HGNC gene-prior component; the no-gene-prior additive variant is slightly better on MAE.
 - Do not claim v0.9 implements a neural EvoPrior model.
+- Do not claim v0.10 establishes public benchmark alignment; it only creates the evidence harness over existing project-defined runs.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

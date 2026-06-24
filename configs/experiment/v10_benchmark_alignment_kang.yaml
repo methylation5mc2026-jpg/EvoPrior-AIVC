@@ -1,0 +1,23 @@
+experiment_id: v0.10-kang-benchmark-alignment
+mode: benchmark_alignment
+output_root: outputs/runs
+output_prefix: v0.10-public-benchmark-alignment
+dataset_id: kang_2018_pbmc_ifnb_alignment
+
+runs:
+  - run_dir: outputs/runs/v0.6-real-multicell-lineage-benchmark/kang_2018_pbmc_ifnb/20260623T092131Z
+    config_path: configs/experiment/real_v06_multicell_lineage.yaml
+    evidence_role: real_lineage_benchmark
+  - run_dir: outputs/runs/v0.7-gene-evolutionary-prior/kang_2018_pbmc_ifnb/20260624T004226Z
+    config_path: configs/experiment/real_v07_kang_gene_prior.yaml
+    evidence_role: gene_prior_compatibility
+  - run_dir: outputs/runs/v0.8-real-versioned-gene-prior-source/kang_2018_pbmc_ifnb/20260624T010126Z
+    config_path: configs/experiment/real_v08_kang_real_gene_prior.yaml
+    evidence_role: real_hgnc_metadata_prior
+  - run_dir: outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z
+    config_path: configs/experiment/real_v09_kang_evoprior_additive.yaml
+    evidence_role: integrated_additive_evoprior
+
+reporting:
+  title: v0.10 Kang Benchmark Evidence Alignment
+  claim_boundary: Kang alignment is project-split-specific evidence hardening. It does not establish SOTA, public benchmark alignment, neural EvoPrior effectiveness, or true evolutionary/conservation-prior benefit.

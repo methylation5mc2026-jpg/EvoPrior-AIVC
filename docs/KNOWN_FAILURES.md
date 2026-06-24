@@ -43,6 +43,9 @@
 39. v0.9 `EvoPriorAdditiveModel` is a transparent non-neural additive model, not a neural EvoPrior implementation.
 40. v0.9 Kang integrated additive improvement over `lineage_shrinkage` should not be attributed to HGNC gene metadata alone; the no-gene-prior additive variant has slightly lower MAE than the HGNC variant.
 41. v0.9 component audits are mostly lineage-dominated, and shuffled gene-prior component magnitude is non-zero, so no true evolutionary/conservation-prior benefit claim is allowed.
+42. v0.10 benchmark alignment does not import external public benchmark data or official external split definitions; public benchmark alignment remains blocked.
+43. v0.10 evidence tables can show same-project split comparability, but they do not make outputs from different datasets or different split policies directly comparable.
+44. v0.10 treats n=0 blank metric means as missing values; they should not be interpreted as finite performance values.
 
 ## 失败记录模板
 

@@ -303,3 +303,24 @@ Claim status:
 - Known risks: integrated additive improvement may come from additive decomposition rather than the HGNC gene-prior component; HGNC metadata is not conservation/orthology/gene age.
 - Rollback note: rollback to tag `v0.8-real-versioned-gene-prior-source` to remove v0.9 work.
 - Claim status: preliminary Kang split-specific non-neural additive result; no SOTA, biological discovery, general EvoPrior effectiveness, neural EvoPrior, or real evolutionary/conservation-prior benefit claim.
+
+### EXP-0013: v0.10 benchmark evidence alignment
+
+- Experiment ID: `v0.10-kang-benchmark-alignment` and `v0.10-synthetic-benchmark-alignment`
+- Date: 2026-06-24
+- Status: completed
+- Role: MLOps / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Align existing v0.6-v0.9 benchmark outputs into auditable JSON/CSV/Markdown evidence artifacts without training new models.
+- Dataset: `kang_2018_pbmc_ifnb_alignment` and `synthetic_alignment`
+- Dataset version/checksum: source run directories are existing project outputs; no new raw data or external benchmark data imported.
+- Split ID: existing project-defined split IDs from source runs.
+- Config path: `configs/experiment/v10_benchmark_alignment_kang.yaml`; `configs/experiment/v10_benchmark_alignment_synthetic.yaml`
+- Git commit: working tree before final v0.10 commit; output manifest records pre-commit `e27d9c0`
+- Seed(s): no new stochastic training; collector only reads existing artifacts.
+- Command: `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`; `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
+- Outputs: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z/`; `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z/`
+- Metrics: Kang alignment collected 40 evidence records, all marked `pass`; v0.9 `evoprior_additive_hgnc_gene_prior` beats `lineage_shrinkage` but trails `evoprior_additive_no_gene_prior` on MAE.
+- Assumptions: n=0 empty summary metric means are missing values, not invalid non-finite metrics.
+- Known risks: alignment uses project-defined run outputs, not external public benchmark splits.
+- Rollback note: rollback to tag `v0.9-integrated-evoprior-additive-model` to remove v0.10 work.
+- Claim status: evidence hardening only; no SOTA, public benchmark alignment, neural EvoPrior effectiveness, or real evolutionary/conservation-prior benefit claim.

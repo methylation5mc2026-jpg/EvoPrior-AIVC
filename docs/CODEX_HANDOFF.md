@@ -302,3 +302,45 @@ git status --short
   - `python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml`
   - `python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml`
 - Claim scan: no positive SOTA, biological-discovery, neural EvoPrior, or real evolutionary/conservation-prior benefit claim added.
+
+## v0.10 kickoff status
+
+- Branch before kickoff: `feat/integrated-evoprior-additive-model`
+- Rollback point: `v0.9-integrated-evoprior-additive-model`
+- Latest v0.9 commit: `e27d9c0 feat: add integrated EvoPrior additive model`
+- New branch: `feat/public-benchmark-alignment-v010`
+- Working tree at branch creation: clean.
+- Goal: align benchmark evidence from v0.6-v0.9 into a reproducible, auditable, cross-run evidence layer without adding neural models, external benchmark data, or new performance claims.
+- Required boundary: v0.10 is benchmark alignment/evidence hardening only; no SOTA, universal generalization, neural EvoPrior, or real evolutionary/conservation-prior benefit claim.
+
+## v0.10 implementation update
+
+- Added docs: `docs/V10_PUBLIC_BENCHMARK_ALIGNMENT_PLAN.md`, `docs/V10_EVIDENCE_TABLE_SCHEMA.md`.
+- Added collector: `src/evoprior_aivc/evaluation/benchmark_evidence.py`.
+- Added tests: `tests/test_benchmark_evidence.py`.
+- Added runner: `scripts/run_benchmark_alignment.py`.
+- Added configs: `configs/experiment/v10_benchmark_alignment_synthetic.yaml`, `configs/experiment/v10_benchmark_alignment_kang.yaml`.
+- Targeted tests: `python -m pytest tests/test_benchmark_evidence.py` passed with `7 passed`.
+- Targeted ruff: passed on v0.10 Python files.
+
+## v0.10 alignment runs
+
+- Synthetic command: `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`
+- Synthetic result: passed.
+- Synthetic output directory: `outputs/runs/v0.10-public-benchmark-alignment/synthetic_alignment/20260624T021655Z`
+- Kang command: `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
+- Kang result: passed.
+- Kang output directory: `outputs/runs/v0.10-public-benchmark-alignment/kang_2018_pbmc_ifnb_alignment/20260624T021659Z`
+- Kang evidence records: 40 records, all `pass`.
+- Current strongest evidence: v0.9 integrated additive variants beat `lineage_shrinkage` on the project Kang held-out cell-type split.
+- Current weak/failed evidence: `evoprior_additive_hgnc_gene_prior` trails `evoprior_additive_no_gene_prior` on MAE, so HGNC gene-prior benefit is not established.
+- Claim boundary: external public benchmark alignment remains blocked; no SOTA, neural EvoPrior, or true evolutionary/conservation-prior benefit claim.
+
+## v0.10 final regression update
+
+- Targeted ruff: `python -m ruff check scripts/run_benchmark_alignment.py src/evoprior_aivc/evaluation/benchmark_evidence.py tests/test_benchmark_evidence.py` passed.
+- Targeted tests: `python -m pytest tests/test_benchmark_evidence.py` passed with `7 passed`.
+- Full test suite: `python -m pytest` passed with `109 passed, 2 warnings`.
+- Required alignment runners passed:
+  - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_synthetic.yaml`
+  - `python scripts/run_benchmark_alignment.py --config configs/experiment/v10_benchmark_alignment_kang.yaml`
