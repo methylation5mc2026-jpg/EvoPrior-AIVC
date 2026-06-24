@@ -516,3 +516,50 @@ Interpretation:
 - real HGNC metadata-prior source and coverage plumbing work;
 - this run does not support a performance gain over `lineage_shrinkage`;
 - because no orthology/conservation source is configured, this is not evidence for real evolutionary/conservation-prior benefit.
+
+## v0.9 integrated EvoPrior additive benchmark
+
+Experiment IDs:
+
+- `v0.9-synthetic-integrated-evoprior-additive`
+- `v0.9-kang-evoprior-additive`
+
+Commands:
+
+```powershell
+python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml
+python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml
+```
+
+Latest outputs:
+
+```text
+outputs/runs/v0.9-integrated-evoprior-additive/synthetic_integrated/20260624T015634Z/
+outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z/
+```
+
+Baselines:
+
+- `control_mean`
+- `mean_delta`
+- `hierarchical_additive`
+- `ridge_cv`
+- `lineage_shrinkage`
+- `gene_prior_correction_lineage_shrinkage`
+- `evoprior_additive_no_gene_prior`
+- `evoprior_additive_hgnc_gene_prior` or `evoprior_additive_synthetic_gene_prior`
+- `evoprior_additive_shuffled_gene_prior`
+- `evoprior_additive_gene_prior_disabled`
+
+Kang metric summary:
+
+- `evoprior_additive_hgnc_gene_prior`: mean MAE 0.3008, MSE 4.5008.
+- `evoprior_additive_no_gene_prior`: mean MAE 0.3006, MSE 4.5011.
+- `lineage_shrinkage`: mean MAE 0.3160, MSE 4.9515.
+
+Interpretation:
+
+- the integrated additive model improves over `lineage_shrinkage` on this Kang project split;
+- the HGNC gene-prior component does not improve MAE over the no-gene-prior additive variant;
+- the component audit is mostly lineage-dominated;
+- this is not evidence for true evolutionary/conservation-prior benefit.

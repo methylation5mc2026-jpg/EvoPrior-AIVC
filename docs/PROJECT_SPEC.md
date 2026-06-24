@@ -1,5 +1,13 @@
 # 项目规格
 
+## v0.9 范围补充
+
+- v0.9 新增 `EvoPriorAdditiveModel`，这是透明、非神经的加性模型，包含 global、perturbation、lineage 和可选 HGNC metadata residual 组件。
+- v0.9 新增组件审计，记录组件幅度、相关性、top genes、shuffled gene-prior control 和 collapse flags。
+- v0.9 提供 synthetic integrated sanity 与 Kang held-out-cell-type 两个 runner。
+- v0.9 仍不包含 neural EvoPrior、pathway prior、orthology prior、conservation-score prior 或 gene-age prior。
+- v0.9 Kang 结果只能解释为 project-split-specific 初步结果；HGNC metadata 不能支撑真实 evolutionary/conservation-prior benefit 声称。
+
 ## 目标
 
 EvoPrior-AIVC 要构建一个可复现、可审计的单细胞扰动响应预测研究项目。第一阶段目标是做出可信的最小基线系统，而不是先做大型神经网络。

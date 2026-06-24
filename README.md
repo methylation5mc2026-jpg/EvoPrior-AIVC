@@ -2,7 +2,7 @@
 
 EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。目标不是做泛泛的“AI for biology”演示，而是在明确公开数据集、固定切分、统一评测脚本和可复现实验记录之上，检验“细胞谱系先验、基因演化/保守性先验、通路/网络先验是否能提升外推预测”这个窄而严肃的问题。
 
-当前仓库已推进到 v0.8-real-versioned-gene-prior-source：在 v0.7 gene-prior infrastructure 之上，新增 HGNC complete-set 真实功能/基因元数据源、版本化 manifest/checksum、Kang coverage report 和一次 Kang held-out cell-type ablation。v0.8 不包含 neural EvoPrior，不声称 SOTA，不声称真实 evolutionary/conservation-prior benefit，因为当前真实源不含 orthology、conservation score 或 gene-age 特征。
+当前仓库已推进到 v0.9-integrated-evoprior-additive-model：在 v0.8 HGNC metadata source 之上，新增透明、非神经的 `EvoPriorAdditiveModel`，把 global、perturbation、lineage 和可选 gene metadata residual 组件合成到同一 runner，并生成 component audit。v0.9 不包含 neural EvoPrior，不声称 SOTA，不声称真实 evolutionary/conservation-prior benefit，因为当前真实源不含 orthology、conservation score 或 gene-age 特征。
 
 ## 科学问题
 
@@ -281,6 +281,35 @@ v0.8 claim boundary:
 - Kang v0.8 is preliminary and dataset/split-specific;
 - no real evolutionary/conservation-prior benefit, SOTA, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
 
+## v0.9 Quickstart
+
+v0.9 adds `EvoPriorAdditiveModel`, a transparent non-neural additive model that combines global, perturbation, lineage, and optional gene-metadata residual components. It is not a neural EvoPrior model.
+
+Run the synthetic integrated sanity benchmark:
+
+```powershell
+python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml
+```
+
+Run the Kang integrated additive benchmark:
+
+```powershell
+python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.9-integrated-evoprior-additive/<dataset_id>/<timestamp>/
+```
+
+v0.9 claim boundary:
+
+- integrated additive model is non-neural and audit-friendly;
+- Kang results are preliminary and project-split-specific;
+- HGNC metadata is not a true evolutionary/conservation prior;
+- no SOTA, public-leaderboard, biological-discovery, causal evolutionary, pathway-prior, or neural EvoPrior claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。
@@ -290,4 +319,4 @@ v0.8 claim boundary:
 
 ## 下一安全里程碑
 
-v0.9 才能考虑 integrated EvoPrior additive model；在此之前，v0.8 只证明真实 HGNC metadata source plumbing 和一次 Kang split-specific ablation。
+v0.10 可以考虑 public benchmark alignment、真实 conservation/orthology/gene-age source，或另起范围明确的 neural prototype；在此之前，v0.9 只支持非神经 integrated additive model 和一次 Kang split-specific 结果。

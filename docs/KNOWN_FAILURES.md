@@ -40,6 +40,9 @@
 36. v0.8 HGNC keyword-derived `is_immune_related` is coarse metadata, not biological discovery.
 37. v0.8 Kang ablation does not show improvement over `lineage_shrinkage`; shuffled lineage correction matches lineage metrics.
 38. v0.8 still uses the same single-stimulus Kang PBMC IFN-beta project-defined split, so no public benchmark or multi-perturbation generalization claim is allowed.
+39. v0.9 `EvoPriorAdditiveModel` is a transparent non-neural additive model, not a neural EvoPrior implementation.
+40. v0.9 Kang integrated additive improvement over `lineage_shrinkage` should not be attributed to HGNC gene metadata alone; the no-gene-prior additive variant has slightly lower MAE than the HGNC variant.
+41. v0.9 component audits are mostly lineage-dominated, and shuffled gene-prior component magnitude is non-zero, so no true evolutionary/conservation-prior benefit claim is allowed.
 
 ## 失败记录模板
 

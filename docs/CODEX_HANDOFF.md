@@ -240,3 +240,65 @@ git status --short
 - Final v0.8 coverage report: `outputs/data_reports/kang_2018_pbmc_ifnb/20260624T010126Z/real_gene_prior_v08_coverage_report.md`
 - Targeted ruff: passed on v0.8-modified Python files.
 - Claim scan: no positive SOTA, biological-discovery, or real evolutionary/conservation-prior benefit claim added.
+
+## v0.9 kickoff status
+
+- Branch before kickoff: `feat/real-versioned-gene-prior-source`
+- Rollback point: `v0.8-real-versioned-gene-prior-source`
+- Baseline test: `python -m pytest` passed with `97 passed, 2 warnings`.
+- New branch: `feat/integrated-evoprior-additive-model`
+- Working tree at branch creation: clean.
+- Goal: implement a transparent non-neural integrated additive model combining control/baseline effects, perturbation effects, lineage borrowing, HGNC gene metadata residual correction, and shrinkage.
+
+## v0.9 model implementation update
+
+- Added design docs: `docs/V09_INTEGRATED_EVOPRIOR_ADDITIVE_DESIGN.md`, `docs/V09_ABLATION_PLAN.md`.
+- Added model: `src/evoprior_aivc/models/evoprior_additive.py`.
+- Added component audit: `src/evoprior_aivc/evaluation/component_audit.py`.
+- Added tests: `tests/test_evoprior_additive_model.py`, `tests/test_component_audit.py`.
+- Targeted tests: `python -m pytest tests/test_evoprior_additive_model.py tests/test_component_audit.py` passed with `5 passed`.
+- Claim boundary: model is transparent and non-neural; HGNC-only gene metadata is not true evolutionary/conservation prior evidence.
+
+## v0.9 synthetic integrated run
+
+- Command: `python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml`
+- Result: passed.
+- Output directory: `outputs/runs/v0.9-integrated-evoprior-additive/synthetic_integrated/20260624T015634Z`
+- Key MAE means:
+  - `lineage_shrinkage`: 0.0243054760
+  - `evoprior_additive_synthetic_gene_prior`: 0.0222905244
+  - `evoprior_additive_no_gene_prior`: 0.0222844883
+  - `evoprior_additive_shuffled_gene_prior`: 0.0222857099
+- Component audit summary: gene-prior mean abs 0.0003198981, lineage mean abs 0.0155531850, gene prior not collapsed, mostly lineage, shuffled gene-prior mean abs 0.0003187738.
+- Claim boundary: synthetic plumbing and ablation evidence only; not biological evidence.
+
+## v0.9 Kang integrated run
+
+- Command: `python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml`
+- Result: passed.
+- Output directory: `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260624T015655Z`
+- Gene-prior coverage: 1,875 / 2,000 genes, 93.75%.
+- Key MAE/MSE means:
+  - `lineage_shrinkage`: MAE 0.3160302826, MSE 4.9515264775
+  - `gene_prior_correction_lineage_shrinkage`: MAE 0.3160302826, MSE 4.9515264775
+  - `evoprior_additive_hgnc_gene_prior`: MAE 0.3008222050, MSE 4.5008464618
+  - `evoprior_additive_no_gene_prior`: MAE 0.3005609659, MSE 4.5010923844
+  - `evoprior_additive_shuffled_gene_prior`: MAE 0.3007507323, MSE 4.5011503320
+- Result interpretation: integrated additive model beats `lineage_shrinkage` on this project split, but the HGNC gene-prior component does not beat the no-gene-prior variant on MAE.
+- Component audit summary: gene-prior mean abs 0.0036346149, lineage mean abs 0.2082943659, gene prior not collapsed, mostly lineage, shuffled gene-prior mean abs 0.0024879102.
+- Claim boundary: preliminary Kang split-specific non-neural additive result; HGNC metadata is not true evolutionary/conservation evidence.
+
+## v0.9 final regression update
+
+- Targeted v0.9 tests: `python -m pytest tests/test_evoprior_additive_model.py tests/test_component_audit.py` passed with `5 passed`.
+- Full test suite: `python -m pytest` passed with `102 passed, 2 warnings`.
+- Targeted ruff: passed on v0.9 Python files.
+- Backward compatibility runners passed:
+  - `python scripts/run_gene_prior.py --config configs/experiment/synthetic_v07_gene_prior.yaml`
+  - `python scripts/run_gene_prior.py --config configs/experiment/real_v07_kang_gene_prior.yaml`
+  - `python scripts/run_gene_prior.py --config configs/experiment/real_v08_kang_real_gene_prior.yaml`
+  - `python scripts/run_lineage_real_benchmark.py --config configs/experiment/real_v06_multicell_lineage.yaml`
+- Final v0.9 runners passed:
+  - `python scripts/run_evoprior_additive.py --config configs/experiment/synthetic_v09_integrated_evoprior.yaml`
+  - `python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml`
+- Claim scan: no positive SOTA, biological-discovery, neural EvoPrior, or real evolutionary/conservation-prior benefit claim added.
