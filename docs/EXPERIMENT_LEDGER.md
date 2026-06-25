@@ -366,3 +366,24 @@ Claim status:
 - Known risks: only two perturbations are eligible with at least two guide-level groups; confidence intervals are underpowered; one configured cell type and no donor metadata prevent lineage/donor generalization claims; metrics are internal compatible metrics, not official benchmark metrics.
 - Rollback note: rollback to tag `v0.11-external-public-benchmark-ingestion` to remove v0.12 work.
 - Claim status: reproducible public-data, benchmark-compatible baseline run only; no SOTA, official benchmark, leaderboard comparability, biological discovery, neural EvoPrior, or general EvoPrior superiority claim.
+
+### EXP-0016: v0.13 GEARS-compatible Norman baseline run
+
+- Experiment ID: `v0.13-gears-norman-baseline`
+- Date: 2026-06-25
+- Status: completed locally; pending user-side git commit/tag because Codex cannot write `.git`
+- Role: MLOps / Benchmark engineer / Data engineer / Baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Execute a credible public Norman combinatorial perturbation baseline run with legal data access, checksum validation, schema report, GEARS-compatible split, leakage audit, locked metrics, and a submission-style package.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo`; internally generated seen0/seen1/seen2 combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v013_baseline.yaml`; data config `configs/data/gears_norman_v013.yaml`.
+- Git commit: run manifest records pre-v0.13 commit `a31ab462740df40ac9551cc7b21f51f41779f294`.
+- Seed(s): experiment seed `130`; split seed `1300`.
+- Command: `python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run`; `python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml`; `python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v013_baseline.yaml`.
+- Outputs: `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/`; data reports in `outputs/data_reports/gears_norman_scperturb_v013/20260625T002742Z/`.
+- Metrics: leakage audit passed with no leaked test combos. Test examples: `control_mean` MAE/MSE 0.8739 / 13.4469; `mean_delta` MAE/MSE/Pearson/Spearman 0.5939 / 7.6769 / 0.6450 / 0.4920; `single_effect_additive_combo` MAE/MSE/Pearson/Spearman 0.5491 / 6.1062 / 0.7538 / 0.5583. Combo-only `single_effect_additive_combo` MAE/MSE/Pearson/Spearman 0.5938 / 6.5080 / 0.8218 / 0.6388.
+- Assumptions: public H5AD is the scPerturb filtered Norman file; preprocessing uses active `X`, gene filtering, top 3,000 variance genes, and pseudobulk groups; split is GEARS-compatible internal, not official.
+- Known risks: official GEARS split files and official GEARS metric package are not imported; no neural GEARS model is run; single cell-line context limits biological/context claims.
+- Rollback note: rollback to tag `v0.12-public-benchmark-baseline-run` to remove v0.13 work.
+- Claim status: reproducible public Norman/GEARS-compatible internal baseline run only; no SOTA, official GEARS, leaderboard, neural GEARS, biological discovery, or general EvoPrior superiority claim.

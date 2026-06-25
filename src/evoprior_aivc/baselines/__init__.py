@@ -2,6 +2,7 @@
 
 from evoprior_aivc.baselines.additive import AdditiveBaseline
 from evoprior_aivc.baselines.base import DeltaDataset, build_delta_dataset
+from evoprior_aivc.baselines.combo_additive import SingleEffectAdditiveComboBaseline
 from evoprior_aivc.baselines.control_mean import ControlMeanBaseline
 from evoprior_aivc.baselines.gene_prior_correction import GenePriorCorrectionBaseline
 from evoprior_aivc.baselines.hierarchical_additive import HierarchicalAdditiveBaseline
@@ -24,5 +25,6 @@ __all__ = [
     "PerturbationMeanDeltaBaselineV2",
     "RidgeBaseline",
     "RidgeCVBaseline",
+    "SingleEffectAdditiveComboBaseline",
     "build_delta_dataset",
 ]

@@ -53,6 +53,12 @@
 49. v0.12 leave-one-perturbation suite is underpowered: only `etv7` and `pdl1` have at least two guide-level pseudobulk test groups under the configured threshold.
 50. v0.12 metrics are internal compatible metrics, not official GEARS/scPerturb leaderboard metrics.
 51. v0.12 `evoprior_additive_no_prior` disables lineage and gene priors because Papalexi has one configured cell type and no relevant real prior claim; it must not be presented as a full EvoPrior prior-benefit result.
+52. v0.13 Norman uses a GEARS-compatible internal split because exact official GEARS split files are not imported.
+53. v0.13 metrics are internal compatible metrics, not official GEARS leaderboard metrics.
+54. v0.13 runs transparent non-neural baselines only; it is not a neural GEARS reproduction.
+55. v0.13 `single_effect_additive_combo` is strongest only among implemented baselines under the exact internal split and preprocessing.
+56. v0.13 Norman has a limited single-context setting, so do not claim broad cell-type, donor, tissue, or biological generalization.
+57. v0.13 raw Norman H5AD is local data and must not be committed.
 
 ## 失败记录模板
 

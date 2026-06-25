@@ -1,0 +1,57 @@
+benchmark:
+  benchmark_id: gears_norman_scperturb_v013
+  display_name: GEARS-compatible Norman 2019 Perturb-seq baseline
+  source_mode: scperturb_norman_h5ad
+  official_or_compatible: gears_compatible_internal
+  alignment_status: GEARS-compatible split generated internally; not official GEARS split
+  source_url_or_reference: https://zenodo.org/records/13350497
+  required_file: NormanWeissman2019_filtered.h5ad
+  expected_local_size_bytes: 698680199
+  expected_runtime: local CPU, minutes after download
+  expected_split: GEARS-compatible combo perturbation split with seen0/seen1/seen2 classes when available
+  metrics: MAE, MSE, Pearson delta, Spearman logFC, DE20, DE50, combo/class breakdowns
+  decision: execute now
+
+data:
+  dataset:
+    dataset_id: gears_norman_scperturb_v013
+    display_name: NormanWeissman2019 filtered Perturb-seq from scPerturb
+    source_url: https://zenodo.org/records/13350497/files/NormanWeissman2019_filtered.h5ad?download=1
+    expected_raw_path: data/raw/NormanWeissman2019_filtered.h5ad
+    expected_format: h5ad
+    checksum: c870e6967d91c017d9da827bab183cd6
+    checksum_algorithm: md5
+    file_size_bytes: 698680199
+    license: CC-BY-4.0 via scPerturb Zenodo record
+    access_notes: Public scPerturb H5AD collection, version 1.4. This repo must not redistribute the raw H5AD.
+    adapter: gears_norman_h5ad
+    allow_auto_download: true
+    manual_download_note: Download NormanWeissman2019_filtered.h5ad from Zenodo record 13350497 and place it under data/raw/.
+  prepare:
+    mode: local_or_download
+    local_path:
+  adapter:
+    perturbation_column_candidates:
+      - perturbation
+      - condition
+      - gene
+      - target
+      - guide_target
+      - guide_identity
+    cell_type_column_candidates:
+      - cell_type
+      - celltype
+      - cell_line
+    batch_column_candidates:
+      - batch
+      - gem_group
+      - sample
+      - plate
+    control_labels:
+      - control
+      - ctrl
+      - non-targeting
+      - nontargeting
+      - nt
+      - safe-targeting
+    fallback_cell_type: K562_or_unspecified_context

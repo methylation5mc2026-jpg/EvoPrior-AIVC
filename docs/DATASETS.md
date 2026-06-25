@@ -265,3 +265,47 @@ Limitations:
 - One configured cell type/cell line and no donor metadata.
 - Only two held-out perturbations are eligible under the configured minimum group threshold.
 - Metrics are internal compatible metrics, not official benchmark metrics.
+
+## v0.13 Norman/scPerturb GEARS-compatible dataset
+
+Dataset ID: `gears_norman_scperturb_v013`
+
+Benchmark ID: `gears_norman_scperturb_v013`
+
+Source:
+
+- scPerturb Zenodo record 13350497, version 1.4
+- File: `NormanWeissman2019_filtered.h5ad`
+- Config: `configs/data/gears_norman_v013.yaml`
+- Expected local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- File size: 698,680,199 bytes
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- License: CC-BY-4.0 via scPerturb Zenodo record
+
+Observed local readiness:
+
+- Actual prepare command reused the existing local file with checksum status `ok`.
+- The raw H5AD is not committed and must remain outside git.
+- Backed inspection observed shape 111,445 cells x 33,694 genes.
+- Observed metadata includes `perturbation`, `perturbation_type`, `celltype`, `cell_line`, and guide-related fields.
+
+v0.13 mapping and split:
+
+- Adapter: `src/evoprior_aivc/data/gears_norman_adapter.py`
+- Canonical perturbation fields: `perturbation`, `is_control`, `perturbation_genes`, `perturbation_type`
+- Pseudobulk grouping: `cell_type`, `perturbation`, `perturbation_type`, `perturbation_genes`
+- Split: internally generated GEARS-compatible combo split with seen0/seen1/seen2 classes where available.
+- Official status: public data and GEARS-compatible internal split; not official GEARS split.
+
+Latest completed output:
+
+```text
+outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/
+outputs/data_reports/gears_norman_scperturb_v013/20260625T002742Z/
+```
+
+Limitations:
+
+- The exact GEARS official split files are not imported.
+- Metrics are internal compatible metrics, not official leaderboard metrics.
+- The run evaluates transparent non-neural baselines only; it is not a neural GEARS reproduction.

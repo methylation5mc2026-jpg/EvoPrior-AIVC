@@ -688,3 +688,65 @@ Interpretation:
 - v0.12 proves the public-data baseline run is executable and auditable.
 - The test suite is underpowered with only two held-out perturbations.
 - Do not claim SOTA, official benchmark alignment, leaderboard comparability, biological discovery, or general EvoPrior superiority.
+
+## v0.13 GEARS-compatible Norman baseline run
+
+Experiment ID: `v0.13-gears-norman-baseline`
+
+Commands:
+
+```powershell
+python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run
+python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml
+python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v013_baseline.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/
+```
+
+Data report:
+
+```text
+outputs/data_reports/gears_norman_scperturb_v013/20260625T002742Z/
+```
+
+Benchmark status:
+
+- public Norman/scPerturb H5AD;
+- GEARS-compatible internal combo split with seen0/seen1/seen2 labels;
+- not official GEARS split;
+- internal compatible metrics only;
+- no neural GEARS model or leaderboard submission.
+
+Baselines:
+
+- `no_change`
+- `control_mean`
+- `mean_delta`
+- `perturbation_mean_delta_v2`
+- `single_effect_additive_combo`
+- `ridge_cv`
+- `evoprior_additive_no_prior`
+
+Main test metrics:
+
+- `control_mean`: MAE 0.8739, MSE 13.4469.
+- `mean_delta`: MAE 0.5939, MSE 7.6769, Pearson 0.6450, Spearman 0.4920.
+- `single_effect_additive_combo`: MAE 0.5491, MSE 6.1062, Pearson 0.7538, Spearman 0.5583.
+- Combo-only `single_effect_additive_combo`: MAE 0.5938, MSE 6.5080, Pearson 0.8218, Spearman 0.6388.
+
+Leakage audit:
+
+- overall pass: true;
+- leaked test combos: none;
+- test groups: 33 combo groups and 31 single groups;
+- test split classes: seen0=2, seen1=13, seen2=18, single_unseen=31.
+
+Interpretation:
+
+- v0.13 produces the first reproducible Norman/GEARS-compatible public benchmark baseline run in this repo.
+- `single_effect_additive_combo` is the strongest implemented non-neural baseline under this exact internal split.
+- Do not claim official GEARS alignment, leaderboard comparability, SOTA, neural GEARS reproduction, biological discovery, or general EvoPrior superiority.

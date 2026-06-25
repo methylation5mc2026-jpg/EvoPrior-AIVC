@@ -393,6 +393,44 @@ v0.12 claim boundary:
 - test metrics are underpowered in the current local split;
 - no SOTA, public leaderboard, biological discovery, neural EvoPrior, or general EvoPrior superiority claim.
 
+## v0.13 Quickstart
+
+v0.13 runs a GEARS-compatible internal Norman combinatorial Perturb-seq baseline on the public scPerturb H5AD. It is closer to the perturbation-prediction benchmark literature than v0.12, but it is still not an official GEARS leaderboard result because the exact official GEARS split and metric package are not imported.
+
+Prepare or dry-run the Norman data:
+
+```powershell
+python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run
+python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml
+```
+
+Run the v0.13 baseline:
+
+```powershell
+python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v013_baseline.yaml
+```
+
+Output pattern:
+
+```text
+outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/<timestamp>/
+outputs/data_reports/gears_norman_scperturb_v013/<timestamp>/
+```
+
+Latest audited local output:
+
+```text
+outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/
+```
+
+v0.13 claim boundary:
+
+- public scPerturb Norman H5AD with md5 `c870e6967d91c017d9da827bab183cd6`;
+- GEARS-compatible internal seen0/seen1/seen2 combo split, not official GEARS split;
+- internal compatible metrics: MAE, MSE, Pearson delta, Spearman logFC, DE20/DE50 recovery;
+- strongest implemented baseline is `single_effect_additive_combo`, test MAE 0.5491 and Pearson delta 0.7538 under this exact split;
+- no SOTA, leaderboard, official GEARS, neural GEARS, biological-discovery, or general EvoPrior superiority claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。
