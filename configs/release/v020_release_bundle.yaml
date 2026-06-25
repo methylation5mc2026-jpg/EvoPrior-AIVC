@@ -1,0 +1,58 @@
+release_id: v0.20-github-release-or-official-gears-docker-env
+output_root: outputs/release/v0.20
+include_zip: true
+
+repository:
+  expected_branch: feat/github-release-or-gears-docker-v020
+  rollback_tag: v0.19-public-repo-polish-and-official-gears-unblock
+
+primary_evidence:
+  dataset: NormanWeissman2019_filtered.h5ad
+  dataset_md5: c870e6967d91c017d9da827bab183cd6
+  split: fixed internal GEARS-compatible Norman seen0/seen1/seen2/random_combo split
+  config: configs/experiment/gears_norman_v017_multiseed_residual.yaml
+  command: python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+  output_dir: outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/
+  split_manifest: outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/split_manifest.csv
+  smoke_result: outputs/runs/v0.19-release-smoke/20260625T230440Z/
+  artifact_manifest: reports/v0.19_artifact_manifest.md
+  metrics:
+    mae: 0.430778
+    mse: 3.668870
+    pearson: 0.869224
+    spearman: 0.784976
+    seeds: [0, 1, 2, 3, 4]
+
+claim_boundary:
+  allowed:
+    - Reproducible public-repo review package around the validated v0.17 Norman residual baseline.
+    - Strong internal GEARS-compatible Norman result under the documented split and metrics.
+  forbidden:
+    - Official GEARS result.
+    - Leaderboard-comparable result.
+    - SOTA claim.
+    - Biological discovery claim.
+    - General model superiority claim.
+
+reference_files:
+  - README.md
+  - docs/V18_RELEASE_MODEL_CARD.md
+  - docs/V18_BENCHMARK_CARD.md
+  - docs/V18_REPRODUCIBILITY_RUNBOOK.md
+  - docs/V18_EXTERNAL_REVIEW_INDEX.md
+  - docs/V17_EXTERNAL_RESULT_CARD.md
+  - docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md
+  - docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md
+  - docs/V19_REPRODUCTION_SMOKE_TESTS.md
+  - reports/v0.19_application_portfolio_summary.md
+  - reports/v0.19_artifact_manifest.md
+
+reproduction_commands:
+  no_data:
+    - python -m pip install -e ".[dev]"
+    - python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local tests/test_release_smoke_config.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py
+    - python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+  with_local_data:
+    - python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run
+    - python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+    - python scripts/check_release_artifacts.py

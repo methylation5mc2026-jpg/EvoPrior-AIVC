@@ -1,5 +1,75 @@
 # Codex Handoff
 
+## Current State: v0.20 GitHub Release Or Official GEARS Docker Env
+
+- Current branch: `feat/github-release-or-gears-docker-v020`
+- Rollback point: `v0.19-public-repo-polish-and-official-gears-unblock`
+- Latest completed source tag before this branch: `v0.19-public-repo-polish-and-official-gears-unblock`
+- v0.20 target tag: `v0.20-github-release-or-official-gears-docker-env`
+- Working tree: dirty with v0.20 release engineering files, Docker/WSL GEARS route, tests, docs, and reports; local raw data, generated outputs, caches, virtualenvs, and Docker build cache must not be committed
+
+## v0.20 Objective
+
+Make the project GitHub-release ready and create a robust official GEARS environment-unblock path without changing the v0.17 model, split, metrics, or claim boundary.
+
+## v0.20 Implemented So Far
+
+- CI smoke workflow: `.github/workflows/ci.yml`
+- Release bundle generator: `scripts/make_release_bundle.py`
+- Release bundle config: `configs/release/v020_release_bundle.yaml`
+- Docker/WSL GEARS route: `docker/Dockerfile.gears`, `docker/README_GEARS_ENV.md`
+- Updated official GEARS diagnostic: `scripts/diagnose_official_gears.py`
+- Updated artifact checker: `scripts/check_release_artifacts.py`
+- v0.20 docs: `docs/V20_GITHUB_RELEASE_PLAN.md`, `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md`, `docs/V20_RELEASE_CHECKLIST.md`, `docs/V20_GITHUB_ACTIONS_CI.md`, `docs/V20_PUBLIC_REVIEW_README_MAP.md`
+- Tests: `tests/test_make_release_bundle.py`, plus updated release artifact and GEARS diagnostic tests
+
+## v0.20 Verification
+
+- Plain `python -m pytest` failed because Windows denied access to `C:\Users\HiC3C\AppData\Local\Temp\pytest-of-HiC3C`; repo-local temp validation passed.
+- Final v0.20 regression with repo-local temp: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v20` -> `162 passed, 4 warnings`.
+- Targeted v0.20 tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v20 tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py tests/test_release_smoke_config.py` -> `9 passed, 2 warnings`.
+- Targeted ruff on v0.20 Python files: passed.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260625T230440Z/`, status `pass`.
+- Release bundle: `python scripts/make_release_bundle.py --config configs/release/v020_release_bundle.yaml` -> `outputs/release/v0.20/20260625T230630Z/`.
+- Official GEARS diagnostic: `python scripts/diagnose_official_gears.py` -> `outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/`, status `import_ok_run_blocked`.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.20_artifact_manifest.json`, status `pass`.
+- Optional heavy v0.17 multiseed rerun was not repeated in v0.20; this milestone relies on the validated v0.17/v0.18 evidence and v0.19/v0.20 smoke/release checks.
+
+## v0.20 Claim Boundary
+
+Allowed: GitHub/release readiness, no-data CI smoke, small review bundle, artifact integrity checking, and Docker/WSL route toward official GEARS environment reproduction.
+
+Forbidden: official GEARS result, leaderboard comparability, SOTA, biological discovery, new benchmark performance result, or general model superiority.
+
+## v0.20 Files Not To Commit
+
+- `data/raw/`
+- `outputs/runs/`
+- `outputs/data_reports/`
+- `outputs/release/*` except `outputs/release/.gitkeep`
+- `.venv/`
+- `.venv_gears/`
+- `.tmp_pytest_v20/`
+- `.tmp_mpl_gears/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- Docker build cache
+
+## v0.20 Next Exact Command
+
+Codex attempted to stage v0.20 files, but `.git/index.lock` creation failed with permission denied. No files were staged by Codex.
+
+User-side commit/tag commands:
+
+```powershell
+git status --short
+git add README.md .github docker configs/release docs reports/v0.20_artifact_manifest.json reports/v0.20_artifact_manifest.md scripts/check_release_artifacts.py scripts/diagnose_official_gears.py scripts/make_release_bundle.py tests/test_official_gears_diagnostics.py tests/test_release_artifact_manifest.py tests/test_make_release_bundle.py .gitignore outputs/release/.gitkeep
+git commit -m "docs: prepare GitHub release and GEARS environment"
+git tag v0.20-github-release-or-official-gears-docker-env
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.19 Public Repo Polish And Official GEARS Unblock
 
 - Current branch: `feat/public-repo-polish-v019`

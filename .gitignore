@@ -24,6 +24,7 @@ outputs/metrics/*
 outputs/logs/*
 outputs/runs/*
 outputs/data_reports/*
+outputs/release/*
 reports/figures/*
 reports/tables/*
 
@@ -36,5 +37,6 @@ reports/tables/*
 !outputs/logs/.gitkeep
 !outputs/runs/.gitkeep
 !outputs/data_reports/.gitkeep
+!outputs/release/.gitkeep
 !reports/figures/.gitkeep
 !reports/tables/.gitkeep

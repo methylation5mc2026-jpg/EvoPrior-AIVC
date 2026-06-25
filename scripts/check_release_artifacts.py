@@ -1,4 +1,4 @@
-"""Check v0.19 release artifact integrity."""
+"""Check release artifact integrity."""
 
 from __future__ import annotations
 
@@ -7,7 +7,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-EXPECTED_TAG = "v0.19-public-repo-polish-and-official-gears-unblock"
+EXPECTED_TAG = "v0.20-github-release-or-official-gears-docker-env"
+ROLLBACK_TAG = "v0.19-public-repo-polish-and-official-gears-unblock"
 PRIMARY_OUTPUT = (
     "outputs/runs/v0.17-norman-validated-residual-baseline/"
     "gears_norman_scperturb_v013/20260625T100322Z"
@@ -29,10 +30,20 @@ REQUIRED_FILES = [
     "docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md",
     "docs/V19_REPRODUCTION_SMOKE_TESTS.md",
     "docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md",
+    "docs/V20_GITHUB_RELEASE_PLAN.md",
+    "docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md",
+    "docs/V20_RELEASE_CHECKLIST.md",
+    "docs/V20_GITHUB_ACTIONS_CI.md",
+    "docs/V20_PUBLIC_REVIEW_README_MAP.md",
     "configs/experiment/release_smoke_v019.yaml",
+    "configs/release/v020_release_bundle.yaml",
+    ".github/workflows/ci.yml",
+    "docker/Dockerfile.gears",
+    "docker/README_GEARS_ENV.md",
     "scripts/run_release_smoke.py",
     "scripts/diagnose_official_gears.py",
     "scripts/check_release_artifacts.py",
+    "scripts/make_release_bundle.py",
 ]
 
 METRIC_FILES = [
@@ -57,15 +68,15 @@ def main() -> None:
     manifest = build_manifest()
     report_dir = Path("reports")
     report_dir.mkdir(exist_ok=True)
-    (report_dir / "v0.19_artifact_manifest.json").write_text(
+    (report_dir / "v0.20_artifact_manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
-    (report_dir / "v0.19_artifact_manifest.md").write_text(
+    (report_dir / "v0.20_artifact_manifest.md").write_text(
         _markdown_report(manifest),
         encoding="utf-8",
     )
-    print("reports/v0.19_artifact_manifest.json")
+    print("reports/v0.20_artifact_manifest.json")
     print(manifest["status"])
     if manifest["status"] != "pass":
         raise SystemExit(1)
@@ -89,16 +100,22 @@ def build_manifest() -> dict[str, Any]:
         status = "fail"
     if primary.exists() and any(not item["exists"] for item in metrics):
         status = "fail"
+    release_bundle = _latest_release_bundle()
     if forbidden_staged:
+        status = "fail"
+    if not release_bundle:
         status = "fail"
     return {
         "release_id": EXPECTED_TAG,
         "status": status,
         "git_commit": _git(["rev-parse", "--short", "HEAD"]),
         "git_tag_expected": EXPECTED_TAG,
+        "rollback_tag": ROLLBACK_TAG,
         "dataset_md5": DATA_MD5,
         "primary_output": PRIMARY_OUTPUT,
         "primary_output_exists": primary.exists(),
+        "release_bundle_latest": release_bundle,
+        "release_bundle_exists": bool(release_bundle),
         "required_files": required,
         "metric_files": metrics,
         "staged_files_checked": staged,
@@ -109,7 +126,11 @@ def build_manifest() -> dict[str, Any]:
                 "configs/experiment/release_smoke_v019.yaml"
             ),
             "python scripts/diagnose_official_gears.py",
-            "python scripts/check_release_artifacts.py",
+                "python scripts/check_release_artifacts.py",
+                (
+                    "python scripts/make_release_bundle.py --config "
+                    "configs/release/v020_release_bundle.yaml"
+                ),
             (
                 "python scripts/run_norman_residual_multiseed.py --config "
                 "configs/experiment/gears_norman_v017_multiseed_residual.yaml"
@@ -134,16 +155,32 @@ def _git(args: list[str]) -> str:
     return result.stdout.strip() if result.returncode == 0 else "unknown"
 
 
+def _latest_release_bundle() -> str:
+    root = Path("outputs/release/v0.20")
+    if not root.exists():
+        return ""
+    candidates = [
+        path
+        for path in root.iterdir()
+        if path.is_dir() and (path / "release_manifest.json").exists()
+    ]
+    candidates = sorted(candidates, key=lambda path: path.name, reverse=True)
+    return str(candidates[0]) if candidates else ""
+
+
 def _markdown_report(manifest: dict[str, Any]) -> str:
     lines = [
-        "# v0.19 Artifact Manifest",
+        "# v0.20 Artifact Manifest",
         "",
         f"- Status: `{manifest['status']}`",
         f"- Git commit: `{manifest['git_commit']}`",
         f"- Expected tag: `{manifest['git_tag_expected']}`",
+        f"- Rollback tag: `{manifest['rollback_tag']}`",
         f"- Dataset md5: `{manifest['dataset_md5']}`",
         f"- Primary output: `{manifest['primary_output']}`",
         f"- Primary output exists: `{manifest['primary_output_exists']}`",
+        f"- Latest release bundle: `{manifest['release_bundle_latest']}`",
+        f"- Release bundle exists: `{manifest['release_bundle_exists']}`",
         "",
         "## Required Files",
         "",

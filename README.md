@@ -23,6 +23,31 @@ python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v0
 python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
 ```
 
+## No-Data Review Path
+
+This path is intended for GitHub reviewers without raw Norman data:
+
+```powershell
+python -m pip install -e ".[dev]"
+python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local tests/test_release_smoke_config.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/make_release_bundle.py --config configs/release/v020_release_bundle.yaml
+```
+
+Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V18_EXTERNAL_REVIEW_INDEX.md`, and `docs/V20_PUBLIC_REVIEW_README_MAP.md`.
+
+Latest v0.20 release bundle output: `outputs/release/v0.20/20260625T230630Z/`.
+
+## With-Local-Data Reproduction Path
+
+Place `NormanWeissman2019_filtered.h5ad` at `data/raw/NormanWeissman2019_filtered.h5ad`. Expected md5: `c870e6967d91c017d9da827bab183cd6`.
+
+```powershell
+python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run
+python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+python scripts/check_release_artifacts.py
+```
+
 ## Review Map
 
 - Model card: `docs/V18_RELEASE_MODEL_CARD.md`
@@ -32,12 +57,18 @@ python scripts/run_norman_residual_multiseed.py --config configs/experiment/gear
 - Public repo checklist: `docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md`
 - GEARS unblock plan: `docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md`
 - Portfolio summary: `docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md`
+- v0.20 release plan: `docs/V20_GITHUB_RELEASE_PLAN.md`
+- v0.20 CI docs: `docs/V20_GITHUB_ACTIONS_CI.md`
+- v0.20 Docker/WSL GEARS route: `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md`
+- v0.20 release checklist: `docs/V20_RELEASE_CHECKLIST.md`
 
 ## Data And GEARS Status
 
 Raw data is not committed. The expected Norman file is `data/raw/NormanWeissman2019_filtered.h5ad`; use `python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run` to verify access instructions.
 
 Official GEARS status: `import_ok_run_blocked`. The isolated `.venv_gears` environment imports the dependency stack, but the repository wrapper is still feasibility-only and does not train/evaluate official GEARS.
+
+v0.20 adds a Docker/WSL environment route at `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md` and `docker/Dockerfile.gears`. This is an unblock path, not a claimed official GEARS result.
 
 ## v0.19 Review Smoke
 
@@ -51,6 +82,8 @@ python scripts/check_release_artifacts.py
 
 Latest local smoke output: `outputs/runs/v0.19-release-smoke/20260625T223712Z/`.
 Latest diagnostic output: `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`.
+Latest v0.20 smoke output: `outputs/runs/v0.19-release-smoke/20260625T230440Z/`.
+Latest v0.20 diagnostic output: `outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/`.
 
 ## v0.18 Validated Norman Baseline Release Quickstart
 

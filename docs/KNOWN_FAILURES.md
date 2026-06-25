@@ -82,6 +82,10 @@
 78. v0.19 release smoke is a reproducibility gate, not a performance benchmark; it should not be used as evidence of model superiority.
 79. Fresh public clones may not include `data/raw/NormanWeissman2019_filtered.h5ad` or local `outputs/`; the smoke script treats missing raw data as a warning, but full v0.17 reproduction still requires legal local data preparation.
 80. v0.19 repo metadata uses `LICENSE` marked license pending until the project owner selects a concrete open-source or restricted license; external reuse rights remain intentionally unresolved.
+81. v0.20 Dockerfile is an environment recipe and was not treated as an official GEARS reproduction; no Docker build result, official training run, official split import, or official metric output is claimed.
+82. v0.20 CI is no-data smoke only; it intentionally does not run the heavy v0.17 multiseed benchmark or require local Norman raw data.
+83. v0.20 release bundle is a small review package under ignored `outputs/release/`; it is not a data archive and does not contain raw H5AD files or large benchmark outputs.
+84. Plain `python -m pytest` can fail on this Windows host if pytest uses `C:\Users\HiC3C\AppData\Local\Temp\pytest-of-HiC3C`; use `-p no:cacheprovider --basetemp .tmp_pytest_v20` for repo-local temp validation.
 
 ## 失败记录模板
 

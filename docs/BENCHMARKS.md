@@ -961,3 +961,37 @@ Interpretation:
 - v0.19 is a public repository review and unblock package over the v0.17 validated residual baseline.
 - It does not alter the v0.17 model, split, seed list, metrics, or claim boundary.
 - Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.
+
+## v0.20 GitHub release and official GEARS Docker environment
+
+Experiment ID: `v0.20-github-release-or-official-gears-docker-env`
+
+Commands:
+
+```powershell
+python scripts/make_release_bundle.py --config configs/release/v020_release_bundle.yaml
+python scripts/diagnose_official_gears.py
+python scripts/check_release_artifacts.py
+```
+
+Outputs:
+
+```text
+outputs/release/v0.20/20260625T230630Z/
+outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/
+reports/v0.20_artifact_manifest.md
+```
+
+Benchmark status:
+
+- no new model training or benchmark performance run;
+- CI smoke workflow added at `.github/workflows/ci.yml`;
+- release bundle generator added for small public-review artifacts;
+- Docker/WSL official GEARS environment route added at `docker/Dockerfile.gears`;
+- official GEARS diagnostic remains `import_ok_run_blocked`.
+
+Interpretation:
+
+- v0.20 is a release-engineering and environment-unblock milestone.
+- It keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
+- It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.

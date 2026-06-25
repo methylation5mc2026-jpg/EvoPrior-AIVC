@@ -7,5 +7,9 @@ def test_release_artifact_manifest_tracks_required_release_docs():
 
     assert "docs/V18_RELEASE_MODEL_CARD.md" in required_paths
     assert "docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md" in required_paths
+    assert "docs/V20_GITHUB_RELEASE_PLAN.md" in required_paths
+    assert ".github/workflows/ci.yml" in required_paths
+    assert "docker/Dockerfile.gears" in required_paths
     assert manifest["dataset_md5"] == "c870e6967d91c017d9da827bab183cd6"
+    assert manifest["rollback_tag"] == "v0.19-public-repo-polish-and-official-gears-unblock"
     assert all(not path.startswith("data/raw/") for path in manifest["staged_files_checked"])

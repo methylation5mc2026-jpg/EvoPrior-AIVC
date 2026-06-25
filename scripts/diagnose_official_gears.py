@@ -65,6 +65,12 @@ def build_diagnostic_payload() -> dict[str, Any]:
         "status": status["status"],
         "blocker_category": status["blocker_category"],
         "recommended_next_step": status["recommended_next_step"],
+        "docker_wsl_next_action": docker_wsl_next_action(),
+        "relation_to_prior_blockers": (
+            "v0.14 documented missing dependencies, v0.18 documented import_ok_run_blocked "
+            "inside .venv_gears, and v0.20 provides a Docker/WSL environment route without "
+            "claiming official GEARS execution."
+        ),
         "python": {
             "executable": sys.executable,
             "version": sys.version,
@@ -73,6 +79,7 @@ def build_diagnostic_payload() -> dict[str, Any]:
         "main_environment": [probe.to_dict() for probe in probes],
         "venv_gears": venv_probe,
         "wrapper_dry_run": wrapper,
+        "exact_error": exact_error(venv_probe=venv_probe, wrapper_result=wrapper),
     }
 
 
@@ -206,13 +213,40 @@ def classify_official_gears_status(
     }
 
 
+def docker_wsl_next_action() -> dict[str, str]:
+    return {
+        "docker_build": "docker build -f docker/Dockerfile.gears -t evoprior-gears-env .",
+        "docker_import_check": (
+            "docker run --rm evoprior-gears-env "
+            "python -c \"import torch; import torch_geometric; import gears; print('ok')\""
+        ),
+        "wsl_note": (
+            "Use WSL2 or Docker for a clean Linux-like PyTorch/PyG stack before "
+            "implementing official GEARS train/evaluate alignment."
+        ),
+    }
+
+
+def exact_error(*, venv_probe: dict[str, Any], wrapper_result: dict[str, Any]) -> str:
+    candidates = [
+        str(wrapper_result.get("stderr", "")).strip(),
+        str(venv_probe.get("stderr", "")).strip(),
+    ]
+    for candidate in candidates:
+        if candidate:
+            return candidate.splitlines()[-1]
+    return "no stderr captured"
+
+
 def _markdown_report(payload: dict[str, Any]) -> str:
     lines = [
-        "# v0.19 Official GEARS Diagnostic Report",
+        "# v0.20 Official GEARS Diagnostic Report",
         "",
         f"- Status: `{payload['status']}`",
         f"- Blocker category: `{payload['blocker_category']}`",
         f"- Recommended next step: {payload['recommended_next_step']}",
+        f"- Exact error: `{payload['exact_error']}`",
+        f"- Relation to prior blockers: {payload['relation_to_prior_blockers']}",
         "",
         "## Main Environment",
         "",
@@ -239,6 +273,12 @@ def _markdown_report(payload: dict[str, Any]) -> str:
             json.dumps(payload["wrapper_dry_run"], indent=2, ensure_ascii=False),
             "```",
             "",
+            "## Docker / WSL Next Action",
+            "",
+            "```json",
+            json.dumps(payload["docker_wsl_next_action"], indent=2, ensure_ascii=False),
+            "```",
+            "",
             "## Claim Boundary",
             "",
             "This is a diagnostic artifact, not an official GEARS result.",
@@ -250,7 +290,7 @@ def _markdown_report(payload: dict[str, Any]) -> str:
 
 def _make_run_dir() -> Path:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    return Path("outputs/runs/v0.19-official-gears-diagnostics") / timestamp
+    return Path("outputs/runs/v0.20-official-gears-diagnostics") / timestamp
 
 
 if __name__ == "__main__":

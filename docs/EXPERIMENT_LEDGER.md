@@ -520,3 +520,24 @@ Claim status:
 - Known risks: official GEARS remains blocked because the wrapper is feasibility-only and does not train/evaluate official GEARS or import official split files; public clones may need manual data placement before full v0.17 reproduction.
 - Rollback note: rollback to tag `v0.18-official-gears-reproduction-or-model-card-release` to remove v0.19 work.
 - Claim status: public review package over the v0.17 internal GEARS-compatible Norman result only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.
+
+### EXP-0023: v0.20 GitHub release and official GEARS Docker environment
+
+- Experiment ID: `v0.20-github-release-or-official-gears-docker-env`
+- Date: 2026-06-26
+- Status: completed locally; regression, targeted ruff, release bundle generation, GEARS diagnostic, release smoke, and artifact checker passed
+- Role: MLOps / Release engineer / Official GEARS environment engineer / Reproducibility engineer / Scientific reviewer / Documentation engineer
+- Objective: Add GitHub CI smoke, release bundle generation, artifact integrity refresh, and Docker/WSL official GEARS environment route without changing the v0.17 benchmark result.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/release/v020_release_bundle.yaml`; primary model config remains `configs/experiment/gears_norman_v017_multiseed_residual.yaml`.
+- Git commit: branch starts from v0.19 commit `e37fb3f`; final v0.20 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: `python scripts/make_release_bundle.py --config configs/release/v020_release_bundle.yaml`; `python scripts/diagnose_official_gears.py`; `python scripts/check_release_artifacts.py`.
+- Outputs: `outputs/release/v0.20/20260625T230630Z/`; `outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/`; `reports/v0.20_artifact_manifest.md`.
+- Metrics: no new benchmark metrics; v0.20 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Assumptions: Dockerfile is an environment route and not a claimed tested official reproduction; CI is no-data smoke only.
+- Known risks: official GEARS remains `import_ok_run_blocked`; no official training, official split, or official metric output exists.
+- Rollback note: rollback to tag `v0.19-public-repo-polish-and-official-gears-unblock` to remove v0.20 work.
+- Claim status: GitHub/release readiness and environment-unblock package only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.

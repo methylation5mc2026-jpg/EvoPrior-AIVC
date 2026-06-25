@@ -37,6 +37,7 @@
 - `v0.17-norman-validated-residual-baseline`: the v0.16 residual model family is reproduced across seeds `0, 1, 2, 3, 4` with repeat-level CIs, ablations, negative controls, class breakdowns, and leakage stress checks. Output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`.
 - `v0.18-official-gears-reproduction-or-model-card-release`: an external review package is created for the v0.17 residual baseline, and a final official GEARS feasibility attempt is recorded as `import_ok_run_blocked`. Model metrics remain the v0.17 metrics. Release docs start at `docs/V18_EXTERNAL_REVIEW_INDEX.md`.
 - `v0.19-public-repo-polish-and-official-gears-unblock`: public repo metadata, release smoke checks, official GEARS diagnostics, and artifact integrity checks are implemented for reviewer use. Smoke output: `outputs/runs/v0.19-release-smoke/20260625T223712Z/`; diagnostic output: `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`; artifact manifest: `reports/v0.19_artifact_manifest.md`.
+- `v0.20-github-release-or-official-gears-docker-env`: CI smoke workflow, release bundle generator, Docker/WSL GEARS environment route, v0.20 diagnostic output, and v0.20 artifact manifest are implemented for release review. Bundle: `outputs/release/v0.20/20260625T230630Z/`; diagnostic output: `outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/`; artifact manifest: `reports/v0.20_artifact_manifest.md`.
 
 ## 消融提示
 
@@ -56,6 +57,7 @@
 - `v0.17-norman-validated-residual-baseline`: five-seed stability is near deterministic because the selected PCA/ridge residual path has little stochasticity under the fixed split; this supports reproducibility, not broad external generalization.
 - `v0.18-official-gears-reproduction-or-model-card-release`: official GEARS dependencies import inside `.venv_gears`, but the repository wrapper is feasibility-only and no official GEARS metrics are produced.
 - `v0.19-public-repo-polish-and-official-gears-unblock`: release smoke and artifact checks support reproducibility review only. They do not create a new model result, official GEARS result, or leaderboard-comparable benchmark.
+- `v0.20-github-release-or-official-gears-docker-env`: Docker/WSL GEARS files are an environment route only. They are not evidence that official GEARS was built, trained, evaluated, or matched to official metrics.
 
 ## 推测/未来工作
 
@@ -81,6 +83,7 @@
 - Do not claim v0.17 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
 - Do not claim v0.18 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
 - Do not claim v0.19 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
+- Do not claim v0.20 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。
