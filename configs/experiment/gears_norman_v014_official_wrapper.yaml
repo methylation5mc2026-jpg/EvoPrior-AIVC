@@ -1,0 +1,32 @@
+experiment_id: v0.14-official-gears-wrapper
+mode: official_gears_wrapper
+seed: 140
+output_root: outputs/runs
+output_prefix: v0.14-official-gears-wrapper
+output_prefix_dry_run: v0.14-official-gears-wrapper-blocked
+benchmark_id: gears_norman_scperturb_v013
+dataset_id: gears_norman_scperturb_v013
+data_config: configs/data/gears_norman_v013.yaml
+
+official_wrapper:
+  package_priority:
+    - cell-gears
+    - gears
+  expected_modules:
+    - gears
+    - torch
+    - torch_geometric
+  install_command_attempted: python -m pip install cell-gears
+  known_install_blockers:
+    - cell-gears install attempt failed with WinError 5 permission denied while writing C:\Users\HiC3C\AppData\Roaming\Python.
+    - torch and torch_geometric are not importable in the current environment.
+  run_policy: do_not_train_if_optional_dependencies_missing
+
+benchmark:
+  official_alignment_status: official_wrapper_blocked
+  source: https://zenodo.org/records/13350497
+  source_version: scPerturb Zenodo record v1.4, NormanWeissman2019_filtered.h5ad
+  data_checksum: c870e6967d91c017d9da827bab183cd6
+  split_definition: official GEARS split not imported; wrapper feasibility only
+  claim_boundary: Official wrapper dry-run/blocker artifact only; not an official GEARS result.
+

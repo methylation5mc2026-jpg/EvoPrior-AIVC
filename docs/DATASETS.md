@@ -309,3 +309,14 @@ Limitations:
 - The exact GEARS official split files are not imported.
 - Metrics are internal compatible metrics, not official leaderboard metrics.
 - The run evaluates transparent non-neural baselines only; it is not a neural GEARS reproduction.
+
+## v0.14 Norman alignment note
+
+v0.14 reuses the same public Norman/scPerturb H5AD:
+
+- File: `NormanWeissman2019_filtered.h5ad`
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- Local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- License: CC-BY-4.0 via scPerturb Zenodo record
+
+The v0.14 data status is unchanged from v0.13. The improvement is in split/report alignment and baseline coverage, not in raw data ingestion.

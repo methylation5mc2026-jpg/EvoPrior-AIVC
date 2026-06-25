@@ -2,98 +2,79 @@
 
 ## Current State
 
-- Current branch: `feat/gears-norman-baseline-v013`
-- Rollback point: `v0.12-public-benchmark-baseline-run`
-- Latest completed milestone before this branch: `v0.12-public-benchmark-baseline-run`
-- v0.13 target tag: `v0.13-gears-norman-baseline`
-- Working tree: dirty with v0.13 source/config/docs/tests; local raw data and outputs must not be committed
+- Current branch: `feat/official-gears-alignment-v014`
+- Rollback point: `v0.13-gears-norman-baseline`
+- Latest completed milestone before this branch: `v0.13-gears-norman-baseline`
+- v0.14 target tag: `v0.14-official-gears-alignment`
+- Working tree: dirty with v0.14 source/config/docs/tests; local raw data and outputs must not be committed
 
-## v0.13 Benchmark Decision
+## v0.14 Objective
 
-- Selected benchmark: `gears_norman_scperturb_v013`
-- Dataset: Norman/Weissman 2019 filtered Perturb-seq from scPerturb Zenodo record 13350497
-- Status: public-data, GEARS-compatible internal split
-- Not official GEARS split
-- Not leaderboard comparable
-- Reason selected: recognized combinatorial perturbation benchmark family; legal public H5AD; file is below 2 GB; checksum is locked; local run completed today
+Move the Norman benchmark package from GEARS-compatible/internal toward official GEARS alignment. The official wrapper is attempted through optional dependency checks. If blocked, v0.14 must still produce a stronger GEARS-compatible aligned baseline package with explicit blocker documentation.
 
-## Data Source
+## Official GEARS Feasibility
 
-- Source: <https://zenodo.org/records/13350497>
-- Version: scPerturb Zenodo record v1.4
-- File: `NormanWeissman2019_filtered.h5ad`
-- Expected local path: `data/raw/NormanWeissman2019_filtered.h5ad`
-- md5: `c870e6967d91c017d9da827bab183cd6`
-- File size: 698,680,199 bytes
-- License: CC-BY-4.0 via Zenodo record
-- Local checksum status: `ok`
+- `python -m pip show cell-gears`: not installed.
+- `python -m pip show gears`: not installed.
+- `python -m pip show torch`: not installed.
+- `python -m pip show torch_geometric`: not installed.
+- `python -c "import gears"`: `ModuleNotFoundError`.
+- `python -c "import torch"`: `ModuleNotFoundError`.
+- `python -m pip install cell-gears`: downloaded `cell_gears-0.1.2` and `torch-2.12.1`, then failed with `WinError 5` while writing `C:\Users\HiC3C\AppData\Roaming\Python`.
 
-## Completed Commands
+Decision: official GEARS wrapper is currently blocked by missing dependencies and user-site install permissions. v0.14 proceeds with an optional wrapper that writes a blocker report plus a tightened GEARS-compatible baseline.
+
+## Implemented So Far
+
+- Optional GEARS wrapper interface: `src/evoprior_aivc/external/gears_wrapper.py`
+- Wrapper runner: `scripts/run_official_gears_wrapper.py`
+- Wrapper config: `configs/experiment/gears_norman_v014_official_wrapper.yaml`
+- v0.14 aligned baseline config: `configs/experiment/gears_norman_v014_aligned_baseline.yaml`
+- Weighted combo baseline: `src/evoprior_aivc/baselines/combo_weighted.py`
+- Split helper now supports `random_combo_fraction`.
+- Combo additive fallback report now includes perturbation metadata.
+
+## Targeted Tests
 
 ```powershell
-python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v13
-python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v13 tests/test_gears_norman_adapter.py tests/test_gears_splits.py tests/test_combo_additive_baseline.py tests/test_gears_metrics.py tests/test_gears_norman_config.py
-python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run
-python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml
-python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v013_baseline.yaml
-python scripts/run_public_benchmark_baseline.py --config configs/experiment/public_benchmark_v012_baseline.yaml
-python scripts/run_evoprior_additive.py --config configs/experiment/real_v09_kang_evoprior_additive.yaml
-python -m ruff check scripts/prepare_gears_norman.py scripts/run_gears_norman_baseline.py src/evoprior_aivc/data/gears_norman_adapter.py src/evoprior_aivc/data/gears_splits.py src/evoprior_aivc/baselines/combo_additive.py src/evoprior_aivc/evaluation/gears_metrics.py src/evoprior_aivc/baselines/__init__.py tests/test_gears_norman_adapter.py tests/test_gears_splits.py tests/test_combo_additive_baseline.py tests/test_gears_metrics.py tests/test_gears_norman_config.py
+python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v14 tests/test_gears_wrapper_interface.py tests/test_combo_weighted_baseline.py tests/test_gears_splits.py tests/test_gears_norman_config.py tests/test_combo_additive_baseline.py tests/test_gears_metrics.py tests/test_gears_norman_adapter.py
 ```
 
-Results:
+Result: `12 passed, 2 warnings`.
 
-- Full tests: `136 passed, 2 warnings`.
-- Targeted v0.13 tests: `7 passed, 2 warnings`.
-- v0.13 prepare dry-run: passed.
-- v0.13 runner: passed, output `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/`.
-- v0.12 backward compatibility runner: passed, output `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260625T003054Z/`.
-- v0.9 backward compatibility runner: passed, output `outputs/runs/v0.9-integrated-evoprior-additive/kang_2018_pbmc_ifnb/20260625T003115Z/`.
-- Targeted ruff: passed.
+## Current v0.14 Outputs
 
-## Current v0.13 Output
+- Official wrapper blocker: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/`
+- Aligned baseline: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/`
+- Split status: GEARS-compatible/internal, not official GEARS.
+- Leakage audit: passed, no leaked test combos.
+- Test groups: 39 combo and 31 single groups.
+- Test classes: random_combo=8, seen0=4, seen1=14, seen2=13, single_unseen=31.
 
-- Run directory: `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/`
-- Data report directory: `outputs/data_reports/gears_norman_scperturb_v013/20260625T002742Z/`
-- Split: internal GEARS-compatible seen0/seen1/seen2 combo split
-- Leakage audit: passed, no leaked test combos
-- Test groups: 33 combo and 31 single groups
-- Test classes: seen0=2, seen1=13, seen2=18, single_unseen=31
+## Main v0.14 Metric Snapshot
 
-## Main Metric Snapshot
+- `mean_delta`: test MAE 0.6954, MSE 10.0818, Pearson 0.5804, Spearman 0.4322.
+- `single_effect_additive_combo`: test MAE 0.5745, MSE 6.7388, Pearson 0.7684, Spearman 0.6443.
+- `weighted_combo_additive`: test MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
 
-- `control_mean`: test MAE 0.8739, MSE 13.4469.
-- `mean_delta`: test MAE 0.5939, MSE 7.6769, Pearson 0.6450, Spearman 0.4920.
-- `single_effect_additive_combo`: test MAE 0.5491, MSE 6.1062, Pearson 0.7538, Spearman 0.5583.
-- Combo-only `single_effect_additive_combo`: MAE 0.5938, MSE 6.5080, Pearson 0.8218, Spearman 0.6388.
+## Final Regression Result
 
-## Claim Boundary
-
-Allowed: v0.13 executed a reproducible public-data, GEARS-compatible internal Norman baseline run with documented data, split, metrics, schema report, leakage audit, and evidence artifacts.
-
-Forbidden: SOTA, official GEARS, leaderboard comparability, biological discovery, neural GEARS reproduction, general EvoPrior superiority, or real evolutionary/conservation-prior benefit.
+- Full tests: `141 passed, 2 warnings`.
+- Targeted v0.14 tests: `12 passed, 2 warnings`.
+- v0.14 official wrapper dry-run: passed, output `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/`.
+- v0.14 aligned baseline runner: passed, output `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/`.
+- v0.13 backward compatibility runner: passed, output `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T015053Z/`.
+- v0.12 backward compatibility runner: passed, output `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260625T015257Z/`.
+- Targeted ruff on v0.14 modified Python files: passed.
 
 ## Files Not To Commit
 
 - `data/raw/`
 - `outputs/`
-- `.tmp_pytest_v13/`
+- `.tmp_pytest_v14/`
 - `.pytest_cache/`
 - `.ruff_cache/`
 - `*.egg-info/`
-
-## Commands Still Required
-
-```powershell
-git status --short
-git add .gitignore README.md configs docs reports src scripts tests pyproject.toml
-git commit -m "feat: run gears norman baseline"
-git tag v0.13-gears-norman-baseline
-```
-
-## Git Permission Blocker
-
-Codex can edit files in the workspace but cannot write to `.git` in this session. Final staging, commit, and tag must be run by the user in PowerShell after verification passes.
 
 ## Next Exact Command
 

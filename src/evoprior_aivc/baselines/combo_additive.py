@@ -53,6 +53,9 @@ class SingleEffectAdditiveComboBaseline(DeltaBaseline):
         self.last_prediction_fallbacks_ = pd.DataFrame(
             {
                 "group_id": dataset.metadata.index.astype(str),
+                "perturbation": dataset.metadata["perturbation"].astype(str).to_numpy(),
+                "perturbation_type": dataset.metadata["perturbation_type"].astype(str).to_numpy(),
+                "perturbation_genes": dataset.metadata["perturbation_genes"].astype(str).to_numpy(),
                 "fallback_mode": fallbacks,
             }
         )

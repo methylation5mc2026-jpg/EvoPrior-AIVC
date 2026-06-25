@@ -20,6 +20,7 @@ from evoprior_aivc.baselines import (
     PerturbationMeanDeltaBaselineV2,
     RidgeCVBaseline,
     SingleEffectAdditiveComboBaseline,
+    WeightedComboAdditiveBaseline,
     build_delta_dataset,
 )
 from evoprior_aivc.data.download import prepare_dataset
@@ -48,6 +49,7 @@ from evoprior_aivc.models import EvoPriorAdditiveModel
 def main() -> None:
     args = _parse_args()
     config = _load_yaml(Path(args.config))
+    config["config_path"] = args.config
     data_payload = _load_yaml(Path(config["data_config"]))
     data_config = data_payload["data"]
     preparation = prepare_dataset(data_config)
@@ -82,6 +84,7 @@ def main() -> None:
         seed=int(config["split"]["seed"]),
         seen_gene_fraction=float(config["split"]["seen_gene_fraction"]),
         test_combo_fraction=float(config["split"]["test_combo_fraction"]),
+        random_combo_fraction=float(config["split"].get("random_combo_fraction", 0.0)),
         val_fraction=float(config["split"]["val_fraction"]),
         min_test_combos_per_class=int(config["split"]["min_test_combos_per_class"]),
     )
@@ -130,7 +133,7 @@ def main() -> None:
             "dataset_id": config["dataset_id"],
             "command": (
                 "python scripts/run_gears_norman_baseline.py --config "
-                "configs/experiment/gears_norman_v013_baseline.yaml"
+                f"{config.get('config_path', 'configs/experiment/gears_norman_v013_baseline.yaml')}"
             ),
             "data_source": config["benchmark"]["source"],
             "data_checksum": data_config["dataset"]["checksum"],
@@ -232,6 +235,14 @@ def _baseline_instances(configs: list[dict[str, Any]]):
                     "global_single_mean",
                 )
             )
+        elif name == "weighted_combo_additive":
+            yield WeightedComboAdditiveBaseline(
+                ridge_alpha=float(config.get("ridge_alpha", 1.0)),
+                missing_single_fallback=config.get(
+                    "missing_single_fallback",
+                    "global_single_mean",
+                ),
+            )
         elif name == "ridge_cv":
             yield RidgeCVBaseline(alphas=tuple(map(float, config.get("alphas", [1.0]))))
         elif name == "evoprior_additive_no_prior":
@@ -289,7 +300,7 @@ def _write_report(
     preparation: dict[str, Any],
 ) -> None:
     lines = [
-        "# v0.13 GEARS/Norman Baseline Run",
+        f"# {config['experiment_id']} GEARS/Norman Baseline Run",
         "",
         "## Executive Summary",
         "",

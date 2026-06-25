@@ -18,6 +18,7 @@ def assign_gears_compatible_combo_split(
     seed: int = 0,
     seen_gene_fraction: float = 0.7,
     test_combo_fraction: float = 0.25,
+    random_combo_fraction: float = 0.0,
     val_fraction: float = 0.1,
     min_test_combos_per_class: int = 1,
 ) -> tuple[pd.Series, pd.DataFrame, dict[str, Any]]:
@@ -45,6 +46,17 @@ def assign_gears_compatible_combo_split(
         test_combo_fraction=test_combo_fraction,
         min_test_combos_per_class=min_test_combos_per_class,
     )
+    random_combos = _select_random_combo_holdouts(
+        perturbations,
+        already_selected=test_combos,
+        rng=rng,
+        random_combo_fraction=random_combo_fraction,
+    )
+    perturbations.loc[
+        perturbations["perturbation"].isin(random_combos),
+        "split_class",
+    ] = "random_combo"
+    test_combos.update(random_combos)
     labels_by_perturbation = {
         str(row.perturbation): "train" for row in perturbations.itertuples(index=False)
     }
@@ -109,6 +121,7 @@ def leakage_audit(split_manifest: pd.DataFrame) -> dict[str, Any]:
         "n_test_combos": len(test_combos),
         "counts": counts,
         "class_counts": class_counts,
+        "split_category_values": sorted(set(split_manifest["split_class"].astype(str))),
         "control_usage": (
             "matched control profiles are allowed input state; post-perturbation "
             "test deltas are not used for training features"
@@ -140,7 +153,7 @@ def write_gears_split_report(
     val_perturbations = _perturbations_by_split(split_manifest, "val")
     test_perturbations = _perturbations_by_split(split_manifest, "test")
     lines = [
-        "# v0.13 GEARS-Compatible Split Report",
+        "# GEARS-Compatible Split Report",
         "",
         "- Split mode: `gears_compatible_combo`",
         "- Alignment: `GEARS-compatible/internal`; official GEARS split file not imported",
@@ -233,6 +246,27 @@ def _select_test_combos(
         chosen = rng.choice(group["perturbation"].to_numpy(dtype=object), size=n, replace=False)
         selected.update(map(str, chosen))
     return selected
+
+
+def _select_random_combo_holdouts(
+    perturbations: pd.DataFrame,
+    *,
+    already_selected: set[str],
+    rng: np.random.Generator,
+    random_combo_fraction: float,
+) -> set[str]:
+    if random_combo_fraction <= 0:
+        return set()
+    combos = perturbations[
+        (perturbations["perturbation_type"] == "combo")
+        & (~perturbations["perturbation"].isin(already_selected))
+    ]
+    if combos.empty:
+        return set()
+    n = int(np.ceil(len(combos) * random_combo_fraction))
+    n = max(1, min(n, len(combos)))
+    chosen = rng.choice(combos["perturbation"].to_numpy(dtype=object), size=n, replace=False)
+    return set(map(str, chosen))
 
 
 def _perturbations_by_split(split_manifest: pd.DataFrame, split: str) -> list[str]:

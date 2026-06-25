@@ -387,3 +387,24 @@ Claim status:
 - Known risks: official GEARS split files and official GEARS metric package are not imported; no neural GEARS model is run; single cell-line context limits biological/context claims.
 - Rollback note: rollback to tag `v0.12-public-benchmark-baseline-run` to remove v0.13 work.
 - Claim status: reproducible public Norman/GEARS-compatible internal baseline run only; no SOTA, official GEARS, leaderboard, neural GEARS, biological discovery, or general EvoPrior superiority claim.
+
+### EXP-0017: v0.14 GEARS alignment and wrapper blocker package
+
+- Experiment ID: `v0.14-gears-aligned-baseline`
+- Date: 2026-06-25
+- Status: completed locally; pending final regression and user-side git commit/tag
+- Role: MLOps / Benchmark engineer / External-baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Strengthen the Norman GEARS-compatible package, attempt official wrapper feasibility, add a fast weighted combo baseline, and produce an external review package.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo_with_random_combo`; internally generated seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v014_aligned_baseline.yaml`; official wrapper config `configs/experiment/gears_norman_v014_official_wrapper.yaml`.
+- Git commit: pre-v0.14 commit `96b9df8`.
+- Seed(s): experiment seed `140`; split seed `1400`.
+- Command: `python scripts/run_official_gears_wrapper.py --config configs/experiment/gears_norman_v014_official_wrapper.yaml --dry-run`; `python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v014_aligned_baseline.yaml`.
+- Outputs: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/`; `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/`.
+- Metrics: leakage audit passed with no leaked test combos. Test examples: `mean_delta` MAE/MSE/Pearson/Spearman 0.6954 / 10.0818 / 0.5804 / 0.4322; `single_effect_additive_combo` 0.5745 / 6.7388 / 0.7684 / 0.6443; `weighted_combo_additive` 0.5660 / 6.6759 / 0.7599 / 0.6390.
+- Assumptions: official GEARS dependency stack remains optional and unavailable; the split is internal-compatible, not official.
+- Known risks: `pip install cell-gears` failed with `WinError 5`; official split and official metrics are not imported; weighted combo improvement is narrow and split-specific.
+- Rollback note: rollback to tag `v0.13-gears-norman-baseline` to remove v0.14 work.
+- Claim status: strengthened GEARS-compatible internal Norman package with official-wrapper blocker only; no SOTA, official GEARS, leaderboard, neural GEARS, biological discovery, or general EvoPrior superiority claim.

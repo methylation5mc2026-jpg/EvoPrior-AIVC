@@ -431,6 +431,35 @@ v0.13 claim boundary:
 - strongest implemented baseline is `single_effect_additive_combo`, test MAE 0.5491 and Pearson delta 0.7538 under this exact split;
 - no SOTA, leaderboard, official GEARS, neural GEARS, biological-discovery, or general EvoPrior superiority claim.
 
+## v0.14 Quickstart
+
+v0.14 strengthens the Norman package with an official GEARS wrapper feasibility layer, an explicit `random_combo` split category, and a fast `weighted_combo_additive` baseline. The official wrapper is blocked in the current environment because `cell-gears`, `gears`, `torch`, and `torch_geometric` are unavailable and `pip install cell-gears` fails with `WinError 5`.
+
+Run the aligned baseline:
+
+```powershell
+python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v014_aligned_baseline.yaml
+```
+
+Run the official wrapper dry-run/blocker:
+
+```powershell
+python scripts/run_official_gears_wrapper.py --config configs/experiment/gears_norman_v014_official_wrapper.yaml --dry-run
+```
+
+Latest v0.14 outputs:
+
+```text
+outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/
+outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/
+```
+
+v0.14 claim boundary:
+
+- GEARS-compatible/internal alignment is tightened, but official GEARS remains blocked;
+- `weighted_combo_additive` has the best test MAE/MSE in this run, while `single_effect_additive_combo` has slightly stronger Pearson/Spearman;
+- no official GEARS, leaderboard, SOTA, neural GEARS, or biological-discovery claim.
+
 ## 数据政策
 
 - 不提交大型原始数据。

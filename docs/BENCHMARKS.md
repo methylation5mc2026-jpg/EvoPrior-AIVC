@@ -750,3 +750,40 @@ Interpretation:
 - v0.13 produces the first reproducible Norman/GEARS-compatible public benchmark baseline run in this repo.
 - `single_effect_additive_combo` is the strongest implemented non-neural baseline under this exact internal split.
 - Do not claim official GEARS alignment, leaderboard comparability, SOTA, neural GEARS reproduction, biological discovery, or general EvoPrior superiority.
+
+## v0.14 GEARS-aligned Norman package
+
+Experiment ID: `v0.14-gears-aligned-baseline`
+
+Commands:
+
+```powershell
+python scripts/run_official_gears_wrapper.py --config configs/experiment/gears_norman_v014_official_wrapper.yaml --dry-run
+python scripts/run_gears_norman_baseline.py --config configs/experiment/gears_norman_v014_aligned_baseline.yaml
+```
+
+Outputs:
+
+```text
+outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/
+outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/
+```
+
+Benchmark status:
+
+- official wrapper: blocked by missing GEARS/Torch stack and user-site install permissions;
+- split: GEARS-compatible/internal with seen0, seen1, seen2, random_combo, and single_unseen classes;
+- metrics: internal compatible MAE, MSE, Pearson, Spearman, DE20/DE50;
+- no leaderboard comparability.
+
+Main test metrics:
+
+- `mean_delta`: MAE 0.6954, MSE 10.0818, Pearson 0.5804, Spearman 0.4322.
+- `single_effect_additive_combo`: MAE 0.5745, MSE 6.7388, Pearson 0.7684, Spearman 0.6443.
+- `weighted_combo_additive`: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+
+Interpretation:
+
+- `weighted_combo_additive` is best by MAE/MSE under this exact v0.14 internal split.
+- `single_effect_additive_combo` is slightly better by Pearson/Spearman.
+- v0.14 is a stronger external review package, not an official GEARS result.

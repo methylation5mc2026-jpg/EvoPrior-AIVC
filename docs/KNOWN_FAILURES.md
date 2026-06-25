@@ -59,6 +59,10 @@
 55. v0.13 `single_effect_additive_combo` is strongest only among implemented baselines under the exact internal split and preprocessing.
 56. v0.13 Norman has a limited single-context setting, so do not claim broad cell-type, donor, tissue, or biological generalization.
 57. v0.13 raw Norman H5AD is local data and must not be committed.
+58. v0.14 official GEARS wrapper is blocked because `cell-gears`, `gears`, `torch`, and `torch_geometric` are unavailable in the current environment.
+59. v0.14 `pip install cell-gears` failed with `WinError 5` while writing `C:\Users\HiC3C\AppData\Roaming\Python`.
+60. v0.14 `weighted_combo_additive` has a narrow MAE/MSE gain under the internal split, but it is not official GEARS and not evidence of general superiority.
+61. v0.14 random_combo split category is internally generated; it is not proof of official GEARS split alignment.
 
 ## 失败记录模板
 
