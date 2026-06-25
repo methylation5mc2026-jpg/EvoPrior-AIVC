@@ -787,3 +787,38 @@ Interpretation:
 - `weighted_combo_additive` is best by MAE/MSE under this exact v0.14 internal split.
 - `single_effect_additive_combo` is slightly better by Pearson/Spearman.
 - v0.14 is a stronger external review package, not an official GEARS result.
+
+## v0.15 Fast Neural Norman Baseline
+
+Experiment ID: `v0.15-fast-neural-norman-baseline`
+
+Command:
+
+```powershell
+python scripts/run_fast_neural_norman.py --config configs/experiment/gears_norman_v015_fast_neural.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/
+```
+
+Benchmark status:
+
+- public Norman/scPerturb H5AD with md5 `c870e6967d91c017d9da827bab183cd6`;
+- v0.14 internal GEARS-compatible seen0/seen1/seen2/random_combo split;
+- sklearn MLP/PCA fast neural-style baseline, not official GEARS;
+- internal compatible metrics only.
+
+Main test metrics:
+
+- `fast_combo_mlp_pca_sklearn` seed mean: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+- `single_effect_additive_combo`: MAE 0.5745, MSE 6.7388, Pearson 0.7684, Spearman 0.6443.
+- `weighted_combo_additive`: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+
+Interpretation:
+
+- v0.15 establishes a reproducible trained neural-style baseline with seed repeats.
+- The neural-style baseline does not beat the strongest v0.14 transparent reference on test MAE/MSE under this exact split.
+- Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general neural superiority.

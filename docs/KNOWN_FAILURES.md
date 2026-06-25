@@ -63,6 +63,10 @@
 59. v0.14 `pip install cell-gears` failed with `WinError 5` while writing `C:\Users\HiC3C\AppData\Roaming\Python`.
 60. v0.14 `weighted_combo_additive` has a narrow MAE/MSE gain under the internal split, but it is not official GEARS and not evidence of general superiority.
 61. v0.14 random_combo split category is internally generated; it is not proof of official GEARS split alignment.
+62. v0.15 uses sklearn `MLPRegressor` because PyTorch and official GEARS dependencies remain unavailable; it is not a GEARS neural reproduction.
+63. v0.15 `fast_combo_mlp_pca_sklearn` does not beat `weighted_combo_additive` on test MAE/MSE under the v0.14 internal split.
+64. v0.15 has seed variability; the three-seed summary, not a single best seed, is the primary result.
+65. v0.15 features are compact perturbation metadata features and do not include graph structure, pathway priors, or official GEARS gene graph inputs.
 
 ## 失败记录模板
 

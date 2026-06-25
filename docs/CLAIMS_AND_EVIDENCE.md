@@ -32,6 +32,7 @@
 - `v0.12-public-benchmark-baseline-run`: a public scPerturb-compatible Papalexi/Satija H5AD baseline run executes end-to-end with checksum-validated data, schema report, custom leave-one-perturbation split, leakage audit, locked internal metrics, and evidence artifacts. Output: `outputs/runs/v0.12-public-benchmark-baseline-run/scperturb_papalexi_2021_arrayed_rna_v012/20260624T150442Z/`.
 - `v0.13-gears-norman-baseline`: a public Norman/scPerturb GEARS-compatible internal baseline run executes end-to-end with md5-validated data, schema report, internally generated seen0/seen1/seen2 split, leakage audit, locked internal metrics, DE20/DE50 recovery, and evidence artifacts. Output: `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/`.
 - `v0.14-gears-aligned-baseline`: the Norman package now includes an official-wrapper blocker report, an explicit random_combo split category, a weighted combo baseline, and a reviewer-facing package. Output: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/`; blocker output: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/`.
+- `v0.15-fast-neural-norman-baseline`: a fast sklearn MLP/PCA neural-style baseline trains and evaluates on the public Norman/scPerturb GEARS-compatible internal split with three seeds, seed summary metrics, model manifests, training curves, and evidence artifacts. Output: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`.
 
 ## 消融提示
 
@@ -46,6 +47,7 @@
 - `v0.12-public-benchmark-baseline-run`: the selected split is custom benchmark-compatible rather than official leaderboard aligned, and the test suite is underpowered with n=2 held-out perturbations.
 - `v0.13-gears-norman-baseline`: the Norman run is GEARS-compatible/internal rather than official GEARS aligned; `single_effect_additive_combo` is strongest among implemented transparent baselines under this exact split only.
 - `v0.14-gears-aligned-baseline`: official GEARS remains blocked. `weighted_combo_additive` improves MAE/MSE narrowly under the v0.14 internal split, but `single_effect_additive_combo` remains slightly stronger on Pearson/Spearman.
+- `v0.15-fast-neural-norman-baseline`: the trained neural-style baseline is reproducible, but it does not beat `weighted_combo_additive` on test MAE/MSE under the same v0.14 internal split.
 
 ## 推测/未来工作
 
@@ -66,6 +68,7 @@
 - Do not claim v0.12 is an official benchmark result, a leaderboard-comparable result, or evidence of general EvoPrior superiority.
 - Do not claim v0.13 is an official GEARS result, a leaderboard-comparable result, SOTA, a neural GEARS reproduction, biological discovery, or evidence of general EvoPrior superiority.
 - Do not claim v0.14 is an official GEARS result, a leaderboard-comparable result, SOTA, a neural GEARS reproduction, biological discovery, or evidence of general EvoPrior superiority.
+- Do not claim v0.15 is an official GEARS result, a leaderboard-comparable result, SOTA, a PyTorch/GEARS reproduction, biological discovery, or evidence of general neural-model superiority.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

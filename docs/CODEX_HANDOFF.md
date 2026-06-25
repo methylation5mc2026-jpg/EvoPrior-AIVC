@@ -1,5 +1,74 @@
 # Codex Handoff
 
+## Current State: v0.15 Fast Neural Norman Baseline
+
+- Current branch: `feat/fast-neural-norman-baseline-v015`
+- Rollback point: `v0.14-official-gears-alignment`
+- Latest completed source tag before this branch: `v0.14-official-gears-alignment`
+- v0.15 target tag: `v0.15-fast-neural-norman-baseline`
+- Working tree: dirty with v0.15 source/config/docs/tests; local raw data and outputs must not be committed
+
+## v0.15 Run Summary
+
+- Config: `configs/experiment/gears_norman_v015_fast_neural.yaml`
+- Command: `python scripts/run_fast_neural_norman.py --config configs/experiment/gears_norman_v015_fast_neural.yaml`
+- Output: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`
+- Dataset: `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`
+- Split: v0.14 internal GEARS-compatible seen0/seen1/seen2/random_combo split
+- Leakage audit: passed, no leaked test combos
+- Model: `fast_combo_mlp_pca_sklearn`, sklearn MLPRegressor over PCA-compressed train deltas
+- Seeds: 1510, 1511, 1512
+
+## v0.15 Metrics
+
+- Fast neural test mean: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+- Recomputed `single_effect_additive_combo`: MAE 0.5745, MSE 6.7388, Pearson 0.7684, Spearman 0.6443.
+- Recomputed `weighted_combo_additive`: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+- Interpretation: trained neural-style baseline is reproducible, but it does not beat the strongest v0.14 transparent baseline on test MAE/MSE.
+
+## v0.15 Final Regression
+
+- Targeted tests: `5 passed, 3 warnings`.
+- Full tests: `144 passed, 3 warnings`.
+- Targeted ruff on v0.15 Python files: passed.
+- v0.15 runner: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`.
+- v0.14 compatibility runner: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T023316Z/`.
+
+## v0.15 Claim Boundary
+
+Allowed: reproducible fast sklearn MLP/PCA baseline on a public Norman/scPerturb GEARS-compatible internal split with documented data, split, metrics, and seed repeats.
+
+Forbidden: SOTA, official GEARS, leaderboard comparability, biological discovery, or general neural-model superiority.
+
+## Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.tmp_pytest_v15/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## Git Permission Blocker
+
+Codex attempted to stage v0.15 files, but `.git/index.lock` creation failed with permission denied. No files are staged.
+
+User-side commit/tag commands:
+
+```powershell
+git add README.md configs/experiment/gears_norman_v015_fast_neural.yaml docs reports/v0.15_fast_neural_norman_summary.md scripts/run_fast_neural_norman.py src/evoprior_aivc/baselines/__init__.py src/evoprior_aivc/baselines/fast_combo_mlp.py src/evoprior_aivc/data/perturbation_features.py tests/test_fast_combo_mlp_baseline.py tests/test_perturbation_features.py tests/test_gears_norman_config.py
+git commit -m "feat: add fast neural Norman baseline"
+git tag v0.15-fast-neural-norman-baseline
+git tag --points-at HEAD
+git status --short
+```
+
+## Next Exact Command
+
+```powershell
+git add README.md configs/experiment/gears_norman_v015_fast_neural.yaml docs reports/v0.15_fast_neural_norman_summary.md scripts/run_fast_neural_norman.py src/evoprior_aivc/baselines/__init__.py src/evoprior_aivc/baselines/fast_combo_mlp.py src/evoprior_aivc/data/perturbation_features.py tests/test_fast_combo_mlp_baseline.py tests/test_perturbation_features.py tests/test_gears_norman_config.py
+```
+
 ## Current State
 
 - Current branch: `feat/official-gears-alignment-v014`

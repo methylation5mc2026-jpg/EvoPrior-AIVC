@@ -23,6 +23,19 @@ def test_gears_norman_v014_configs_lock_alignment_status():
     assert wrapper["benchmark"]["official_alignment_status"] == "official_wrapper_blocked"
 
 
+def test_gears_norman_v015_config_locks_fast_neural_scope():
+    config = _load_yaml(Path("configs/experiment/gears_norman_v015_fast_neural.yaml"))
+
+    assert config["output_prefix"] == "v0.15-fast-neural-norman-baseline"
+    assert config["benchmark"]["official_alignment_status"] == (
+        "gears_compatible_internal_neural_baseline"
+    )
+    assert config["model"]["backend"] == "sklearn_mlp_regressor_pca"
+    assert len(config["model"]["seeds"]) == 3
+    assert config["split"]["seed"] == 1400
+    assert "not official GEARS" in config["reporting"]["claim_boundary"]
+
+
 def _load_yaml(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle)

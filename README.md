@@ -1,5 +1,30 @@
 # EvoPrior-AIVC
 
+## v0.15 Fast Neural Norman Quickstart
+
+v0.15 adds a fast neural-style Norman baseline using sklearn `MLPRegressor` over PCA-compressed delta-expression targets. PyTorch and official GEARS dependencies remain unavailable in the current environment, so this is not an official GEARS model reproduction.
+
+Run:
+
+```powershell
+python scripts/run_fast_neural_norman.py --config configs/experiment/gears_norman_v015_fast_neural.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/
+```
+
+Claim boundary:
+
+- public Norman/scPerturb H5AD, md5 `c870e6967d91c017d9da827bab183cd6`;
+- v0.14 internal GEARS-compatible split with seen0/seen1/seen2/random_combo classes;
+- `fast_combo_mlp_pca_sklearn` was trained with seeds 1510, 1511, and 1512;
+- test MAE mean was 0.5877 and Pearson delta mean was 0.7134 across the three neural seeds;
+- v0.14 `weighted_combo_additive` remains stronger on test MAE/MSE under this exact split;
+- no official GEARS, leaderboard, SOTA, biological-discovery, or general neural-superiority claim.
+
 EvoPrior-AIVC 是一个面向单细胞扰动响应预测的研究工程项目。目标不是做泛泛的“AI for biology”演示，而是在明确公开数据集、固定切分、统一评测脚本和可复现实验记录之上，检验“细胞谱系先验、基因演化/保守性先验、通路/网络先验是否能提升外推预测”这个窄而严肃的问题。
 
 当前仓库已推进到 v0.9-integrated-evoprior-additive-model：在 v0.8 HGNC metadata source 之上，新增透明、非神经的 `EvoPriorAdditiveModel`，把 global、perturbation、lineage 和可选 gene metadata residual 组件合成到同一 runner，并生成 component audit。v0.9 不包含 neural EvoPrior，不声称 SOTA，不声称真实 evolutionary/conservation-prior benefit，因为当前真实源不含 orthology、conservation score 或 gene-age 特征。

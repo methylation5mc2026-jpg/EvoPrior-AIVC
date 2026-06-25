@@ -408,3 +408,24 @@ Claim status:
 - Known risks: `pip install cell-gears` failed with `WinError 5`; official split and official metrics are not imported; weighted combo improvement is narrow and split-specific.
 - Rollback note: rollback to tag `v0.13-gears-norman-baseline` to remove v0.14 work.
 - Claim status: strengthened GEARS-compatible internal Norman package with official-wrapper blocker only; no SOTA, official GEARS, leaderboard, neural GEARS, biological discovery, or general EvoPrior superiority claim.
+
+### EXP-0018: v0.15 fast neural Norman baseline
+
+- Experiment ID: `v0.15-fast-neural-norman-baseline`
+- Date: 2026-06-25
+- Status: completed locally; regression passed; pending git commit/tag
+- Role: MLOps / Benchmark engineer / Baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Train and evaluate a fast neural-style baseline on the existing public Norman/scPerturb GEARS-compatible internal benchmark.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo_with_random_combo`; same v0.14 internal seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v015_fast_neural.yaml`
+- Git commit: run manifest records pre-v0.15 commit `f97ce1e`.
+- Seed(s): model seeds `1510`, `1511`, `1512`; split seed `1400`.
+- Command: `python scripts/run_fast_neural_norman.py --config configs/experiment/gears_norman_v015_fast_neural.yaml`
+- Outputs: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`.
+- Metrics: leakage audit passed with no leaked test combos. `fast_combo_mlp_pca_sklearn` test mean across three seeds: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317. Recomputed references: `single_effect_additive_combo` MAE 0.5745 / MSE 6.7388 / Pearson 0.7684 / Spearman 0.6443; `weighted_combo_additive` MAE 0.5660 / MSE 6.6759 / Pearson 0.7599 / Spearman 0.6390.
+- Assumptions: PyTorch and official GEARS stack remain unavailable, so the neural-style backend is sklearn MLPRegressor with PCA target compression; hyperparameters were pre-specified and not tuned on test metrics.
+- Known risks: internal split and internal metrics only; no graph neural GEARS architecture; seed variability exists; v0.14 transparent weighted combo remains stronger on test MAE/MSE.
+- Rollback note: rollback to tag `v0.14-official-gears-alignment` to remove v0.15 work.
+- Claim status: reproducible fast neural-style baseline execution only; no SOTA, official GEARS, leaderboard, biological discovery, or general neural superiority claim.

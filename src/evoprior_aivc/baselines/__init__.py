@@ -5,6 +5,7 @@ from evoprior_aivc.baselines.base import DeltaDataset, build_delta_dataset
 from evoprior_aivc.baselines.combo_additive import SingleEffectAdditiveComboBaseline
 from evoprior_aivc.baselines.combo_weighted import WeightedComboAdditiveBaseline
 from evoprior_aivc.baselines.control_mean import ControlMeanBaseline
+from evoprior_aivc.baselines.fast_combo_mlp import FastComboMLPConfig, FastComboMLPPCA
 from evoprior_aivc.baselines.gene_prior_correction import GenePriorCorrectionBaseline
 from evoprior_aivc.baselines.hierarchical_additive import HierarchicalAdditiveBaseline
 from evoprior_aivc.baselines.lineage_shrinkage import LineageShrinkageBaseline
@@ -18,6 +19,8 @@ __all__ = [
     "AdditiveBaseline",
     "ControlMeanBaseline",
     "DeltaDataset",
+    "FastComboMLPConfig",
+    "FastComboMLPPCA",
     "GenePriorCorrectionBaseline",
     "HierarchicalAdditiveBaseline",
     "LineageShrinkageBaseline",
