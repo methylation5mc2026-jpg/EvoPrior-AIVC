@@ -4,12 +4,14 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .tmp_pytest*/
+.tmp_mpl_gears/
 .ruff_cache/
 .coverage
 htmlcov/
 
 # Environments
 .venv/
+.venv_gears/
 venv/
 
 # Local data and outputs

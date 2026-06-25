@@ -822,3 +822,38 @@ Interpretation:
 - v0.15 establishes a reproducible trained neural-style baseline with seed repeats.
 - The neural-style baseline does not beat the strongest v0.14 transparent reference on test MAE/MSE under this exact split.
 - Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general neural superiority.
+
+## v0.16 Norman residual performance sprint
+
+Experiment ID: `v0.16-official-gears-or-model-improvement-sprint`
+
+Command:
+
+```powershell
+python scripts/run_norman_residual_sprint.py --config configs/experiment/gears_norman_v016_residual_sweep.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/
+```
+
+Selection:
+
+- validation metric: `mae_delta`;
+- selected candidate: `weighted_pca_ridge_s075_a10`;
+- base model: `weighted_combo_additive`;
+- residual model: PCA residual + ridge, scale 0.75, alpha 10.0.
+
+Main test metrics:
+
+- v0.16 selected residual: MAE 0.4308, MSE 3.6689, Pearson 0.8692, Spearman 0.7850.
+- v0.14 weighted combo: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+- v0.15 fast MLP/PCA: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+
+Interpretation:
+
+- v0.16 improves the project-owned residual baseline under this exact internal split.
+- Official GEARS imports now work in `.venv_gears`, but official GEARS metrics are still not produced by the repo wrapper.
+- Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.

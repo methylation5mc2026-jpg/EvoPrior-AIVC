@@ -429,3 +429,25 @@ Claim status:
 - Known risks: internal split and internal metrics only; no graph neural GEARS architecture; seed variability exists; v0.14 transparent weighted combo remains stronger on test MAE/MSE.
 - Rollback note: rollback to tag `v0.14-official-gears-alignment` to remove v0.15 work.
 - Claim status: reproducible fast neural-style baseline execution only; no SOTA, official GEARS, leaderboard, biological discovery, or general neural superiority claim.
+
+### EXP-0019: v0.16 Norman residual performance sprint
+
+- Experiment ID: `v0.16-official-gears-or-model-improvement-sprint`
+- Date: 2026-06-25
+- Status: completed locally; regression passed; pending git commit/tag
+- Role: MLOps / Official GEARS engineer / Baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Attempt official GEARS import unblocking and improve the project-owned Norman baseline with a validation-selected residual correction model.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo_with_random_combo`; same v0.14/v0.15 internal seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v016_residual_sweep.yaml`
+- Git commit: run manifest records pre-v0.16 commit `7ed5377`.
+- Seed(s): split seed `1400`; selected residual candidate random state `1603`.
+- Command: `python scripts/run_norman_residual_sprint.py --config configs/experiment/gears_norman_v016_residual_sweep.yaml`
+- Outputs: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`.
+- Metrics: selected `weighted_pca_ridge_s075_a10` test MAE 0.4308, MSE 3.6689, Pearson 0.8692, Spearman 0.7850. This beats v0.14 weighted combo MAE 0.5660 / MSE 6.6759 and v0.14 single-effect Pearson 0.7684 / Spearman 0.6443 under the same internal split.
+- Official GEARS status: `.venv_gears` can import `gears`, `torch`, and `torch_geometric`; the current repo wrapper remains feasibility-only and does not produce official GEARS metrics.
+- Assumptions: validation split selected the candidate by MAE; test metrics were not used to alter the candidate grid or selected model.
+- Known risks: internal split and internal metrics only; residual model is not official GEARS; no leaderboard comparability.
+- Rollback note: rollback to tag `v0.15-fast-neural-norman-baseline` to remove v0.16 work.
+- Claim status: project-owned residual baseline improvement under one public Norman GEARS-compatible internal split only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.

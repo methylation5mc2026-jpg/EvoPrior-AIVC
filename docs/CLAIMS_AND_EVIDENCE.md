@@ -33,6 +33,7 @@
 - `v0.13-gears-norman-baseline`: a public Norman/scPerturb GEARS-compatible internal baseline run executes end-to-end with md5-validated data, schema report, internally generated seen0/seen1/seen2 split, leakage audit, locked internal metrics, DE20/DE50 recovery, and evidence artifacts. Output: `outputs/runs/v0.13-gears-norman-baseline/gears_norman_scperturb_v013/20260625T002742Z/`.
 - `v0.14-gears-aligned-baseline`: the Norman package now includes an official-wrapper blocker report, an explicit random_combo split category, a weighted combo baseline, and a reviewer-facing package. Output: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/`; blocker output: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T014710Z/`.
 - `v0.15-fast-neural-norman-baseline`: a fast sklearn MLP/PCA neural-style baseline trains and evaluates on the public Norman/scPerturb GEARS-compatible internal split with three seeds, seed summary metrics, model manifests, training curves, and evidence artifacts. Output: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`.
+- `v0.16-official-gears-or-model-improvement-sprint`: a validation-selected residual correction baseline improves over the v0.14/v0.15 Norman internal baselines on test MAE, MSE, Pearson delta, and Spearman logFC. Output: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`.
 
 ## 消融提示
 
@@ -48,6 +49,7 @@
 - `v0.13-gears-norman-baseline`: the Norman run is GEARS-compatible/internal rather than official GEARS aligned; `single_effect_additive_combo` is strongest among implemented transparent baselines under this exact split only.
 - `v0.14-gears-aligned-baseline`: official GEARS remains blocked. `weighted_combo_additive` improves MAE/MSE narrowly under the v0.14 internal split, but `single_effect_additive_combo` remains slightly stronger on Pearson/Spearman.
 - `v0.15-fast-neural-norman-baseline`: the trained neural-style baseline is reproducible, but it does not beat `weighted_combo_additive` on test MAE/MSE under the same v0.14 internal split.
+- `v0.16-official-gears-or-model-improvement-sprint`: `weighted_pca_ridge_s075_a10` is validation-selected and improves test MAE/MSE/Pearson/Spearman under the same internal split, but it is still not official GEARS or leaderboard-comparable.
 
 ## 推测/未来工作
 
@@ -69,6 +71,7 @@
 - Do not claim v0.13 is an official GEARS result, a leaderboard-comparable result, SOTA, a neural GEARS reproduction, biological discovery, or evidence of general EvoPrior superiority.
 - Do not claim v0.14 is an official GEARS result, a leaderboard-comparable result, SOTA, a neural GEARS reproduction, biological discovery, or evidence of general EvoPrior superiority.
 - Do not claim v0.15 is an official GEARS result, a leaderboard-comparable result, SOTA, a PyTorch/GEARS reproduction, biological discovery, or evidence of general neural-model superiority.
+- Do not claim v0.16 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

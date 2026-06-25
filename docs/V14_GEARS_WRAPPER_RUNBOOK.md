@@ -33,6 +33,18 @@ This command remains blocker-first unless `gears`, `cell-gears`, `torch`, and th
 - `torch_geometric`: not importable.
 - `pip install cell-gears`: blocked by `WinError 5` writing the Python user site.
 
+## v0.16 Isolated Environment Update
+
+v0.16 created an ignored `.venv_gears` environment and installed `cell-gears==0.1.2`, `torch==2.12.1+cpu`, and `torch-geometric==2.8.0`.
+
+Import check status:
+
+- `torch`: importable as `2.12.1+cpu`.
+- `torch_geometric`: importable.
+- `gears`: importable.
+
+Wrapper status: the repository wrapper remains feasibility-only. It does not train or evaluate official GEARS and does not produce official GEARS Norman metrics. The v0.16 blocker is therefore implementation alignment, not dependency import.
+
 ## Claim Boundary
 
 Wrapper dry-run/blocker artifacts are not model results. They only document why official GEARS execution is not available in the current environment.

@@ -1,5 +1,28 @@
 # EvoPrior-AIVC
 
+## v0.16 Norman Residual Sprint Quickstart
+
+v0.16 adds a validation-selected residual correction sprint on the public Norman/scPerturb GEARS-compatible internal split. It improves the project-owned baseline result, but it is still not official GEARS, not leaderboard-comparable, and not SOTA.
+
+Run:
+
+```powershell
+python scripts/run_norman_residual_sprint.py --config configs/experiment/gears_norman_v016_residual_sweep.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/
+```
+
+Main result:
+
+- selected model: `weighted_pca_ridge_s075_a10`;
+- test MAE/MSE/Pearson/Spearman: `0.4308 / 3.6689 / 0.8692 / 0.7850`;
+- v0.14 `weighted_combo_additive`: `0.5660 / 6.6759 / 0.7599 / 0.6390`;
+- official GEARS status: dependencies import in `.venv_gears`, but the repo wrapper does not yet produce official GEARS metrics.
+
 ## v0.15 Fast Neural Norman Quickstart
 
 v0.15 adds a fast neural-style Norman baseline using sklearn `MLPRegressor` over PCA-compressed delta-expression targets. PyTorch and official GEARS dependencies remain unavailable in the current environment, so this is not an official GEARS model reproduction.

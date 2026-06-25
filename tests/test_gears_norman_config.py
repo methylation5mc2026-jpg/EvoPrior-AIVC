@@ -36,6 +36,18 @@ def test_gears_norman_v015_config_locks_fast_neural_scope():
     assert "not official GEARS" in config["reporting"]["claim_boundary"]
 
 
+def test_gears_norman_v016_config_locks_validation_selection_scope():
+    config = _load_yaml(Path("configs/experiment/gears_norman_v016_residual_sweep.yaml"))
+
+    assert config["output_prefix"] == "v0.16-model-improvement-sprint"
+    assert config["selection"]["split"] == "val"
+    assert config["selection"]["metric"] == "mae_delta"
+    assert config["split"]["seed"] == 1400
+    assert len(config["candidate_models"]) >= 3
+    assert config["official_gears"]["status"] == "import_ok_but_wrapper_metrics_not_implemented"
+    assert "not official GEARS" in config["reporting"]["claim_boundary"]
+
+
 def _load_yaml(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle)

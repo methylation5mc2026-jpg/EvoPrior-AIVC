@@ -1,5 +1,85 @@
 # Codex Handoff
 
+## Current State: v0.16 Official GEARS Or Model Improvement Sprint
+
+- Current branch: `feat/official-gears-or-model-improvement-v016`
+- Rollback point: `v0.15-fast-neural-norman-baseline`
+- Latest completed source tag before this branch: `v0.15-fast-neural-norman-baseline`
+- v0.16 target tag: `v0.16-official-gears-or-model-improvement-sprint`
+- Working tree: dirty with v0.16 source/config/docs/tests; local raw data, outputs, caches, `.venv_gears/`, and `.tmp_mpl_gears/` must not be committed
+
+## v0.16 Objective
+
+Try to unblock official GEARS locally. If official GEARS metrics remain unavailable, improve the project-owned Norman/scPerturb GEARS-compatible baseline without changing the locked internal split or tuning on test metrics.
+
+## v0.16 Official GEARS Status
+
+- Isolated environment: `.venv_gears/`
+- Installed/importable: `cell-gears==0.1.2`, `torch==2.12.1+cpu`, `torch-geometric==2.8.0`, `gears`
+- Dry-run command: `.\.venv_gears\Scripts\python.exe scripts\run_official_gears_wrapper.py --config configs\experiment\gears_norman_v014_official_wrapper.yaml --dry-run`
+- Wrapper dry-run output: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T025148Z/`
+- v0.16 blocker artifact: `outputs/runs/v0.16-official-gears-attempt/20260625T025148Z/blocker_report.md`
+- Status: imports are unblocked, but the repo wrapper is still feasibility-only and does not train/evaluate official GEARS or produce official GEARS metrics
+
+## v0.16 Run Summary
+
+- Config: `configs/experiment/gears_norman_v016_residual_sweep.yaml`
+- Command: `python scripts/run_norman_residual_sprint.py --config configs/experiment/gears_norman_v016_residual_sweep.yaml`
+- Output: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`
+- Dataset: `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`
+- Split: v0.14/v0.15 internal GEARS-compatible seen0/seen1/seen2/random_combo split
+- Selection: validation MAE only; final test metrics were not used to change the candidate grid
+- Selected model: `weighted_pca_ridge_s075_a10`
+
+## v0.16 Metrics
+
+- Final test: MAE 0.4308, MSE 3.6689, Pearson 0.8692, Spearman 0.7850.
+- v0.14 weighted reference: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+- v0.15 fast MLP/PCA reference: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+- Interpretation: v0.16 improves a project-owned residual baseline under one documented internal Norman split. It is not official GEARS, not SOTA, and not leaderboard-comparable.
+
+## v0.16 Final Regression
+
+- Start full tests: `144 passed, 3 warnings`.
+- Targeted residual/config tests: `7 passed, 3 warnings`.
+- Targeted ruff on v0.16 modified Python files: passed.
+- Full tests: `148 passed, 4 warnings`.
+- v0.16 runner: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`.
+- v0.14 compatibility runner: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T031201Z/`.
+- v0.15 smoke runner: `outputs/runs/v0.15-fast-neural-norman-baseline-smoke/gears_norman_scperturb_v013/20260625T031407Z/`.
+
+## v0.16 Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.venv_gears/`
+- `.tmp_mpl_gears/`
+- `.tmp_pytest_v16/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## v0.16 Git Permission Blocker
+
+Codex attempted to stage v0.16 files, but `.git/index.lock` creation failed with permission denied. No files are staged by Codex.
+
+User-side commit/tag commands:
+
+```powershell
+git status --short
+git add .gitignore README.md configs/experiment/gears_norman_v016_residual_sweep.yaml docs reports/v0.16_norman_performance_sprint_summary.md scripts/run_fast_neural_norman.py scripts/run_norman_residual_sprint.py src/evoprior_aivc/baselines/__init__.py src/evoprior_aivc/baselines/residual_combo_model.py tests/test_gears_norman_config.py tests/test_residual_combo_model.py
+git commit -m "feat: improve Norman baseline with residual sprint"
+git tag v0.16-official-gears-or-model-improvement-sprint
+git tag --points-at HEAD
+git status --short
+```
+
+## v0.16 Next Exact Command
+
+```powershell
+git add .gitignore README.md configs/experiment/gears_norman_v016_residual_sweep.yaml docs reports/v0.16_norman_performance_sprint_summary.md scripts/run_fast_neural_norman.py scripts/run_norman_residual_sprint.py src/evoprior_aivc/baselines/__init__.py src/evoprior_aivc/baselines/residual_combo_model.py tests/test_gears_norman_config.py tests/test_residual_combo_model.py
+```
+
 ## Current State: v0.15 Fast Neural Norman Baseline
 
 - Current branch: `feat/fast-neural-norman-baseline-v015`

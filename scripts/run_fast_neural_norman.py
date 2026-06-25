@@ -45,6 +45,8 @@ def main() -> None:
     args = _parse_args()
     config = _load_yaml(Path(args.config))
     config["config_path"] = args.config
+    if args.smoke:
+        _apply_smoke_overrides(config)
     data_payload = _load_yaml(Path(config["data_config"]))
     data_config = data_payload["data"]
     preparation = prepare_dataset(data_config)
@@ -523,7 +525,20 @@ def _make_run_dir(config: dict[str, Any]) -> Path:
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
+    parser.add_argument("--smoke", action="store_true")
     return parser.parse_args()
+
+
+def _apply_smoke_overrides(config: dict[str, Any]) -> None:
+    config["experiment_id"] = f"{config['experiment_id']}-smoke"
+    config["output_prefix"] = f"{config['output_prefix']}-smoke"
+    seeds = list(config["model"].get("seeds", []))
+    if seeds:
+        config["model"]["seeds"] = seeds[:1]
+    config["model"]["max_iter"] = min(int(config["model"].get("max_iter", 250)), 50)
+    config["reporting"]["claim_boundary"] = (
+        config["reporting"]["claim_boundary"] + " Smoke mode is compatibility-only."
+    )
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:

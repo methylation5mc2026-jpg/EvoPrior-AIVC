@@ -67,6 +67,10 @@
 63. v0.15 `fast_combo_mlp_pca_sklearn` does not beat `weighted_combo_additive` on test MAE/MSE under the v0.14 internal split.
 64. v0.15 has seed variability; the three-seed summary, not a single best seed, is the primary result.
 65. v0.15 features are compact perturbation metadata features and do not include graph structure, pathway priors, or official GEARS gene graph inputs.
+66. v0.16 isolated `.venv_gears` can import `gears`, `torch`, and `torch_geometric`, but the repo wrapper still does not train/evaluate official GEARS or produce official GEARS metrics.
+67. v0.16 `weighted_pca_ridge_s075_a10` improves over v0.14/v0.15 under the same internal Norman split, but it is a project-owned residual baseline, not official GEARS and not leaderboard-comparable.
+68. v0.16 model selection is valid only for the locked validation-selected candidate grid; do not tune the grid after reading final test metrics.
+69. v0.16 uses internal compatible metrics and a GEARS-compatible internal split; no SOTA, biological discovery, or general model superiority claim is allowed.
 
 ## 失败记录模板
 
