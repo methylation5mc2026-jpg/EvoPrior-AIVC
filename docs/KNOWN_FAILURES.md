@@ -75,6 +75,9 @@
 71. v0.17 ablation validation selects `pca_ridge_residual_only`, but this is a follow-up candidate and must not be retconned into the primary v0.17 claim after test inspection.
 72. v0.17 official GEARS dry-run still writes `document_blocker`; no official GEARS metrics or leaderboard-comparable result exists.
 73. v0.17 remains one public Norman GEARS-compatible internal split with internal compatible metrics only; no SOTA, official GEARS, biological discovery, or general superiority claim is allowed.
+74. v0.18 main environment still lacks official GEARS/Torch dependencies; `.venv_gears` imports them, but the wrapper remains feasibility-only and does not train/evaluate official GEARS.
+75. v0.18 release manifest has `git_commit` marked pending until user-side commit/tag because Codex cannot write `.git/index.lock`.
+76. v0.18 is a release/model-card package over v0.17 metrics; it must not be described as a new benchmark performance run or official GEARS reproduction.
 
 ## 失败记录模板
 

@@ -475,3 +475,27 @@ Claim status:
 - Known risks: internal split and internal metrics only; repeat variability is near zero because the selected PCA/ridge path is nearly deterministic; no official GEARS metrics.
 - Rollback note: rollback to tag `v0.16-official-gears-or-model-improvement-sprint` to remove v0.17 work.
 - Claim status: validated project-owned residual baseline package under one public Norman GEARS-compatible internal split only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.
+
+### EXP-0021: v0.18 official GEARS reproduction or model-card release
+
+- Experiment ID: `v0.18-official-gears-reproduction-or-model-card-release`
+- Date: 2026-06-25
+- Status: completed locally; regression passed; pending git commit/tag
+- Role: MLOps / Official GEARS engineer / Benchmark engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Make one final time-boxed official GEARS feasibility attempt and package the validated v0.17 Norman residual baseline for external review.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo_with_random_combo`; same fixed v0.14-v0.17 internal seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Git commit: release branch starts from v0.17 commit `adc93e7`.
+- Seed(s): v0.17 model seeds `0`, `1`, `2`, `3`, `4`; split seed `1400`.
+- Command: `python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Primary output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`.
+- Official GEARS status: `import_ok_run_blocked`; `.venv_gears` imports dependencies, but the wrapper does not train/evaluate official GEARS or import official split files.
+- Release artifacts: `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V18_REPRODUCIBILITY_RUNBOOK.md`, `docs/V18_OFFICIAL_GEARS_REPRODUCTION_LOG.md`, `docs/V18_EXTERNAL_REVIEW_INDEX.md`, `reports/v0.18_release_manifest.md`.
+- Metrics: same as v0.17 validated residual baseline; MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Regression: full pytest passed with `153 passed, 4 warnings`; v0.17 runner, v0.14 compatibility runner, Norman data dry-run, and official GEARS dry-run all passed.
+- Assumptions: v0.18 is release packaging and official-wrapper feasibility logging; it does not alter split, model, seed list, or metrics.
+- Known risks: no official GEARS metrics; release manifest records commit as pending until user-side commit/tag.
+- Rollback note: rollback to tag `v0.17-norman-validated-residual-baseline` to remove v0.18 work.
+- Claim status: external review package for an internal GEARS-compatible Norman result only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.

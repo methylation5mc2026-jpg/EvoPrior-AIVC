@@ -1,5 +1,25 @@
 # EvoPrior-AIVC
 
+## v0.18 Validated Norman Baseline Release Quickstart
+
+v0.18 packages the validated Norman residual baseline for external review and records a final official GEARS feasibility attempt. The official dependency stack imports inside `.venv_gears`, but the repository wrapper is still feasibility-only and does not produce official GEARS metrics.
+
+Run:
+
+```powershell
+python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+```
+
+Release docs:
+
+- model card: `docs/V18_RELEASE_MODEL_CARD.md`;
+- benchmark card: `docs/V18_BENCHMARK_CARD.md`;
+- reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`;
+- external review index: `docs/V18_EXTERNAL_REVIEW_INDEX.md`;
+- release manifest: `reports/v0.18_release_manifest.md`.
+
+Claim boundary: internal GEARS-compatible Norman split only; not official GEARS, not leaderboard-comparable, and not SOTA.
+
 ## v0.17 Validated Norman Residual Baseline Quickstart
 
 v0.17 validates the v0.16 residual baseline on the fixed public Norman/scPerturb GEARS-compatible internal split with five seeds, ablations, negative controls, leakage stress checks, and repeat-level confidence intervals. It is not official GEARS, not leaderboard-comparable, and not SOTA.

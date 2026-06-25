@@ -345,3 +345,15 @@ v0.16 reuses the same public Norman/scPerturb H5AD:
 - Output: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`
 
 No new raw dataset was introduced. v0.16 changes the model family and validation-selection protocol only.
+
+## v0.17/v0.18 Norman release note
+
+v0.17 and v0.18 reuse the same public Norman/scPerturb H5AD:
+
+- File: `NormanWeissman2019_filtered.h5ad`
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- Local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- Config: `configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Primary output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+
+No new raw dataset was introduced. v0.18 is a release/documentation package plus official GEARS feasibility log; it does not change data, split, or metrics.

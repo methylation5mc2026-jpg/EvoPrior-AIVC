@@ -900,3 +900,31 @@ Interpretation:
 
 - v0.17 turns the v0.16 residual result into a reproducible external review package.
 - The result remains GEARS-compatible/internal, not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.
+
+## v0.18 Official GEARS reproduction or model-card release
+
+Experiment ID: `v0.18-official-gears-reproduction-or-model-card-release`
+
+Primary release package:
+
+- model card: `docs/V18_RELEASE_MODEL_CARD.md`;
+- benchmark card: `docs/V18_BENCHMARK_CARD.md`;
+- reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`;
+- official GEARS log: `docs/V18_OFFICIAL_GEARS_REPRODUCTION_LOG.md`;
+- external review index: `docs/V18_EXTERNAL_REVIEW_INDEX.md`;
+- release manifest: `reports/v0.18_release_manifest.md`.
+
+Official GEARS status:
+
+- status: `import_ok_run_blocked`;
+- main environment lacks `cell-gears`, `gears`, `torch`, and `torch_geometric`;
+- `.venv_gears` imports `torch 2.12.1+cpu`, `torch_geometric`, `gears`, and `cell-gears 0.1.2`;
+- dry-run output: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T102235Z/`;
+- full wrapper output: `outputs/runs/v0.14-official-gears-wrapper/gears_norman_scperturb_v013/20260625T102255Z/`;
+- blocker: the wrapper is feasibility-only and does not train/evaluate official GEARS or import official split files.
+
+Release claim:
+
+- v0.18 packages the v0.17 validated residual baseline for external review.
+- It does not change the benchmark split, model, metrics, or v0.17 output.
+- It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or broad model superiority.

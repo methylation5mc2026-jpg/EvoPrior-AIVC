@@ -35,6 +35,7 @@
 - `v0.15-fast-neural-norman-baseline`: a fast sklearn MLP/PCA neural-style baseline trains and evaluates on the public Norman/scPerturb GEARS-compatible internal split with three seeds, seed summary metrics, model manifests, training curves, and evidence artifacts. Output: `outputs/runs/v0.15-fast-neural-norman-baseline/gears_norman_scperturb_v013/20260625T023033Z/`.
 - `v0.16-official-gears-or-model-improvement-sprint`: a validation-selected residual correction baseline improves over the v0.14/v0.15 Norman internal baselines on test MAE, MSE, Pearson delta, and Spearman logFC. Output: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T031612Z/`.
 - `v0.17-norman-validated-residual-baseline`: the v0.16 residual model family is reproduced across seeds `0, 1, 2, 3, 4` with repeat-level CIs, ablations, negative controls, class breakdowns, and leakage stress checks. Output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`.
+- `v0.18-official-gears-reproduction-or-model-card-release`: an external review package is created for the v0.17 residual baseline, and a final official GEARS feasibility attempt is recorded as `import_ok_run_blocked`. Model metrics remain the v0.17 metrics. Release docs start at `docs/V18_EXTERNAL_REVIEW_INDEX.md`.
 
 ## 消融提示
 
@@ -52,6 +53,7 @@
 - `v0.15-fast-neural-norman-baseline`: the trained neural-style baseline is reproducible, but it does not beat `weighted_combo_additive` on test MAE/MSE under the same v0.14 internal split.
 - `v0.16-official-gears-or-model-improvement-sprint`: `weighted_pca_ridge_s075_a10` is validation-selected and improves test MAE/MSE/Pearson/Spearman under the same internal split, but it is still not official GEARS or leaderboard-comparable.
 - `v0.17-norman-validated-residual-baseline`: five-seed stability is near deterministic because the selected PCA/ridge residual path has little stochasticity under the fixed split; this supports reproducibility, not broad external generalization.
+- `v0.18-official-gears-reproduction-or-model-card-release`: official GEARS dependencies import inside `.venv_gears`, but the repository wrapper is feasibility-only and no official GEARS metrics are produced.
 
 ## 推测/未来工作
 
@@ -75,6 +77,7 @@
 - Do not claim v0.15 is an official GEARS result, a leaderboard-comparable result, SOTA, a PyTorch/GEARS reproduction, biological discovery, or evidence of general neural-model superiority.
 - Do not claim v0.16 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
 - Do not claim v0.17 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
+- Do not claim v0.18 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or evidence of general model superiority.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

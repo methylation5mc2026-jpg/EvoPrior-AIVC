@@ -1,5 +1,95 @@
 # Codex Handoff
 
+## Current State: v0.18 Official GEARS Reproduction Or Model-Card Release
+
+- Current branch: `feat/gears-reproduction-or-release-v018`
+- Rollback point: `v0.17-norman-validated-residual-baseline`
+- Latest completed source tag before this branch: `v0.17-norman-validated-residual-baseline`
+- v0.18 target tag: `v0.18-official-gears-reproduction-or-model-card-release`
+- Working tree: dirty with v0.18 docs/reports only; local raw data, outputs, caches, `.venv_gears/`, `.tmp_mpl_gears/`, and `.tmp_pytest_v18/` must not be committed
+
+## v0.18 Objective
+
+Make one final controlled official GEARS feasibility attempt and package the validated v0.17 Norman residual baseline for external AI-biology review.
+
+## v0.18 Official GEARS Status
+
+- Status: `import_ok_run_blocked`
+- Main environment: `cell-gears`, `gears`, `torch`, and `torch_geometric` are not installed/importable.
+- Isolated environment: `.venv_gears` imports `torch 2.12.1+cpu`, `torch_geometric`, `gears`, and `cell-gears 0.1.2`.
+- Dry-run output: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T102235Z/`
+- Full wrapper output: `outputs/runs/v0.14-official-gears-wrapper/gears_norman_scperturb_v013/20260625T102255Z/`
+- v0.18 local status artifact: `outputs/runs/v0.18-official-gears-reproduction/20260625T102255Z/official_gears_status.md`
+- Blocker: the repository wrapper is feasibility-only; it does not train/evaluate official GEARS, import official split files, or produce official metrics.
+
+## v0.18 Release Package
+
+- Model card: `docs/V18_RELEASE_MODEL_CARD.md`
+- Benchmark card: `docs/V18_BENCHMARK_CARD.md`
+- Reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`
+- Official GEARS log: `docs/V18_OFFICIAL_GEARS_REPRODUCTION_LOG.md`
+- External review index: `docs/V18_EXTERNAL_REVIEW_INDEX.md`
+- Release manifest: `reports/v0.18_release_manifest.md` and `reports/v0.18_release_manifest.json`
+- External summary: `reports/v0.18_external_review_index.md`
+
+## v0.18 Metrics Source
+
+v0.18 does not change the model, split, or metrics. It packages the v0.17 output:
+
+- Output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+- Dataset md5: `c870e6967d91c017d9da827bab183cd6`
+- Seeds: `0, 1, 2, 3, 4`
+- Primary model: `weighted_pca_ridge_s075_a10`
+- Mean test MAE/MSE/Pearson/Spearman: 0.430778 / 3.668870 / 0.869224 / 0.784976.
+
+## v0.18 Tests So Far
+
+- Baseline full tests before branch creation: `153 passed, 4 warnings`.
+- Full tests: `153 passed, 4 warnings`.
+- Data dry-run: `python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run` passed.
+- v0.17 reproducibility runner: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T102713Z/`.
+- v0.14 compatibility runner: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T103100Z/`.
+- Official GEARS dry-run regression: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T103300Z/`, decision `document_blocker`.
+- Python ruff: not needed; v0.18 changed docs/reports only.
+
+## v0.18 Claim Boundary
+
+Allowed: v0.18 is an external review package for the validated v0.17 residual baseline and an official GEARS feasibility log.
+
+Forbidden: official GEARS result, leaderboard comparability, SOTA, biological discovery, new performance result beyond v0.17, or broad model superiority.
+
+## v0.18 Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.venv_gears/`
+- `.tmp_mpl_gears/`
+- `.tmp_pytest_v18/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## v0.18 Git Permission Blocker
+
+Codex attempted to stage v0.18 files, but `.git/index.lock` creation failed with permission denied. No files are staged by Codex.
+
+User-side commit/tag commands:
+
+```powershell
+git status --short
+git add README.md docs reports configs scripts tests src pyproject.toml
+git commit -m "docs: release validated Norman baseline package"
+git tag v0.18-official-gears-reproduction-or-model-card-release
+git tag --points-at HEAD
+git status --short
+```
+
+## v0.18 Next Exact Command
+
+```powershell
+git add README.md docs reports configs scripts tests src pyproject.toml
+```
+
 ## Current State: v0.17 Validated Norman Residual Baseline
 
 - Current branch: `feat/norman-validated-residual-baseline-v017`
