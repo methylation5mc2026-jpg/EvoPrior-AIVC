@@ -48,6 +48,25 @@ def test_gears_norman_v016_config_locks_validation_selection_scope():
     assert "not official GEARS" in config["reporting"]["claim_boundary"]
 
 
+def test_gears_norman_v017_config_locks_validation_package_scope():
+    config = _load_yaml(Path("configs/experiment/gears_norman_v017_multiseed_residual.yaml"))
+
+    assert config["output_prefix"] == "v0.17-norman-validated-residual-baseline"
+    assert config["seeds"] == [0, 1, 2, 3, 4]
+    assert config["split"]["seed"] == 1400
+    assert config["selection"]["split"] == "val"
+    assert config["selected_model"]["candidate_id"] == "weighted_pca_ridge_s075_a10"
+    assert any(
+        item["candidate_id"] == "shuffled_residual_target_control"
+        for item in config["ablation_models"]
+    )
+    assert any(
+        item["candidate_id"] == "shuffled_perturbation_feature_control"
+        for item in config["ablation_models"]
+    )
+    assert "not official GEARS" in config["reporting"]["claim_boundary"]
+
+
 def _load_yaml(path: Path) -> dict:
     with path.open("r", encoding="utf-8") as handle:
         payload = yaml.safe_load(handle)

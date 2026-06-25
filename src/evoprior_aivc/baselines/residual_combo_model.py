@@ -32,6 +32,8 @@ class ResidualComboConfig:
     include_base_prediction_features: bool = True
     missing_single_fallback: str = "global_single_mean"
     weighted_ridge_alpha: float = 1.0
+    residual_target_shuffle_seed: int | None = None
+    metadata_feature_shuffle_seed: int | None = None
 
 
 class ResidualComboCorrectionBaseline(DeltaBaseline):
@@ -54,11 +56,21 @@ class ResidualComboCorrectionBaseline(DeltaBaseline):
         self.base_model_.fit(dataset)
         base_delta = self.base_model_.predict_delta(dataset)
         residual_delta = dataset.observed_delta.loc[:, self.gene_names_] - base_delta
+        if self.config.residual_target_shuffle_seed is not None:
+            residual_delta = _shuffle_frame_rows(
+                residual_delta,
+                seed=int(self.config.residual_target_shuffle_seed),
+            )
         self.feature_encoder_ = PerturbationFeatureEncoder(
             include_cell_type=self.config.include_cell_type,
             include_perturbation_type=self.config.include_perturbation_type,
         )
         metadata_features = self.feature_encoder_.fit_transform(dataset.metadata)
+        if self.config.metadata_feature_shuffle_seed is not None:
+            metadata_features = _shuffle_frame_rows(
+                metadata_features,
+                seed=int(self.config.metadata_feature_shuffle_seed),
+            )
         self.extra_categories_ = self._fit_extra_categories(dataset.metadata)
         x_train = self._feature_frame(dataset.metadata, metadata_features, base_delta, fit=True)
         y_train = residual_delta.to_numpy(dtype=float)
@@ -172,6 +184,8 @@ class ResidualComboCorrectionBaseline(DeltaBaseline):
                 "include_perturbation_type": self.config.include_perturbation_type,
                 "include_split_class": self.config.include_split_class,
                 "include_base_prediction_features": self.config.include_base_prediction_features,
+                "residual_target_shuffle_seed": self.config.residual_target_shuffle_seed,
+                "metadata_feature_shuffle_seed": self.config.metadata_feature_shuffle_seed,
             },
             "fit_status": dict(self.fit_status_),
             "feature_manifest": self.feature_encoder_.manifest(),
@@ -188,8 +202,11 @@ class ResidualComboCorrectionBaseline(DeltaBaseline):
                 ridge_alpha=float(self.config.weighted_ridge_alpha),
                 missing_single_fallback=self.config.missing_single_fallback,
             )
+        if self.config.base_model == "zero_delta":
+            return _ZeroDeltaBaseline()
         raise ValueError(
-            "base_model must be single_effect_additive_combo or weighted_combo_additive"
+            "base_model must be single_effect_additive_combo, "
+            "weighted_combo_additive, or zero_delta"
         )
 
     def _fit_extra_categories(self, metadata: pd.DataFrame) -> dict[str, tuple[str, ...]]:
@@ -265,6 +282,17 @@ def _base_prediction_summary(base_delta: pd.DataFrame) -> pd.DataFrame:
     )
 
 
+def _shuffle_frame_rows(frame: pd.DataFrame, *, seed: int) -> pd.DataFrame:
+    rng = np.random.default_rng(seed)
+    order = rng.permutation(frame.shape[0])
+    return pd.DataFrame(
+        frame.to_numpy(dtype=float)[order],
+        index=frame.index,
+        columns=frame.columns,
+        dtype=float,
+    )
+
+
 def _safe_float(value: object) -> float | None:
     if value is None:
         return None
@@ -272,3 +300,18 @@ def _safe_float(value: object) -> float | None:
     if np.isnan(value) or np.isinf(value):
         return None
     return value
+
+
+class _ZeroDeltaBaseline(DeltaBaseline):
+    name = "zero_delta"
+
+    def fit(self, dataset: DeltaDataset) -> _ZeroDeltaBaseline:
+        self.gene_names_ = dataset.gene_names
+        return self
+
+    def predict_delta(self, dataset: DeltaDataset) -> pd.DataFrame:
+        return pd.DataFrame(
+            0.0,
+            index=dataset.metadata.index.astype(str),
+            columns=self.gene_names_,
+        )

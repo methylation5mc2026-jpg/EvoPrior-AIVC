@@ -1,5 +1,30 @@
 # EvoPrior-AIVC
 
+## v0.17 Validated Norman Residual Baseline Quickstart
+
+v0.17 validates the v0.16 residual baseline on the fixed public Norman/scPerturb GEARS-compatible internal split with five seeds, ablations, negative controls, leakage stress checks, and repeat-level confidence intervals. It is not official GEARS, not leaderboard-comparable, and not SOTA.
+
+Run:
+
+```powershell
+python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+```
+
+Latest output:
+
+```text
+outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/
+```
+
+Main result:
+
+- seeds: `0, 1, 2, 3, 4`;
+- dataset md5: `c870e6967d91c017d9da827bab183cd6`;
+- primary model: `weighted_pca_ridge_s075_a10`;
+- test MAE/MSE/Pearson/Spearman mean: `0.4308 / 3.6689 / 0.8692 / 0.7850`;
+- leakage stress: all critical checks passed;
+- external card: `docs/V17_EXTERNAL_RESULT_CARD.md`.
+
 ## v0.16 Norman Residual Sprint Quickstart
 
 v0.16 adds a validation-selected residual correction sprint on the public Norman/scPerturb GEARS-compatible internal split. It improves the project-owned baseline result, but it is still not official GEARS, not leaderboard-comparable, and not SOTA.

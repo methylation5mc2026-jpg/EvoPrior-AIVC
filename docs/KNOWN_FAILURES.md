@@ -71,6 +71,10 @@
 67. v0.16 `weighted_pca_ridge_s075_a10` improves over v0.14/v0.15 under the same internal Norman split, but it is a project-owned residual baseline, not official GEARS and not leaderboard-comparable.
 68. v0.16 model selection is valid only for the locked validation-selected candidate grid; do not tune the grid after reading final test metrics.
 69. v0.16 uses internal compatible metrics and a GEARS-compatible internal split; no SOTA, biological discovery, or general model superiority claim is allowed.
+70. v0.17 five-seed stability is near deterministic because the selected PCA/ridge residual path has little stochasticity under the fixed split; it is reproducibility evidence, not a broad uncertainty estimate.
+71. v0.17 ablation validation selects `pca_ridge_residual_only`, but this is a follow-up candidate and must not be retconned into the primary v0.17 claim after test inspection.
+72. v0.17 official GEARS dry-run still writes `document_blocker`; no official GEARS metrics or leaderboard-comparable result exists.
+73. v0.17 remains one public Norman GEARS-compatible internal split with internal compatible metrics only; no SOTA, official GEARS, biological discovery, or general superiority claim is allowed.
 
 ## 失败记录模板
 

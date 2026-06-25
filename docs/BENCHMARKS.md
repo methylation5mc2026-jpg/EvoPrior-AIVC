@@ -857,3 +857,46 @@ Interpretation:
 - v0.16 improves the project-owned residual baseline under this exact internal split.
 - Official GEARS imports now work in `.venv_gears`, but official GEARS metrics are still not produced by the repo wrapper.
 - Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.
+
+## v0.17 Validated Norman residual baseline
+
+Experiment ID: `v0.17-norman-validated-residual-baseline`
+
+Command:
+
+```powershell
+python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+```
+
+Output:
+
+```text
+outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/
+```
+
+Benchmark status:
+
+- public Norman/scPerturb H5AD with md5 `c870e6967d91c017d9da827bab183cd6`;
+- fixed v0.14 internal GEARS-compatible seen0/seen1/seen2/random_combo split;
+- five seeds: `0, 1, 2, 3, 4`;
+- repeat-level confidence intervals, ablations, negative controls, and leakage stress checks;
+- internal compatible metrics only; not official GEARS and not leaderboard-comparable.
+
+Main test metrics:
+
+- `weighted_pca_ridge_s075_a10` five-seed mean: MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- v0.14 `weighted_combo_additive`: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+- v0.15 fast MLP/PCA: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+- v0.16 residual: MAE 0.430775, MSE 3.668888, Pearson 0.869223, Spearman 0.784999.
+
+Validation and audit:
+
+- ablation winner by validation MAE: `pca_ridge_residual_only`;
+- shuffled residual-target and shuffled perturbation-feature controls degrade;
+- all critical leakage stress checks pass;
+- official GEARS dry-run remains `document_blocker` at `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T100234Z/`.
+
+Interpretation:
+
+- v0.17 turns the v0.16 residual result into a reproducible external review package.
+- The result remains GEARS-compatible/internal, not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.

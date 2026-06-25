@@ -451,3 +451,27 @@ Claim status:
 - Known risks: internal split and internal metrics only; residual model is not official GEARS; no leaderboard comparability.
 - Rollback note: rollback to tag `v0.15-fast-neural-norman-baseline` to remove v0.16 work.
 - Claim status: project-owned residual baseline improvement under one public Norman GEARS-compatible internal split only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.
+
+### EXP-0020: v0.17 validated Norman residual baseline
+
+- Experiment ID: `v0.17-norman-validated-residual-baseline`
+- Date: 2026-06-25
+- Status: completed locally; regression passed; pending git commit/tag
+- Role: MLOps / Benchmark engineer / Baseline engineer / Evaluation engineer / Scientific reviewer / Documentation engineer
+- Objective: Convert the v0.16 residual result into a reviewer-facing package with five seeds, ablations, negative controls, leakage stress checks, class breakdowns, and repeat-level confidence intervals.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok`.
+- Split ID: `gears_compatible_combo_with_random_combo`; same fixed v0.14/v0.15/v0.16 internal seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Git commit: run manifest records pre-v0.17 commit `b497dfd`.
+- Seed(s): model seeds `0`, `1`, `2`, `3`, `4`; split seed `1400`.
+- Command: `python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Outputs: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`.
+- Metrics: primary `weighted_pca_ridge_s075_a10` five-seed test mean MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976. This reproduces v0.16 and remains stronger than v0.14/v0.15 internal baselines under the same split.
+- Ablation: validation MAE selects `pca_ridge_residual_only`; this is recorded as a follow-up candidate, not used to rewrite the primary frozen v0.17 claim after test inspection.
+- Negative controls: shuffled residual target MAE/MSE 0.598936 / 8.050228; shuffled perturbation features 0.584434 / 7.413003; both degrade relative to the selected model.
+- Leakage stress: all critical checks pass; official GEARS dry-run remains `document_blocker`.
+- Assumptions: test metrics were not used to alter the fixed split, selected primary model, seed list, or ablation selection rule.
+- Known risks: internal split and internal metrics only; repeat variability is near zero because the selected PCA/ridge path is nearly deterministic; no official GEARS metrics.
+- Rollback note: rollback to tag `v0.16-official-gears-or-model-improvement-sprint` to remove v0.17 work.
+- Claim status: validated project-owned residual baseline package under one public Norman GEARS-compatible internal split only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.

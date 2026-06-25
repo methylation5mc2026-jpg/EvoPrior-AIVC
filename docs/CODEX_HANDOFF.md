@@ -1,5 +1,89 @@
 # Codex Handoff
 
+## Current State: v0.17 Validated Norman Residual Baseline
+
+- Current branch: `feat/norman-validated-residual-baseline-v017`
+- Rollback point: `v0.16-official-gears-or-model-improvement-sprint`
+- Latest completed source tag before this branch: `v0.16-official-gears-or-model-improvement-sprint`
+- v0.17 target tag: `v0.17-norman-validated-residual-baseline`
+- Working tree: dirty with v0.17 source/config/docs/tests; local raw data, outputs, caches, `.venv_gears/`, and `.tmp_*` directories must not be committed
+
+## v0.17 Run Summary
+
+- Config: `configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Command: `python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml`
+- Output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+- Dataset: `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`
+- Split: fixed v0.14/v0.15/v0.16 internal GEARS-compatible seen0/seen1/seen2/random_combo split
+- Seeds: `0, 1, 2, 3, 4`
+- Primary model: `weighted_pca_ridge_s075_a10`
+
+## v0.17 Metrics
+
+- Five-seed test mean: MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- v0.14 weighted reference: MAE 0.5660, MSE 6.6759, Pearson 0.7599, Spearman 0.6390.
+- v0.15 fast MLP/PCA reference: MAE 0.5877, MSE 7.5517, Pearson 0.7134, Spearman 0.6317.
+- v0.16 residual reference: MAE 0.430775, MSE 3.668888, Pearson 0.869223, Spearman 0.784999.
+- Interpretation: v0.17 reproduces the v0.16 residual result across the documented seed list and packages it with validation artifacts.
+
+## v0.17 Ablation And Leakage
+
+- Ablation winner by validation MAE: `pca_ridge_residual_only`.
+- Shuffled residual-target control degrades to MAE/MSE 0.598936 / 8.050228.
+- Shuffled perturbation-feature control degrades to MAE/MSE 0.584434 / 7.413003.
+- Leakage stress status: all critical checks pass.
+- Official GEARS dry-run: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T100234Z/`, decision `document_blocker`.
+
+## v0.17 Final Regression
+
+- v0.16 baseline full tests with repo-local temp: `148 passed, 4 warnings`.
+- Targeted v0.17 tests: `12 passed, 3 warnings`.
+- Targeted ruff on v0.17 Python files: passed.
+- Full tests: `153 passed, 4 warnings`.
+- v0.17 runner: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`.
+- v0.16 compatibility runner: `outputs/runs/v0.16-model-improvement-sprint/gears_norman_scperturb_v013/20260625T101101Z/`.
+- v0.14 compatibility runner: `outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T101302Z/`.
+- Official GEARS dry-run recheck: `outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T100234Z/`, decision `document_blocker`.
+- Targeted ruff on v0.17 modified Python files: passed after regression.
+
+## v0.17 Claim Boundary
+
+Allowed: On the project's fixed GEARS-compatible Norman split, `weighted_pca_ridge_s075_a10` reproducibly matches the v0.16 residual result across five documented seeds and remains stronger than the v0.14/v0.15 internal baselines.
+
+Forbidden: official GEARS, leaderboard comparability, SOTA, general biological discovery, comparison to the GEARS paper, or broad model superiority.
+
+## v0.17 Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.venv_gears/`
+- `.tmp_pytest_v17/`
+- `.tmp_mpl_gears/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## v0.17 Git Permission Blocker
+
+Codex attempted to stage v0.17 files, but `.git/index.lock` creation failed with permission denied. No files are staged by Codex.
+
+User-side commit/tag commands:
+
+```powershell
+git status --short
+git add README.md configs docs reports src scripts tests pyproject.toml
+git commit -m "feat: validate Norman residual baseline"
+git tag v0.17-norman-validated-residual-baseline
+git tag --points-at HEAD
+git status --short
+```
+
+## v0.17 Next Exact Command
+
+```powershell
+git add README.md configs docs reports src scripts tests pyproject.toml
+```
+
 ## Current State: v0.16 Official GEARS Or Model Improvement Sprint
 
 - Current branch: `feat/official-gears-or-model-improvement-v016`

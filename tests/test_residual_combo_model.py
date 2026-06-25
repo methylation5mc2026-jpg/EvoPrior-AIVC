@@ -76,6 +76,42 @@ def test_residual_combo_improves_toy_seen_combo_over_base():
     assert residual_error < base_error
 
 
+def test_residual_combo_zero_delta_supports_residual_only_ablation():
+    train = _toy_dataset()
+    query = _subset(train, ["A+B", "A+C"])
+    model = ResidualComboCorrectionBaseline(
+        ResidualComboConfig(
+            base_model="zero_delta",
+            residual_model="pca_ridge",
+            residual_scale=1.0,
+            pca_components=2,
+        )
+    ).fit(train)
+
+    predicted = model.predict_delta(query)
+
+    assert predicted.shape == query.observed_delta.shape
+    assert np.isfinite(predicted.to_numpy()).all()
+    assert model.manifest()["config"]["base_model"] == "zero_delta"
+
+
+def test_residual_combo_shuffle_controls_are_recorded():
+    train = _toy_dataset()
+    model = ResidualComboCorrectionBaseline(
+        ResidualComboConfig(
+            residual_model="ridge",
+            residual_scale=1.0,
+            residual_target_shuffle_seed=10,
+            metadata_feature_shuffle_seed=11,
+        )
+    ).fit(train)
+
+    manifest = model.manifest()["config"]
+
+    assert manifest["residual_target_shuffle_seed"] == 10
+    assert manifest["metadata_feature_shuffle_seed"] == 11
+
+
 def _toy_dataset() -> DeltaDataset:
     metadata = pd.DataFrame(
         {
