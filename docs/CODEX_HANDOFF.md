@@ -1,5 +1,66 @@
 # Codex Handoff
 
+## Current State: v0.21 GitHub Release Candidate And GEARS Docker Test
+
+- Current branch: `feat/release-candidate-gears-docker-v021`
+- Rollback point: `v0.20-github-release-or-official-gears-docker-env`
+- Latest completed source tag before this branch: `v0.20-github-release-or-official-gears-docker-env`
+- v0.21 target tag: `v0.21-github-release-candidate-and-gears-docker-test`
+- Working tree: dirty with v0.21 release-candidate docs, CI static validator, release bundle config, artifact manifest updates, and tests; local raw data, generated outputs, caches, virtualenvs, and Docker build cache must not be committed.
+
+## v0.21 Implemented
+
+- Static CI workflow validator: `scripts/check_ci_workflow.py`
+- v0.21 bundle config: `configs/release/v021_release_bundle.yaml`
+- v0.21 docs: `docs/V21_RELEASE_CANDIDATE_PLAN.md`, `docs/V21_DOCKER_GEARS_TEST_REPORT.md`, `docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md`, `docs/V21_GITHUB_RELEASE_NOTES.md`, `docs/V21_CI_VALIDATION_REPORT.md`
+- v0.21 reports: `reports/v0.21_release_notes.md`, `reports/v0.21_artifact_manifest.md`, `reports/v0.21_artifact_manifest.json`
+- Tests: `tests/test_ci_workflow_static.py` plus updated release bundle and artifact manifest tests.
+
+## v0.21 Verification
+
+- Baseline regression with repo-local temp before v0.21 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v21` -> `162 passed, 4 warnings`.
+- Targeted tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v21 tests/test_ci_workflow_static.py tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py tests/test_release_smoke_config.py` -> `11 passed, 2 warnings`.
+- Final full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v21` -> `164 passed, 4 warnings`.
+- Targeted ruff on v0.21 Python files: passed.
+- Static CI validation: `python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml` -> status `pass`.
+- Release bundle: `python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml` -> `outputs/release/v0.21/20260625T233703Z/`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260625T233315Z/`, status `pass`.
+- Official GEARS diagnostic: `python scripts/diagnose_official_gears.py` -> `outputs/runs/v0.20-official-gears-diagnostics/20260625T233312Z/`, status `import_ok_run_blocked`.
+- Docker availability commands: `docker --version`; `docker info` -> Docker unavailable/not on PATH.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.21_artifact_manifest.json`, status `pass`.
+
+## v0.21 Claim Boundary
+
+Allowed: release-candidate package around the validated v0.17 Norman residual baseline, static CI validation, no-data smoke, public data acquisition guide, artifact manifest, and honest Docker availability report.
+
+Forbidden: official GEARS result, Docker build success, leaderboard comparability, SOTA, biological discovery, new benchmark performance result, or broad model superiority.
+
+## v0.21 Files Not To Commit
+
+- `data/raw/`
+- `outputs/runs/`
+- `outputs/data_reports/`
+- `outputs/release/*` except `outputs/release/.gitkeep`
+- `.venv/`
+- `.venv_gears/`
+- `.tmp_pytest_v21/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- Docker build cache
+
+## v0.21 Next Exact Command
+
+Codex attempted `git add` for the v0.21 release-candidate files, but `.git/index.lock` creation failed with `Permission denied`. Workspace files are ready; user-side commit/tag is required:
+
+```powershell
+git status --short
+git add README.md .github docker configs/release docs reports/v0.21_release_notes.md reports/v0.21_artifact_manifest.json reports/v0.21_artifact_manifest.md scripts/check_release_artifacts.py scripts/check_ci_workflow.py scripts/make_release_bundle.py tests/test_ci_workflow_static.py tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py
+git commit -m "docs: prepare v0.21 release candidate"
+git tag v0.21-github-release-candidate-and-gears-docker-test
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.20 GitHub Release Or Official GEARS Docker Env
 
 - Current branch: `feat/github-release-or-gears-docker-v020`

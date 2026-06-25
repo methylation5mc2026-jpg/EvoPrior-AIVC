@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-EXPECTED_TAG = "v0.20-github-release-or-official-gears-docker-env"
-ROLLBACK_TAG = "v0.19-public-repo-polish-and-official-gears-unblock"
+EXPECTED_TAG = "v0.21-github-release-candidate-and-gears-docker-test"
+ROLLBACK_TAG = "v0.20-github-release-or-official-gears-docker-env"
 PRIMARY_OUTPUT = (
     "outputs/runs/v0.17-norman-validated-residual-baseline/"
     "gears_norman_scperturb_v013/20260625T100322Z"
@@ -35,8 +35,15 @@ REQUIRED_FILES = [
     "docs/V20_RELEASE_CHECKLIST.md",
     "docs/V20_GITHUB_ACTIONS_CI.md",
     "docs/V20_PUBLIC_REVIEW_README_MAP.md",
+    "docs/V21_RELEASE_CANDIDATE_PLAN.md",
+    "docs/V21_DOCKER_GEARS_TEST_REPORT.md",
+    "docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md",
+    "docs/V21_GITHUB_RELEASE_NOTES.md",
+    "docs/V21_CI_VALIDATION_REPORT.md",
+    "reports/v0.21_release_notes.md",
     "configs/experiment/release_smoke_v019.yaml",
     "configs/release/v020_release_bundle.yaml",
+    "configs/release/v021_release_bundle.yaml",
     ".github/workflows/ci.yml",
     "docker/Dockerfile.gears",
     "docker/README_GEARS_ENV.md",
@@ -44,6 +51,7 @@ REQUIRED_FILES = [
     "scripts/diagnose_official_gears.py",
     "scripts/check_release_artifacts.py",
     "scripts/make_release_bundle.py",
+    "scripts/check_ci_workflow.py",
 ]
 
 METRIC_FILES = [
@@ -68,15 +76,15 @@ def main() -> None:
     manifest = build_manifest()
     report_dir = Path("reports")
     report_dir.mkdir(exist_ok=True)
-    (report_dir / "v0.20_artifact_manifest.json").write_text(
+    (report_dir / "v0.21_artifact_manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
-    (report_dir / "v0.20_artifact_manifest.md").write_text(
+    (report_dir / "v0.21_artifact_manifest.md").write_text(
         _markdown_report(manifest),
         encoding="utf-8",
     )
-    print("reports/v0.20_artifact_manifest.json")
+    print("reports/v0.21_artifact_manifest.json")
     print(manifest["status"])
     if manifest["status"] != "pass":
         raise SystemExit(1)
@@ -126,11 +134,11 @@ def build_manifest() -> dict[str, Any]:
                 "configs/experiment/release_smoke_v019.yaml"
             ),
             "python scripts/diagnose_official_gears.py",
-                "python scripts/check_release_artifacts.py",
-                (
-                    "python scripts/make_release_bundle.py --config "
-                    "configs/release/v020_release_bundle.yaml"
-                ),
+            "python scripts/check_release_artifacts.py",
+            (
+                "python scripts/make_release_bundle.py --config "
+                "configs/release/v021_release_bundle.yaml"
+            ),
             (
                 "python scripts/run_norman_residual_multiseed.py --config "
                 "configs/experiment/gears_norman_v017_multiseed_residual.yaml"
@@ -156,7 +164,7 @@ def _git(args: list[str]) -> str:
 
 
 def _latest_release_bundle() -> str:
-    root = Path("outputs/release/v0.20")
+    root = Path("outputs/release/v0.21")
     if not root.exists():
         return ""
     candidates = [
@@ -170,7 +178,7 @@ def _latest_release_bundle() -> str:
 
 def _markdown_report(manifest: dict[str, Any]) -> str:
     lines = [
-        "# v0.20 Artifact Manifest",
+        "# v0.21 Artifact Manifest",
         "",
         f"- Status: `{manifest['status']}`",
         f"- Git commit: `{manifest['git_commit']}`",

@@ -86,6 +86,9 @@
 82. v0.20 CI is no-data smoke only; it intentionally does not run the heavy v0.17 multiseed benchmark or require local Norman raw data.
 83. v0.20 release bundle is a small review package under ignored `outputs/release/`; it is not a data archive and does not contain raw H5AD files or large benchmark outputs.
 84. Plain `python -m pytest` can fail on this Windows host if pytest uses `C:\Users\HiC3C\AppData\Local\Temp\pytest-of-HiC3C`; use `-p no:cacheprovider --basetemp .tmp_pytest_v20` for repo-local temp validation.
+85. v0.21 Docker availability test failed because `docker` is not installed or not on PATH in the current PowerShell environment; no Docker image build or container import test was completed.
+86. v0.21 CI evidence is static local validation only; GitHub-hosted Actions was not executed in this environment.
+87. v0.21 remains a release-candidate package around the v0.17 internal GEARS-compatible Norman result; it is not an official GEARS run, not leaderboard-comparable, not SOTA, and not a new benchmark performance result.
 
 ## 失败记录模板
 

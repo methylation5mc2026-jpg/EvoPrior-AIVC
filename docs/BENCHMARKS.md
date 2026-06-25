@@ -995,3 +995,38 @@ Interpretation:
 - v0.20 is a release-engineering and environment-unblock milestone.
 - It keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
 - It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.
+
+## v0.21 GitHub release candidate and GEARS Docker test
+
+Experiment ID: `v0.21-github-release-candidate-and-gears-docker-test`
+
+Commands:
+
+```powershell
+python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml
+python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/diagnose_official_gears.py
+python scripts/check_release_artifacts.py
+```
+
+Outputs:
+
+```text
+outputs/release/v0.21/20260625T233703Z/
+outputs/runs/v0.19-release-smoke/20260625T233315Z/
+outputs/runs/v0.20-official-gears-diagnostics/20260625T233312Z/
+reports/v0.21_artifact_manifest.md
+```
+
+Benchmark status:
+
+- no new model training or benchmark performance run;
+- static CI validation passed locally, but GitHub Actions was not executed here;
+- Docker availability test returned `unavailable_docker`, so no Docker image build/import is claimed;
+- release candidate keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
+
+Interpretation:
+
+- v0.21 is a release-candidate and reproducibility-packaging milestone.
+- It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, Docker validation, or general model superiority.

@@ -29,7 +29,7 @@ def test_release_bundle_writes_required_files(tmp_path):
     assert (bundle_dir / "claim_boundary.md").exists()
     assert (bundle_dir / "reproduction_commands.md").exists()
     assert (bundle_dir / "file_index.md").exists()
-    assert (bundle_dir / "evoprior_aivc_v0.20_review_bundle.zip").exists()
+    assert any(path.name.endswith("_review_bundle.zip") for path in bundle_dir.iterdir())
 
 
 def _load_yaml(path: Path) -> dict:

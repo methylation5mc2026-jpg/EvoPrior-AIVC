@@ -380,3 +380,15 @@ v0.20 introduces no new raw dataset.
 - Primary evidence output remains: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
 
 The release bundle at `outputs/release/v0.20/20260625T230630Z/` contains references and summaries only. It does not include raw data, large outputs, checkpoints, virtual environments, cache directories, or `.git`.
+
+## v0.21 release candidate data note
+
+v0.21 introduces no new raw dataset.
+
+- Primary dataset remains: `NormanWeissman2019_filtered.h5ad`
+- Local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- Data guide: `docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md`
+- Primary evidence output remains: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+
+The release-candidate bundle at `outputs/release/v0.21/20260625T233703Z/` contains references and summaries only. It does not include raw data, large outputs, checkpoints, virtual environments, cache directories, or `.git`.

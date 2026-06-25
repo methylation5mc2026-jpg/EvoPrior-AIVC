@@ -38,6 +38,17 @@ Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/
 
 Latest v0.20 release bundle output: `outputs/release/v0.20/20260625T230630Z/`.
 
+Latest v0.21 release-candidate bundle output: `outputs/release/v0.21/20260625T233703Z/`.
+
+v0.21 no-data release-candidate commands:
+
+```powershell
+python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml
+python scripts/check_release_artifacts.py
+```
+
 ## With-Local-Data Reproduction Path
 
 Place `NormanWeissman2019_filtered.h5ad` at `data/raw/NormanWeissman2019_filtered.h5ad`. Expected md5: `c870e6967d91c017d9da827bab183cd6`.
@@ -61,6 +72,11 @@ python scripts/check_release_artifacts.py
 - v0.20 CI docs: `docs/V20_GITHUB_ACTIONS_CI.md`
 - v0.20 Docker/WSL GEARS route: `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md`
 - v0.20 release checklist: `docs/V20_RELEASE_CHECKLIST.md`
+- v0.21 release candidate plan: `docs/V21_RELEASE_CANDIDATE_PLAN.md`
+- v0.21 public data guide: `docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md`
+- v0.21 release notes: `docs/V21_GITHUB_RELEASE_NOTES.md`
+- v0.21 CI validation: `docs/V21_CI_VALIDATION_REPORT.md`
+- v0.21 Docker GEARS test report: `docs/V21_DOCKER_GEARS_TEST_REPORT.md`
 
 ## Data And GEARS Status
 
@@ -69,6 +85,8 @@ Raw data is not committed. The expected Norman file is `data/raw/NormanWeissman2
 Official GEARS status: `import_ok_run_blocked`. The isolated `.venv_gears` environment imports the dependency stack, but the repository wrapper is still feasibility-only and does not train/evaluate official GEARS.
 
 v0.20 adds a Docker/WSL environment route at `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md` and `docker/Dockerfile.gears`. This is an unblock path, not a claimed official GEARS result.
+
+v0.21 Docker status: `unavailable_docker`. Local `docker --version` and `docker info` failed because Docker is not installed or not on PATH, so no Docker image build, container import check, official GEARS training, official split import, or official metric output is claimed.
 
 ## v0.19 Review Smoke
 

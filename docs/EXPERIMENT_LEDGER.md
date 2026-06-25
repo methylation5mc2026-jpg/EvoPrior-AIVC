@@ -541,3 +541,25 @@ Claim status:
 - Known risks: official GEARS remains `import_ok_run_blocked`; no official training, official split, or official metric output exists.
 - Rollback note: rollback to tag `v0.19-public-repo-polish-and-official-gears-unblock` to remove v0.20 work.
 - Claim status: GitHub/release readiness and environment-unblock package only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.
+
+### EXP-0024: v0.21 GitHub release candidate and GEARS Docker test
+
+- Experiment ID: `v0.21-github-release-candidate-and-gears-docker-test`
+- Date: 2026-06-26
+- Status: completed locally; full regression, targeted ruff, static CI validation, release smoke, release bundle generation, GEARS diagnostic, and artifact checker passed; commit/tag pending user-side git write.
+- Role: MLOps / Release engineer / CI engineer / Official GEARS environment engineer / Scientific reviewer / Documentation engineer
+- Objective: Turn the v0.20 release-ready package into a reviewer-facing release candidate while honestly testing Docker availability and preserving the v0.17 claim boundary.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/release/v021_release_bundle.yaml`; smoke config `configs/experiment/release_smoke_v019.yaml`; primary model config remains `configs/experiment/gears_norman_v017_multiseed_residual.yaml`.
+- Git commit: branch starts from v0.20 commit `35e92cf`; final v0.21 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: `python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml`; `python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml`; `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python scripts/diagnose_official_gears.py`; `python scripts/check_release_artifacts.py`.
+- Outputs: `outputs/release/v0.21/20260625T233703Z/`; `outputs/runs/v0.19-release-smoke/20260625T233315Z/`; `outputs/runs/v0.20-official-gears-diagnostics/20260625T233312Z/`; `reports/v0.21_artifact_manifest.md`.
+- Metrics: no new benchmark metrics; v0.21 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Docker status: `unavailable_docker`; `docker --version` and `docker info` failed because Docker is not installed or not on PATH.
+- Assumptions: static CI validation checks workflow structure only; release bundle is a small ignored review package and does not include raw data or large outputs.
+- Known risks: no Docker build, no container import test, no official GEARS training, no official split import, no official metric output, and no GitHub-hosted Actions run in this environment.
+- Rollback note: rollback to tag `v0.20-github-release-or-official-gears-docker-env` to remove v0.21 work.
+- Claim status: release-candidate package only; no SOTA, official GEARS, leaderboard, biological discovery, new benchmark performance, or general model superiority claim.

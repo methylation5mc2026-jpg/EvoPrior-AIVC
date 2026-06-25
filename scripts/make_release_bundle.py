@@ -126,7 +126,8 @@ def _write_bundle_files(
 
 
 def _write_zip(config: dict[str, Any], bundle_dir: Path) -> Path:
-    archive_path = bundle_dir / "evoprior_aivc_v0.20_review_bundle.zip"
+    safe_id = str(config["release_id"]).replace("-", "_").replace(".", "_")
+    archive_path = bundle_dir / f"evoprior_aivc_{safe_id}_review_bundle.zip"
     generated = [
         "release_manifest.json",
         "release_manifest.md",
@@ -148,7 +149,7 @@ def _write_zip(config: dict[str, Any], bundle_dir: Path) -> Path:
 
 def _manifest_markdown(manifest: dict[str, Any]) -> str:
     lines = [
-        "# v0.20 Release Manifest",
+        "# Release Manifest",
         "",
         f"- Release ID: `{manifest['release_id']}`",
         f"- Status: `{manifest['status']}`",
