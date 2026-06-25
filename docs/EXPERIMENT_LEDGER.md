@@ -499,3 +499,24 @@ Claim status:
 - Known risks: no official GEARS metrics; release manifest records commit as pending until user-side commit/tag.
 - Rollback note: rollback to tag `v0.17-norman-validated-residual-baseline` to remove v0.18 work.
 - Claim status: external review package for an internal GEARS-compatible Norman result only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.
+
+### EXP-0022: v0.19 public repo polish and official GEARS unblock
+
+- Experiment ID: `v0.19-public-repo-polish-and-official-gears-unblock`
+- Date: 2026-06-26
+- Status: in progress locally; smoke, diagnostics, artifact check, targeted tests, and targeted ruff have passed
+- Role: MLOps / Official GEARS engineer / Scientific reviewer / Documentation engineer
+- Objective: Polish the repository for external review, add repo metadata, add release smoke and artifact integrity checks, and record the current official GEARS unblock state without changing the validated v0.17 model claim.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`, local checksum status `ok` when present.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/experiment/release_smoke_v019.yaml`
+- Git commit: branch starts from v0.18 commit `1a9169a`; final v0.19 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python scripts/diagnose_official_gears.py`; `python scripts/check_release_artifacts.py`.
+- Outputs: `outputs/runs/v0.19-release-smoke/20260625T223712Z/`; `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`; `reports/v0.19_artifact_manifest.md`.
+- Metrics: no new benchmark metrics; v0.19 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Assumptions: v0.19 is repository polish and unblock documentation only; release smoke is a reproducibility gate, not a new benchmark run.
+- Known risks: official GEARS remains blocked because the wrapper is feasibility-only and does not train/evaluate official GEARS or import official split files; public clones may need manual data placement before full v0.17 reproduction.
+- Rollback note: rollback to tag `v0.18-official-gears-reproduction-or-model-card-release` to remove v0.19 work.
+- Claim status: public review package over the v0.17 internal GEARS-compatible Norman result only; no SOTA, official GEARS, leaderboard, biological discovery, or general model superiority claim.

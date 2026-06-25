@@ -1,5 +1,57 @@
 # EvoPrior-AIVC
 
+Reproducible perturbation-response prediction benchmark pipeline with structured priors and a validated Norman/GEARS-compatible residual baseline.
+
+## Key Result
+
+Public Norman/scPerturb H5AD, md5 `c870e6967d91c017d9da827bab183cd6`; fixed internal GEARS-compatible seen0/seen1/seen2/random_combo split; metrics are internal compatible metrics, not official GEARS leaderboard metrics.
+
+| milestone/model | MAE | MSE | Pearson | Spearman | status |
+| --- | ---: | ---: | ---: | ---: | --- |
+| v0.14 `weighted_combo_additive` | 0.5660 | 6.6759 | 0.7599 | 0.6390 | transparent additive baseline |
+| v0.15 fast MLP/PCA | 0.5877 | 7.5517 | 0.7134 | 0.6317 | lightweight trained baseline |
+| v0.17 residual baseline | 0.430778 | 3.668870 | 0.869224 | 0.784976 | five-seed validated baseline |
+
+Claim boundary: this is a strong internal GEARS-compatible Norman result. It is not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.
+
+## Quickstart
+
+```powershell
+python -m pip install -e ".[dev]"
+python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
+```
+
+## Review Map
+
+- Model card: `docs/V18_RELEASE_MODEL_CARD.md`
+- Benchmark card: `docs/V18_BENCHMARK_CARD.md`
+- Reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`
+- External review index: `docs/V18_EXTERNAL_REVIEW_INDEX.md`
+- Public repo checklist: `docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md`
+- GEARS unblock plan: `docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md`
+- Portfolio summary: `docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md`
+
+## Data And GEARS Status
+
+Raw data is not committed. The expected Norman file is `data/raw/NormanWeissman2019_filtered.h5ad`; use `python scripts/prepare_gears_norman.py --config configs/data/gears_norman_v013.yaml --dry-run` to verify access instructions.
+
+Official GEARS status: `import_ok_run_blocked`. The isolated `.venv_gears` environment imports the dependency stack, but the repository wrapper is still feasibility-only and does not train/evaluate official GEARS.
+
+## v0.19 Review Smoke
+
+v0.19 adds public-repo metadata, release smoke checks, an official GEARS diagnostic, and an artifact manifest. It does not change the v0.17 model, split, metrics, or claim boundary.
+
+```powershell
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/diagnose_official_gears.py
+python scripts/check_release_artifacts.py
+```
+
+Latest local smoke output: `outputs/runs/v0.19-release-smoke/20260625T223712Z/`.
+Latest diagnostic output: `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`.
+
 ## v0.18 Validated Norman Baseline Release Quickstart
 
 v0.18 packages the validated Norman residual baseline for external review and records a final official GEARS feasibility attempt. The official dependency stack imports inside `.venv_gears`, but the repository wrapper is still feasibility-only and does not produce official GEARS metrics.

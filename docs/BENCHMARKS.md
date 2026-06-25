@@ -928,3 +928,36 @@ Release claim:
 - v0.18 packages the v0.17 validated residual baseline for external review.
 - It does not change the benchmark split, model, metrics, or v0.17 output.
 - It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or broad model superiority.
+
+## v0.19 Public repo polish and official GEARS unblock
+
+Experiment ID: `v0.19-public-repo-polish-and-official-gears-unblock`
+
+Commands:
+
+```powershell
+python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
+python scripts/diagnose_official_gears.py
+python scripts/check_release_artifacts.py
+```
+
+Outputs:
+
+```text
+outputs/runs/v0.19-release-smoke/20260625T223712Z/
+outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/
+reports/v0.19_artifact_manifest.md
+```
+
+Benchmark status:
+
+- no new model training or benchmark performance run;
+- public Norman/scPerturb H5AD and the v0.17 fixed internal split remain the primary evidence source;
+- release smoke validates package import, required docs/configs/scripts, Norman md5 when present, key v0.17 output files, a tiny residual baseline fixture, and a targeted pytest subset;
+- official GEARS diagnostic remains `import_ok_run_blocked`.
+
+Interpretation:
+
+- v0.19 is a public repository review and unblock package over the v0.17 validated residual baseline.
+- It does not alter the v0.17 model, split, seed list, metrics, or claim boundary.
+- Do not claim official GEARS, leaderboard comparability, SOTA, biological discovery, or general model superiority.

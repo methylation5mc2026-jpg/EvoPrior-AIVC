@@ -78,6 +78,10 @@
 74. v0.18 main environment still lacks official GEARS/Torch dependencies; `.venv_gears` imports them, but the wrapper remains feasibility-only and does not train/evaluate official GEARS.
 75. v0.18 release manifest has `git_commit` marked pending until user-side commit/tag because Codex cannot write `.git/index.lock`.
 76. v0.18 is a release/model-card package over v0.17 metrics; it must not be described as a new benchmark performance run or official GEARS reproduction.
+77. v0.19 official GEARS diagnostic remains `import_ok_run_blocked`: dependencies may import in `.venv_gears`, but no official GEARS train/evaluate path, official split import, or official metric script is implemented.
+78. v0.19 release smoke is a reproducibility gate, not a performance benchmark; it should not be used as evidence of model superiority.
+79. Fresh public clones may not include `data/raw/NormanWeissman2019_filtered.h5ad` or local `outputs/`; the smoke script treats missing raw data as a warning, but full v0.17 reproduction still requires legal local data preparation.
+80. v0.19 repo metadata uses `LICENSE` marked license pending until the project owner selects a concrete open-source or restricted license; external reuse rights remain intentionally unresolved.
 
 ## 失败记录模板
 

@@ -1,0 +1,31 @@
+experiment_id: v0.19-public-repo-release-smoke
+mode: release_smoke
+output_root: outputs/runs
+output_prefix: v0.19-release-smoke
+
+package:
+  import_name: evoprior_aivc
+
+data:
+  norman_path: data/raw/NormanWeissman2019_filtered.h5ad
+  checksum_md5: c870e6967d91c017d9da827bab183cd6
+  missing_policy: warn_with_manual_download
+
+release:
+  v017_output: outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z
+  required_docs:
+    - docs/V18_RELEASE_MODEL_CARD.md
+    - docs/V18_BENCHMARK_CARD.md
+    - docs/V18_REPRODUCIBILITY_RUNBOOK.md
+    - docs/V18_EXTERNAL_REVIEW_INDEX.md
+    - docs/V17_EXTERNAL_RESULT_CARD.md
+  required_configs:
+    - configs/data/gears_norman_v013.yaml
+    - configs/experiment/gears_norman_v017_multiseed_residual.yaml
+  required_scripts:
+    - scripts/run_norman_residual_multiseed.py
+    - scripts/run_gears_norman_baseline.py
+    - scripts/run_official_gears_wrapper.py
+  pytest_subset:
+    - tests/test_gears_norman_config.py
+    - tests/test_residual_combo_model.py

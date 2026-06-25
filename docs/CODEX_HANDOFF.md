@@ -1,5 +1,69 @@
 # Codex Handoff
 
+## Current State: v0.19 Public Repo Polish And Official GEARS Unblock
+
+- Current branch: `feat/public-repo-polish-v019`
+- Rollback point: `v0.18-official-gears-reproduction-or-model-card-release`
+- Latest completed source tag before this branch: `v0.18-official-gears-reproduction-or-model-card-release`
+- v0.19 target tag: `v0.19-public-repo-polish-and-official-gears-unblock`
+- Working tree: dirty with v0.19 repo-polish files, smoke scripts, diagnostics, tests, and small reports; local raw data, outputs, caches, `.venv_gears/`, and `.tmp_*` directories must not be committed
+
+## v0.19 Objective
+
+Make the repository reviewer-ready without changing the v0.17 model claim: tighten the README first screen, add public repo metadata, add release smoke checks, add artifact integrity checks, and record an official GEARS unblock diagnostic.
+
+## v0.19 Implemented So Far
+
+- Public repo metadata: `LICENSE`, `CITATION.cff`, `CONTRIBUTING.md`, `SECURITY.md`, `.env.example`.
+- Release smoke config/script: `configs/experiment/release_smoke_v019.yaml`, `scripts/run_release_smoke.py`.
+- Official GEARS diagnostic: `scripts/diagnose_official_gears.py`.
+- Release artifact checker: `scripts/check_release_artifacts.py`.
+- v0.19 docs: `docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md`, `docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md`, `docs/V19_REPRODUCTION_SMOKE_TESTS.md`, `docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md`.
+- v0.19 reports: `reports/v0.19_application_portfolio_summary.md`, `reports/v0.19_artifact_manifest.md`, `reports/v0.19_artifact_manifest.json`.
+
+## v0.19 Verification So Far
+
+- Baseline full tests before v0.19 branch work: `153 passed, 4 warnings`.
+- Targeted v0.19 tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v19 tests/test_release_smoke_config.py tests/test_official_gears_diagnostics.py tests/test_release_artifact_manifest.py` -> `5 passed, 2 warnings`.
+- Targeted ruff on v0.19 Python files: passed.
+- Full v0.19 regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v19` -> `158 passed, 4 warnings`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260625T223712Z/`, status `pass`.
+- Official GEARS diagnostic: `python scripts/diagnose_official_gears.py` -> `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`, status `import_ok_run_blocked`.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.19_artifact_manifest.json`, status `pass`.
+- Small fix made during smoke: the tiny residual smoke fixture now uses explicit string gene columns to match `DeltaDataset.gene_names`.
+
+## v0.19 Claim Boundary
+
+Allowed: the repository is packaged for external review around the validated v0.17 Norman residual baseline, with smoke checks and artifact integrity checks.
+
+Forbidden: official GEARS reproduction, leaderboard comparability, SOTA, biological discovery, broad model superiority, or any new performance claim beyond the documented v0.17 internal split.
+
+## v0.19 Files Not To Commit
+
+- `data/raw/`
+- `outputs/`
+- `.venv_gears/`
+- `.tmp_pytest_v19/`
+- `.tmp_pytest_v19_smoke/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- `*.egg-info/`
+
+## v0.19 Next Exact Command
+
+Codex attempted to stage v0.19 files, but `.git/index.lock` creation failed with permission denied. No files were staged by Codex.
+
+User-side commit/tag commands:
+
+```powershell
+git status --short
+git add README.md LICENSE CITATION.cff CONTRIBUTING.md SECURITY.md .env.example configs/experiment/release_smoke_v019.yaml docs reports/v0.19_application_portfolio_summary.md reports/v0.19_artifact_manifest.json reports/v0.19_artifact_manifest.md scripts/check_release_artifacts.py scripts/diagnose_official_gears.py scripts/run_release_smoke.py tests/test_official_gears_diagnostics.py tests/test_release_artifact_manifest.py tests/test_release_smoke_config.py
+git commit -m "docs: polish public repo and GEARS unblock plan"
+git tag v0.19-public-repo-polish-and-official-gears-unblock
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.18 Official GEARS Reproduction Or Model-Card Release
 
 - Current branch: `feat/gears-reproduction-or-release-v018`

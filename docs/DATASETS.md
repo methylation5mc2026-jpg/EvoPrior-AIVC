@@ -357,3 +357,15 @@ v0.17 and v0.18 reuse the same public Norman/scPerturb H5AD:
 - Primary output: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
 
 No new raw dataset was introduced. v0.18 is a release/documentation package plus official GEARS feasibility log; it does not change data, split, or metrics.
+
+## v0.19 public repo polish note
+
+v0.19 introduces no new raw dataset.
+
+- Primary dataset remains: `NormanWeissman2019_filtered.h5ad`
+- Local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- Source: scPerturb Zenodo record 13350497, version 1.4
+- Primary evidence output remains: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+
+The v0.19 release smoke checks the Norman md5 when the local raw file is present. In a fresh public clone, missing raw data is reported as a warning with preparation instructions, not as committed repository content.
