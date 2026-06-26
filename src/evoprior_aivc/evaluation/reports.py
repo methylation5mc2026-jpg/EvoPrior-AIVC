@@ -180,7 +180,11 @@ def write_v04_strengthening_report(
         "",
         "## Leave-One-Perturbation Suite",
         "",
-        _table(skipped_perturbations) if not skipped_perturbations.empty else "No perturbations skipped.",
+        (
+            _table(skipped_perturbations)
+            if not skipped_perturbations.empty
+            else "No perturbations skipped."
+        ),
         "",
         "## PDS / Retrieval Metrics",
         "",
@@ -192,7 +196,11 @@ def write_v04_strengthening_report(
         "",
         "## Sensitivity Audit",
         "",
-        _table(sensitivity_summary) if sensitivity_summary is not None and not sensitivity_summary.empty else "See the separate sensitivity run/report if generated.",
+        (
+            _table(sensitivity_summary)
+            if sensitivity_summary is not None and not sensitivity_summary.empty
+            else "See the separate sensitivity run/report if generated."
+        ),
         "",
         "## Leakage Checks",
         "",
@@ -212,7 +220,10 @@ def write_v04_strengthening_report(
         "",
         "## What This Enables For v0.5",
         "",
-        "The project can now compare a first lineage-prior module against stronger, repeated classical baselines without changing the evaluation substrate.",
+        (
+            "The project can now compare a first lineage-prior module against stronger, "
+            "repeated classical baselines without changing the evaluation substrate."
+        ),
         "",
     ]
     report_path.write_text("\n".join(lines), encoding="utf-8")

@@ -24,7 +24,7 @@ class RidgeBaseline(DeltaBaseline):
         self.alpha = alpha
         self.categorical_columns = categorical_columns
 
-    def fit(self, dataset: DeltaDataset) -> "RidgeBaseline":
+    def fit(self, dataset: DeltaDataset) -> RidgeBaseline:
         self.gene_names_ = dataset.gene_names
         self.used_categorical_columns_ = tuple(
             column for column in self.categorical_columns if column in dataset.metadata.columns
@@ -40,10 +40,17 @@ class RidgeBaseline(DeltaBaseline):
     def predict_delta(self, dataset: DeltaDataset) -> pd.DataFrame:
         x = self._features(dataset)
         predictions = self.model_.predict(x)
-        return pd.DataFrame(predictions, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            predictions,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 
     def _features(self, dataset: DeltaDataset) -> np.ndarray:
         control = dataset.control_expression.to_numpy(dtype=float)
-        categorical = self.encoder_.transform(dataset.metadata.loc[:, self.used_categorical_columns_])
+        categorical = self.encoder_.transform(
+            dataset.metadata.loc[:, self.used_categorical_columns_]
+        )
         return np.hstack([control, categorical])
 

@@ -26,7 +26,7 @@ class DatasetRecord:
     allow_auto_download: bool = False
 
     @classmethod
-    def from_config(cls, config: dict[str, Any]) -> "DatasetRecord":
+    def from_config(cls, config: dict[str, Any]) -> DatasetRecord:
         dataset = config["dataset"]
         checksum = dataset.get("checksum")
         checksum_algorithm = dataset.get("checksum_algorithm")

@@ -24,10 +24,12 @@ class MeanDeltaBaseline(DeltaBaseline):
             raise ValueError("fallback must be 'global' or 'zero'")
         self.fallback = fallback
 
-    def fit(self, dataset: DeltaDataset) -> "MeanDeltaBaseline":
+    def fit(self, dataset: DeltaDataset) -> MeanDeltaBaseline:
         self.gene_names_ = dataset.gene_names
         self.global_mean_ = dataset.observed_delta.mean(axis=0)
-        self.perturbation_means_ = dataset.observed_delta.groupby(dataset.metadata["perturbation"]).mean()
+        self.perturbation_means_ = dataset.observed_delta.groupby(
+            dataset.metadata["perturbation"]
+        ).mean()
         return self
 
     def predict_delta(self, dataset: DeltaDataset) -> pd.DataFrame:
@@ -39,5 +41,10 @@ class MeanDeltaBaseline(DeltaBaseline):
                 rows.append(self.global_mean_.to_numpy(dtype=float))
             else:
                 rows.append(np.zeros(len(self.gene_names_), dtype=float))
-        return pd.DataFrame(rows, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            rows,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 

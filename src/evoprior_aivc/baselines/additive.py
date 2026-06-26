@@ -13,11 +13,12 @@ class AdditiveBaseline(DeltaBaseline):
 
     name = "additive"
 
-    def fit(self, dataset: DeltaDataset) -> "AdditiveBaseline":
+    def fit(self, dataset: DeltaDataset) -> AdditiveBaseline:
         self.gene_names_ = dataset.gene_names
         self.global_mean_ = dataset.observed_delta.mean(axis=0)
         self.perturbation_offsets_ = (
-            dataset.observed_delta.groupby(dataset.metadata["perturbation"]).mean() - self.global_mean_
+            dataset.observed_delta.groupby(dataset.metadata["perturbation"]).mean()
+            - self.global_mean_
         )
         self.cell_type_offsets_ = (
             dataset.observed_delta.groupby(dataset.metadata["cell_type"]).mean() - self.global_mean_
@@ -40,5 +41,10 @@ class AdditiveBaseline(DeltaBaseline):
                 else zero
             )
             rows.append(global_delta + perturb_offset + cell_offset)
-        return pd.DataFrame(rows, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            rows,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 

@@ -22,7 +22,11 @@ def main() -> None:
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True, help="Path to data config YAML.")
-    parser.add_argument("--dry-run", action="store_true", help="Print the plan without downloading.")
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Print the plan without downloading.",
+    )
     return parser.parse_args()
 
 

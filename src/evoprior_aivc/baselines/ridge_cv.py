@@ -19,12 +19,18 @@ class RidgeCVBaseline(DeltaBaseline):
         self,
         *,
         alphas: tuple[float, ...] = (0.01, 0.1, 1.0, 10.0, 100.0),
-        categorical_columns: tuple[str, ...] = ("perturbation", "guide_id", "cell_type", "donor", "batch"),
+        categorical_columns: tuple[str, ...] = (
+            "perturbation",
+            "guide_id",
+            "cell_type",
+            "donor",
+            "batch",
+        ),
     ) -> None:
         self.alphas = alphas
         self.categorical_columns = categorical_columns
 
-    def fit(self, dataset: DeltaDataset) -> "RidgeCVBaseline":
+    def fit(self, dataset: DeltaDataset) -> RidgeCVBaseline:
         self.gene_names_ = dataset.gene_names
         self.used_categorical_columns_ = tuple(
             column for column in self.categorical_columns if column in dataset.metadata.columns
@@ -40,10 +46,17 @@ class RidgeCVBaseline(DeltaBaseline):
 
     def predict_delta(self, dataset: DeltaDataset) -> pd.DataFrame:
         predictions = self.model_.predict(self._features(dataset))
-        return pd.DataFrame(predictions, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            predictions,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 
     def _features(self, dataset: DeltaDataset) -> np.ndarray:
         control = dataset.control_expression.to_numpy(dtype=float)
-        categorical = self.encoder_.transform(dataset.metadata.loc[:, self.used_categorical_columns_])
+        categorical = self.encoder_.transform(
+            dataset.metadata.loc[:, self.used_categorical_columns_]
+        )
         return np.hstack([control, categorical])
 

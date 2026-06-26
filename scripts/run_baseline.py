@@ -164,8 +164,14 @@ def main() -> None:
         metrics=metrics_df,
         breakdown=breakdown_df,
         assumptions=[
-            "Synthetic data are deterministic for a fixed seed and are used only for engineering validation.",
-            "Control expression matched by cell_type and donor is treated as an allowed model input.",
+            (
+                "Synthetic data are deterministic for a fixed seed and are used only for "
+                "engineering validation."
+            ),
+            (
+                "Control expression matched by cell_type and donor is treated as an allowed "
+                "model input."
+            ),
             "Ridge uses one-hot metadata with unknown categories ignored at prediction time.",
         ],
         limitations=[

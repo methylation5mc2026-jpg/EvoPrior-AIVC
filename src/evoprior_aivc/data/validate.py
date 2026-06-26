@@ -48,7 +48,9 @@ def validate_adata_schema(
     if required_var is None:
         if not any(field in adata.var.columns for field in REQUIRED_VAR_ALTERNATIVES):
             alternatives = " or ".join(REQUIRED_VAR_ALTERNATIVES)
-            raise ValueError(f"var must contain at least one gene identifier column: {alternatives}")
+            raise ValueError(
+                f"var must contain at least one gene identifier column: {alternatives}"
+            )
     else:
         _require_columns(adata.var, tuple(required_var), axis_name="var")
 
@@ -63,7 +65,9 @@ def validate_adata_schema(
     if not control_values.issubset({True, False, np.bool_(True), np.bool_(False)}):
         raise ValueError("obs['is_control'] must be boolean")
 
-    preferred_missing = tuple(field for field in PREFERRED_OBS_FIELDS if field not in adata.obs.columns)
+    preferred_missing = tuple(
+        field for field in PREFERRED_OBS_FIELDS if field not in adata.obs.columns
+    )
     return SchemaValidationReport(
         n_obs=adata.n_obs,
         n_vars=adata.n_vars,

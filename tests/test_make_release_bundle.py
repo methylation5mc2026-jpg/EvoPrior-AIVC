@@ -9,7 +9,7 @@ def test_release_bundle_manifest_tracks_claim_boundary():
     config = _load_yaml(Path("configs/release/v024_release_bundle.yaml"))
     manifest = build_manifest(config)
 
-    assert manifest["release_id"] == "v0.24-github-push-and-release-or-website-integration"
+    assert manifest["release_id"] == "public-technical-package"
     assert manifest["dataset_md5"] == "c870e6967d91c017d9da827bab183cd6"
     assert "Official GEARS result." in manifest["claim_boundary"]["forbidden"]
     assert all(not item["path"].startswith("data/raw/") for item in manifest["reference_files"])

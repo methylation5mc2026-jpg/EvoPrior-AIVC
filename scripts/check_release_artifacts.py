@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-EXPECTED_TAG = "v0.24-github-push-and-release-or-website-integration"
-ROLLBACK_TAG = "v0.23-github-publish-or-project-page-assets"
+EXPECTED_TAG = "public-technical-package"
+ROLLBACK_TAG = "v0.26-main-merge-release-and-public-verification"
 PRIMARY_OUTPUT = (
     "outputs/runs/v0.17-norman-validated-residual-baseline/"
     "gears_norman_scperturb_v013/20260625T100322Z"
@@ -17,53 +17,29 @@ DATA_MD5 = "c870e6967d91c017d9da827bab183cd6"
 
 REQUIRED_FILES = [
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "CITATION.cff",
     "CONTRIBUTING.md",
     "SECURITY.md",
     ".env.example",
-    "docs/V18_RELEASE_MODEL_CARD.md",
-    "docs/V18_BENCHMARK_CARD.md",
-    "docs/V18_REPRODUCIBILITY_RUNBOOK.md",
-    "docs/V18_EXTERNAL_REVIEW_INDEX.md",
-    "docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md",
+    "docs/MODEL_CARD.md",
+    "docs/BENCHMARK_CARD.md",
+    "docs/REPRODUCIBILITY.md",
+    "docs/DATA.md",
+    "docs/KNOWN_LIMITATIONS.md",
+    "docs/EXPERIMENT_LEDGER.md",
+    "docs/CLAIMS_AND_EVIDENCE.md",
+    "docs/BENCHMARKS.md",
+    "docs/DATASETS.md",
     "docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md",
     "docs/V19_REPRODUCTION_SMOKE_TESTS.md",
-    "docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md",
-    "docs/V20_GITHUB_RELEASE_PLAN.md",
     "docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md",
-    "docs/V20_RELEASE_CHECKLIST.md",
     "docs/V20_GITHUB_ACTIONS_CI.md",
-    "docs/V20_PUBLIC_REVIEW_README_MAP.md",
-    "docs/V21_RELEASE_CANDIDATE_PLAN.md",
     "docs/V21_DOCKER_GEARS_TEST_REPORT.md",
     "docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md",
-    "docs/V21_GITHUB_RELEASE_NOTES.md",
     "docs/V21_CI_VALIDATION_REPORT.md",
-    "docs/V22_PUBLIC_GITHUB_FINAL_CHECK.md",
-    "docs/V22_REPO_SANITIZATION_REPORT.md",
-    "docs/V22_GITHUB_RELEASE_NOTES_FINAL.md",
-    "docs/V22_GITHUB_REPO_PROFILE.md",
-    "docs/V22_PUBLIC_DEMO_GUIDE.md",
-    "docs/V23_GITHUB_PUBLISH_GUIDE.md",
-    "docs/V23_GITHUB_RELEASE_BODY.md",
-    "docs/V23_PROJECT_PAGE_ASSETS.md",
-    "docs/V23_MENTOR_REVIEW_BRIEF.md",
-    "docs/V23_SHOWCASE_INDEX.md",
-    "docs/V23_FINAL_PUBLICATION_CHECKLIST.md",
-    "docs/V24_GITHUB_PUBLISH_STATUS.md",
-    "docs/V24_GITHUB_RELEASE_DRAFT.md",
-    "docs/V24_GITHUB_PUBLISH_COMMANDS.md",
-    "docs/V24_WEBSITE_INTEGRATION_ASSETS.md",
-    "docs/V24_POST_PUBLISH_CHECKLIST.md",
-    "docs/V24_PUBLIC_LINK_AUDIT.md",
-    "docs/V24_FINAL_PRESENTATION_SUMMARY.md",
-    "reports/v0.24_final_presentation_summary.md",
-    "reports/v0.21_release_notes.md",
     "configs/experiment/release_smoke_v019.yaml",
-    "configs/release/v020_release_bundle.yaml",
-    "configs/release/v021_release_bundle.yaml",
-    "configs/release/v022_release_bundle.yaml",
     "configs/release/v024_release_bundle.yaml",
     ".github/workflows/ci.yml",
     "docker/Dockerfile.gears",
@@ -154,12 +130,7 @@ def build_manifest() -> dict[str, Any]:
                 "python scripts/run_release_smoke.py --config "
                 "configs/experiment/release_smoke_v019.yaml"
             ),
-            "python scripts/diagnose_official_gears.py",
             "python scripts/check_release_artifacts.py",
-            (
-                "python scripts/make_release_bundle.py --config "
-                "configs/release/v024_release_bundle.yaml"
-            ),
             (
                 "python scripts/run_norman_residual_multiseed.py --config "
                 "configs/experiment/gears_norman_v017_multiseed_residual.yaml"

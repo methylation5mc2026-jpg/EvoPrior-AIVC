@@ -1,10 +1,10 @@
-release_id: v0.24-github-push-and-release-or-website-integration
+release_id: public-technical-package
 output_root: outputs/release/v0.24
 include_zip: true
 
 repository:
-  expected_branch: feat/github-push-release-website-v024
-  rollback_tag: v0.23-github-publish-or-project-page-assets
+  expected_branch: main
+  rollback_tag: v0.26-main-merge-release-and-public-verification
 
 primary_evidence:
   dataset: NormanWeissman2019_filtered.h5ad
@@ -25,9 +25,9 @@ primary_evidence:
 
 claim_boundary:
   allowed:
-    - GitHub publish command package, Release draft, website integration assets, public link audit, and mentor presentation summary.
-    - Strong internal GEARS-compatible Norman result under the documented split and metrics.
-    - Reproducibility package around the validated v0.17 Norman residual baseline.
+    - Reproducible benchmark engineering package around the validated internal GEARS-compatible Norman residual baseline.
+    - Documented data source, checksum, split, metric script, and reproduction commands.
+    - Internal compatible metric comparison among implemented repository baselines.
   forbidden:
     - Official GEARS result.
     - Leaderboard-comparable result.
@@ -35,29 +35,22 @@ claim_boundary:
     - Biological discovery claim.
     - Clinical claim.
     - General model superiority claim.
-    - Claim that GitHub was pushed or a website was updated by v0.24.
+    - General evolutionary or conservation-prior benefit claim.
 
 reference_files:
   - README.md
-  - docs/V18_RELEASE_MODEL_CARD.md
-  - docs/V18_BENCHMARK_CARD.md
-  - docs/V18_REPRODUCIBILITY_RUNBOOK.md
-  - docs/V18_EXTERNAL_REVIEW_INDEX.md
+  - docs/MODEL_CARD.md
+  - docs/BENCHMARK_CARD.md
+  - docs/REPRODUCIBILITY.md
+  - docs/DATA.md
+  - docs/KNOWN_LIMITATIONS.md
+  - docs/CLAIMS_AND_EVIDENCE.md
+  - docs/EXPERIMENT_LEDGER.md
+  - docs/BENCHMARKS.md
+  - docs/DATASETS.md
   - docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md
-  - docs/V22_GITHUB_RELEASE_NOTES_FINAL.md
-  - docs/V22_PUBLIC_DEMO_GUIDE.md
-  - docs/V23_GITHUB_PUBLISH_GUIDE.md
-  - docs/V23_GITHUB_RELEASE_BODY.md
-  - docs/V23_PROJECT_PAGE_ASSETS.md
-  - docs/V23_MENTOR_REVIEW_BRIEF.md
-  - docs/V24_GITHUB_PUBLISH_STATUS.md
-  - docs/V24_GITHUB_RELEASE_DRAFT.md
-  - docs/V24_GITHUB_PUBLISH_COMMANDS.md
-  - docs/V24_WEBSITE_INTEGRATION_ASSETS.md
-  - docs/V24_POST_PUBLISH_CHECKLIST.md
-  - docs/V24_PUBLIC_LINK_AUDIT.md
-  - docs/V24_FINAL_PRESENTATION_SUMMARY.md
-  - reports/v0.24_final_presentation_summary.md
+  - docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md
+  - docs/V21_DOCKER_GEARS_TEST_REPORT.md
 
 reproduction_commands:
   no_data:

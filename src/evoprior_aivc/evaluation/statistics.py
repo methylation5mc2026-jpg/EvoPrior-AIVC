@@ -9,7 +9,11 @@ import numpy as np
 import pandas as pd
 
 
-def normal_approx_ci(values: Iterable[float], *, confidence: float = 0.95) -> dict[str, float | int | bool | None]:
+def normal_approx_ci(
+    values: Iterable[float],
+    *,
+    confidence: float = 0.95,
+) -> dict[str, float | int | bool | None]:
     """Return mean/std/normal-approximation CI with underpowered flag."""
     series = pd.Series(list(values), dtype="float64").dropna()
     n = int(series.shape[0])

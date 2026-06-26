@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import copy
-import json
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -212,7 +211,12 @@ def _make_run_dir(config: dict[str, Any], base_config: dict[str, Any]) -> Path:
 
 
 def _git_commit() -> str:
-    result = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=False)
+    result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
     return result.stdout.strip() if result.returncode == 0 else "unknown"
 
 

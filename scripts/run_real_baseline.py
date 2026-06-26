@@ -20,10 +20,10 @@ from evoprior_aivc.baselines import (
     RidgeBaseline,
     build_delta_dataset,
 )
+from evoprior_aivc.data.adapters import write_schema_report
 from evoprior_aivc.data.download import prepare_dataset
 from evoprior_aivc.data.preprocess import preprocess_adata
 from evoprior_aivc.data.pseudobulk import aggregate_pseudobulk
-from evoprior_aivc.data.adapters import write_schema_report
 from evoprior_aivc.data.real_loader import load_real_dataset
 from evoprior_aivc.data.registry import DatasetRecord
 from evoprior_aivc.data.splits import assign_group_holdout_split, assign_random_group_split
@@ -263,7 +263,14 @@ def _split_frame(split_mode: str, split: pd.Series, metadata: pd.DataFrame) -> p
     return frame.reset_index(drop=True)
 
 
-def _failure_cases(query, predicted_delta: pd.DataFrame, *, baseline: str, split_mode: str, split_label: str):
+def _failure_cases(
+    query,
+    predicted_delta: pd.DataFrame,
+    *,
+    baseline: str,
+    split_mode: str,
+    split_label: str,
+):
     observed = query.observed_delta
     absolute_error = (observed - predicted_delta.loc[observed.index, observed.columns]).abs()
     rows = []
@@ -292,7 +299,12 @@ def _split_summary(split_df: pd.DataFrame, metadata: pd.DataFrame) -> pd.DataFra
     return summary
 
 
-def _group_summary(adata, expression: pd.DataFrame, metadata: pd.DataFrame, delta_dataset) -> dict[str, object]:
+def _group_summary(
+    adata,
+    expression: pd.DataFrame,
+    metadata: pd.DataFrame,
+    delta_dataset,
+) -> dict[str, object]:
     return {
         "n_cells_after_preprocessing": int(adata.n_obs),
         "n_genes_after_preprocessing": int(adata.n_vars),
@@ -302,7 +314,9 @@ def _group_summary(adata, expression: pd.DataFrame, metadata: pd.DataFrame, delt
         "max_group_cells": int(metadata["n_cells"].max()),
         "median_group_cells": float(metadata["n_cells"].median()),
         "perturbations": int(metadata["perturbation"].nunique()),
-        "cell_types": int(metadata["cell_type"].nunique()) if "cell_type" in metadata.columns else 0,
+        "cell_types": (
+            int(metadata["cell_type"].nunique()) if "cell_type" in metadata.columns else 0
+        ),
     }
 
 

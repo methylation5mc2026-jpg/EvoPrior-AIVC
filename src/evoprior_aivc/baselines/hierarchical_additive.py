@@ -24,7 +24,7 @@ class HierarchicalAdditiveBaseline(DeltaBaseline):
         self.alpha = float(alpha)
         self.effect_columns = effect_columns
 
-    def fit(self, dataset: DeltaDataset) -> "HierarchicalAdditiveBaseline":
+    def fit(self, dataset: DeltaDataset) -> HierarchicalAdditiveBaseline:
         self.gene_names_ = dataset.gene_names
         self.global_mean_ = dataset.observed_delta.mean(axis=0)
         self.effect_tables_: dict[str, pd.DataFrame] = {}
@@ -53,5 +53,10 @@ class HierarchicalAdditiveBaseline(DeltaBaseline):
                     effects.loc[value].to_numpy(dtype=float) if value in effects.index else zero
                 )
             rows.append(prediction)
-        return pd.DataFrame(rows, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            rows,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 

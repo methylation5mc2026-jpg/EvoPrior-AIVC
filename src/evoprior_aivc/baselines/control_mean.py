@@ -27,7 +27,7 @@ class ControlMeanBaseline(DeltaBaseline):
     ) -> None:
         self.fallback_hierarchy = fallback_hierarchy
 
-    def fit(self, dataset: DeltaDataset) -> "ControlMeanBaseline":
+    def fit(self, dataset: DeltaDataset) -> ControlMeanBaseline:
         self.gene_names_ = dataset.gene_names
         self.available_fallbacks_ = tuple(
             fields

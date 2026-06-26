@@ -7,7 +7,11 @@ from typing import Any
 
 from anndata import AnnData
 
-from evoprior_aivc.data.adapters import SchemaMappingReport, adapter_from_config, write_schema_report
+from evoprior_aivc.data.adapters import (
+    SchemaMappingReport,
+    adapter_from_config,
+    write_schema_report,
+)
 from evoprior_aivc.data.registry import DatasetRecord, resolve_local_path
 
 

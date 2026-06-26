@@ -47,7 +47,8 @@ def build_delta_dataset(
 
     global_control = expression.loc[control_mask].mean(axis=0)
     control_lookup: dict[tuple[object, ...], np.ndarray] = {}
-    for key, group_index in metadata.loc[control_mask].groupby(list(match_columns), dropna=False).groups.items():
+    control_groups = metadata.loc[control_mask].groupby(list(match_columns), dropna=False)
+    for key, group_index in control_groups.groups.items():
         if not isinstance(key, tuple):
             key = (key,)
         control_lookup[key] = expression.loc[group_index].mean(axis=0).to_numpy(dtype=float)
@@ -92,7 +93,7 @@ class DeltaBaseline:
 
     name: str = "baseline"
 
-    def fit(self, dataset: DeltaDataset) -> "DeltaBaseline":
+    def fit(self, dataset: DeltaDataset) -> DeltaBaseline:
         raise NotImplementedError
 
     def predict_delta(self, dataset: DeltaDataset) -> pd.DataFrame:

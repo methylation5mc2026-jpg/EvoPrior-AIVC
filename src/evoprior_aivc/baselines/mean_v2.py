@@ -20,10 +20,12 @@ class PerturbationMeanDeltaBaselineV2(DeltaBaseline):
             raise ValueError("fallback must be 'guide', 'global', or 'zero'")
         self.fallback = fallback
 
-    def fit(self, dataset: DeltaDataset) -> "PerturbationMeanDeltaBaselineV2":
+    def fit(self, dataset: DeltaDataset) -> PerturbationMeanDeltaBaselineV2:
         self.gene_names_ = dataset.gene_names
         self.global_mean_ = dataset.observed_delta.mean(axis=0)
-        self.perturbation_means_ = dataset.observed_delta.groupby(dataset.metadata["perturbation"]).mean()
+        self.perturbation_means_ = dataset.observed_delta.groupby(
+            dataset.metadata["perturbation"]
+        ).mean()
         self.guide_means_ = (
             dataset.observed_delta.groupby(dataset.metadata["guide_id"]).mean()
             if "guide_id" in dataset.metadata.columns
@@ -50,5 +52,10 @@ class PerturbationMeanDeltaBaselineV2(DeltaBaseline):
                 rows.append(self.global_mean_.to_numpy(dtype=float))
             else:
                 rows.append(zero)
-        return pd.DataFrame(rows, index=dataset.metadata.index, columns=self.gene_names_, dtype=float)
+        return pd.DataFrame(
+            rows,
+            index=dataset.metadata.index,
+            columns=self.gene_names_,
+            dtype=float,
+        )
 

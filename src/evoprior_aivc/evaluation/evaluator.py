@@ -21,7 +21,10 @@ def evaluate_delta_predictions(
     predicted_delta: pd.DataFrame,
 ) -> dict[str, float]:
     """Compute locked scalar metrics for delta predictions."""
-    predicted_delta = predicted_delta.loc[dataset.observed_delta.index, dataset.observed_delta.columns]
+    predicted_delta = predicted_delta.loc[
+        dataset.observed_delta.index,
+        dataset.observed_delta.columns,
+    ]
     predicted_post = dataset.control_expression + predicted_delta
     metrics = {
         "mae_delta": mean_absolute_error(
@@ -64,7 +67,11 @@ def evaluate_by_group(
 
 def subset_delta_dataset(dataset: DeltaDataset, indexer) -> DeltaDataset:
     """Return a DeltaDataset subset by labels, boolean mask, or positional mask."""
-    metadata = dataset.metadata.loc[indexer] if not _is_bool_mask(indexer) else dataset.metadata.loc[indexer]
+    metadata = (
+        dataset.metadata.loc[indexer]
+        if not _is_bool_mask(indexer)
+        else dataset.metadata.loc[indexer]
+    )
     index = metadata.index
     return DeltaDataset(
         group_ids=tuple(map(str, index)),
@@ -84,7 +91,10 @@ def prediction_long_frame(
     split_label: str,
 ) -> pd.DataFrame:
     """Serialize observed/predicted delta and post-expression as a long table."""
-    predicted_delta = predicted_delta.loc[dataset.observed_delta.index, dataset.observed_delta.columns]
+    predicted_delta = predicted_delta.loc[
+        dataset.observed_delta.index,
+        dataset.observed_delta.columns,
+    ]
     predicted_post = dataset.control_expression + predicted_delta
     rows: list[dict[str, object]] = []
     for group_id in dataset.group_ids:

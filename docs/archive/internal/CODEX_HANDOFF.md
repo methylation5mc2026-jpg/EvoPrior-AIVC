@@ -1,3 +1,7 @@
+# Internal Operational Notes
+
+Internal operational notes. Not part of public technical documentation.
+
 # Codex Handoff
 
 ## Current State: v0.26 Main Merge Release And Public Verification

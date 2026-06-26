@@ -12,7 +12,7 @@ class NoChangeBaseline(DeltaBaseline):
 
     name = "no_change"
 
-    def fit(self, dataset: DeltaDataset) -> "NoChangeBaseline":
+    def fit(self, dataset: DeltaDataset) -> NoChangeBaseline:
         self.gene_names_ = dataset.gene_names
         return self
 
