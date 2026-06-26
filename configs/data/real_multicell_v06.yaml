@@ -1,0 +1,44 @@
+dataset:
+  dataset_id: kang_2018_pbmc_ifnb
+  display_name: Kang et al. 2018 PBMC IFN-beta stimulation
+  source_url: https://ndownloader.figshare.com/files/34464122
+  expected_raw_path: data/raw/kang_2018_pbmc_ifnb.h5ad
+  expected_format: h5ad
+  checksum: adb2246232e8493031c576982c0c02a3
+  checksum_algorithm: md5
+  file_size_bytes: 38356412
+  license: Public Figshare dataset associated with Kang et al. 2018; use for research benchmark with citation.
+  access_notes: Figshare file kang.h5ad, file id 34464122, article id 19397624.
+  adapter: generic_h5ad
+  allow_auto_download: true
+  manual_download_note: Download kang.h5ad from Figshare file id 34464122 and place it at data/raw/kang_2018_pbmc_ifnb.h5ad.
+
+prepare:
+  mode: local_or_download
+  local_path:
+
+adapter:
+  obs_mapping:
+    perturbation: label
+    cell_type: cell_type
+    tissue:
+    donor: replicate
+    batch:
+    dose:
+    time:
+  var_mapping:
+    gene_symbol: name
+    gene_id:
+  control_labels:
+    - ctrl
+    - control
+  fallback_cell_type: unknown_cell_type
+  preserve_obs_fields:
+    - nCount_RNA
+    - nFeature_RNA
+    - cluster
+    - seurat_clusters
+
+reporting:
+  source_article: https://figshare.com/articles/dataset/Kang_HM_Subramaniam_M_Targ_S_Nguyen_M_et_al_2017/19397624
+  claim_boundary: Real PBMC IFN-beta stimulation benchmark with one non-control perturbation; preliminary lineage-aware comparison only.

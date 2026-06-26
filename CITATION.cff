@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+title: EvoPrior-AIVC
+message: "If you use this repository, please cite the project and the relevant dataset sources."
+type: software
+version: "0.19"
+authors:
+  - name: "EvoPrior-AIVC contributors"
+repository-code: "TODO: add public repository URL"
+abstract: "Reproducible perturbation-response prediction benchmark pipeline with structured priors and a validated Norman/GEARS-compatible residual baseline."
+keywords:
+  - perturbation prediction
+  - single-cell genomics
+  - benchmark
+  - reproducibility
+license: "LicenseRef-Pending"

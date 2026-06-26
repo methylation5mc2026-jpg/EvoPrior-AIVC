@@ -1,0 +1,55 @@
+benchmark:
+  benchmark_id: scperturb_papalexi_2021_arrayed_rna_v012
+  display_name: Papalexi/Satija 2021 scPerturb-compatible baseline
+  selected_from_v011_record: scperturb_papalexi_metadata_only
+  official_or_compatible: custom_benchmark_compatible
+  alignment_status: custom split; not official leaderboard aligned
+  access_method: local_or_download
+  expected_local_size_bytes: 52339395
+  expected_runtime: minutes on local CPU
+  expected_split: leave-one-perturbation suite over guide-level pseudobulk groups
+  metrics: MAE, MSE, Pearson delta correlation, Spearman logFC, DE top-k recovery
+  decision: run now
+
+data:
+  dataset:
+    dataset_id: scperturb_papalexi_2021_arrayed_rna
+    display_name: PapalexiSatija2021 ECCITE-seq arrayed RNA
+    source_url: https://zenodo.org/records/13350497/files/PapalexiSatija2021_eccite_arrayed_RNA.h5ad?download=1
+    expected_raw_path: data/raw/PapalexiSatija2021_eccite_arrayed_RNA.h5ad
+    expected_format: h5ad
+    checksum: 843820d48b024348d6132cd53be0da91
+    checksum_algorithm: md5
+    file_size_bytes: 52339395
+    license: CC-BY-4.0 via scPerturb Zenodo record
+    access_notes: Public scPerturb H5AD collection, version 1.4; raw data is not redistributed by this repo.
+    adapter: generic_h5ad
+    allow_auto_download: true
+    manual_download_note: Download PapalexiSatija2021_eccite_arrayed_RNA.h5ad from Zenodo record 13350497 and place it under data/raw/.
+  prepare:
+    mode: local_or_download
+    local_path:
+  adapter:
+    obs_mapping:
+      perturbation: perturbation
+      cell_type: celltype
+      tissue: tissue_type
+      donor:
+      batch:
+      dose:
+      time:
+    var_mapping:
+      gene_symbol:
+      gene_id: ensembl_id
+    control_labels:
+      - control
+      - ctrl
+      - nt
+      - non-targeting
+    fallback_cell_type: unknown_cell_type
+    preserve_obs_fields:
+      - guide_id
+      - hto
+      - cell_line
+      - perturbation_type
+      - nperts

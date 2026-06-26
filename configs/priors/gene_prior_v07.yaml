@@ -1,0 +1,12 @@
+prior_id: synthetic_gene_prior_v07
+output_root: data/interim/gene_priors
+claim_boundary: Synthetic/toy gene-prior table for v0.7 infrastructure and synthetic benchmark testing only.
+
+source:
+  mode: synthetic_gene_prior
+  source: synthetic_gene_prior
+  source_version: v0.7-toy
+  n_genes: 120
+  gene_prefix: SGENE
+  missing_fraction: 0.1
+  seed: 707

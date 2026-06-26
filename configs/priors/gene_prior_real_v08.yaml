@@ -1,0 +1,15 @@
+prior_id: real_v08_hgnc_gene_metadata
+output_root: data/interim/gene_priors
+output_subdir: hgnc_complete_set_20260619
+claim_boundary: Real HGNC functional/gene-metadata prior. No orthology or conservation source is configured, so this is not a real evolutionary/conservation-prior test.
+
+source:
+  mode: download_hgnc
+  source: HGNC complete set
+  source_version: hgnc_complete_set_current_page_date_2026-06-19
+  source_kind: real_functional_gene_metadata
+  url: https://storage.googleapis.com/public-download-files/hgnc/tsv/tsv/hgnc_complete_set.txt
+  cache_dir: data/interim/gene_priors/_source_cache
+  output_subdir: hgnc_complete_set_20260619
+  manual_note: HGNC download page reports the complete set as a current TSV download; manifest records source checksum at preparation time.
+  timeout_seconds: 120

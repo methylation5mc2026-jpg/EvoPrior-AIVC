@@ -1,0 +1,182 @@
+experiment_id: v0.16-official-gears-or-model-improvement-sprint
+mode: norman_residual_sprint
+seed: 160
+output_root: outputs/runs
+output_prefix: v0.16-model-improvement-sprint
+benchmark_id: gears_norman_scperturb_v013
+dataset_id: gears_norman_scperturb_v013
+data_config: configs/data/gears_norman_v013.yaml
+
+benchmark:
+  selected_benchmark: NormanWeissman2019 filtered Perturb-seq from scPerturb
+  official_alignment_status: gears_compatible_internal_residual_sprint
+  official_alignment_notes: Official GEARS dependencies import in .venv_gears after v0.16 install, but the project wrapper remains feasibility-only and does not produce official GEARS metrics.
+  source: https://zenodo.org/records/13350497
+  source_version: scPerturb Zenodo record v1.4, NormanWeissman2019_filtered.h5ad
+  split_definition: v0.14 internal GEARS-compatible seen0/seen1/seen2/random_combo combo split
+  metric_status: GEARS-compatible internal metrics, not official leaderboard metrics
+
+preprocessing:
+  seed: 160
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: global
+
+split:
+  mode: gears_compatible_combo_with_random_combo
+  seed: 1400
+  seen_gene_fraction: 0.7
+  test_combo_fraction: 0.22
+  random_combo_fraction: 0.08
+  val_fraction: 0.1
+  min_test_combos_per_class: 1
+
+features:
+  allowed_feature_columns:
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+    - cell_type
+    - split_class
+  leakage_policy: train-only residual fitting; validation-only model selection; test used once
+
+selection:
+  split: val
+  metric: mae_delta
+  mode: minimize
+  tie_breakers:
+    - mse_delta
+    - pearson_delta_desc
+
+reference_baselines:
+  - name: single_effect_additive_combo
+    missing_single_fallback: global_single_mean
+  - name: weighted_combo_additive
+    missing_single_fallback: global_single_mean
+    ridge_alpha: 1.0
+
+candidate_models:
+  - candidate_id: weighted_base_only
+    base_model: weighted_combo_additive
+    residual_model: none
+    residual_scale: 0.0
+    alpha: 1.0
+    pca_components: 16
+    random_state: 1600
+  - candidate_id: weighted_pca_ridge_s025_a01
+    base_model: weighted_combo_additive
+    residual_model: pca_ridge
+    residual_scale: 0.25
+    alpha: 0.1
+    pca_components: 8
+    random_state: 1601
+  - candidate_id: weighted_pca_ridge_s050_a1
+    base_model: weighted_combo_additive
+    residual_model: pca_ridge
+    residual_scale: 0.5
+    alpha: 1.0
+    pca_components: 16
+    random_state: 1602
+  - candidate_id: weighted_pca_ridge_s075_a10
+    base_model: weighted_combo_additive
+    residual_model: pca_ridge
+    residual_scale: 0.75
+    alpha: 10.0
+    pca_components: 16
+    random_state: 1603
+  - candidate_id: weighted_direct_ridge_s025_a10
+    base_model: weighted_combo_additive
+    residual_model: ridge
+    residual_scale: 0.25
+    alpha: 10.0
+    pca_components: 16
+    random_state: 1604
+  - candidate_id: weighted_direct_ridge_s050_a100
+    base_model: weighted_combo_additive
+    residual_model: ridge
+    residual_scale: 0.5
+    alpha: 100.0
+    pca_components: 16
+    random_state: 1605
+  - candidate_id: weighted_mlp_pca_s025
+    base_model: weighted_combo_additive
+    residual_model: mlp_pca
+    residual_scale: 0.25
+    alpha: 0.0001
+    pca_components: 16
+    hidden_layer_sizes:
+      - 64
+    max_iter: 250
+    random_state: 1606
+  - candidate_id: weighted_mlp_pca_s050
+    base_model: weighted_combo_additive
+    residual_model: mlp_pca
+    residual_scale: 0.5
+    alpha: 0.0001
+    pca_components: 16
+    hidden_layer_sizes:
+      - 64
+    max_iter: 250
+    random_state: 1607
+  - candidate_id: single_pca_ridge_s025_a1
+    base_model: single_effect_additive_combo
+    residual_model: pca_ridge
+    residual_scale: 0.25
+    alpha: 1.0
+    pca_components: 16
+    random_state: 1608
+
+comparison_reference:
+  rows:
+    - label: v0.14_weighted_combo_additive
+      split: test
+      mae_delta: 0.5660
+      mse_delta: 6.6759
+      pearson_delta: 0.7599
+      spearman_logfc: 0.6390
+    - label: v0.14_single_effect_additive_combo
+      split: test
+      mae_delta: 0.5745
+      mse_delta: 6.7388
+      pearson_delta: 0.7684
+      spearman_logfc: 0.6443
+    - label: v0.15_fast_combo_mlp_pca_sklearn
+      split: test
+      mae_delta: 0.5877
+      mse_delta: 7.5517
+      pearson_delta: 0.7134
+      spearman_logfc: 0.6317
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+
+official_gears:
+  status: import_ok_but_wrapper_metrics_not_implemented
+  venv: .venv_gears
+  dry_run_output: outputs/runs/v0.14-official-gears-wrapper-blocked/gears_norman_scperturb_v013/20260625T025148Z/
+
+reporting:
+  claim_boundary: v0.16 is a validation-selected residual/ensemble performance sprint on the public Norman/scPerturb GEARS-compatible internal split. It is not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.

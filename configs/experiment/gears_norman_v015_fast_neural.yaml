@@ -1,0 +1,118 @@
+experiment_id: v0.15-fast-neural-norman-baseline
+mode: fast_neural_norman_baseline
+seed: 150
+output_root: outputs/runs
+output_prefix: v0.15-fast-neural-norman-baseline
+benchmark_id: gears_norman_scperturb_v013
+dataset_id: gears_norman_scperturb_v013
+data_config: configs/data/gears_norman_v013.yaml
+
+benchmark:
+  selected_benchmark: NormanWeissman2019 filtered Perturb-seq from scPerturb
+  official_alignment_status: gears_compatible_internal_neural_baseline
+  official_alignment_notes: Official GEARS split files and official GEARS model are not imported. v0.15 trains a lightweight sklearn MLP baseline on the v0.14 internal split.
+  source: https://zenodo.org/records/13350497
+  source_version: scPerturb Zenodo record v1.4, NormanWeissman2019_filtered.h5ad
+  split_definition: v0.14 internal GEARS-compatible seen0/seen1/seen2/random_combo combo split
+  metric_status: GEARS-compatible internal metrics, not official leaderboard metrics
+
+preprocessing:
+  seed: 150
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: global
+
+split:
+  mode: gears_compatible_combo_with_random_combo
+  seed: 1400
+  seen_gene_fraction: 0.7
+  test_combo_fraction: 0.22
+  random_combo_fraction: 0.08
+  val_fraction: 0.1
+  min_test_combos_per_class: 1
+
+features:
+  allowed_feature_columns:
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+    - cell_type
+  leakage_policy: train-only perturbation metadata vocab; no observed target deltas from val/test
+
+model:
+  name: fast_combo_mlp_pca_sklearn
+  backend: sklearn_mlp_regressor_pca
+  torch_available_required: false
+  seeds:
+    - 1510
+    - 1511
+    - 1512
+  pca_components: 32
+  hidden_layer_sizes:
+    - 64
+  alpha: 0.0001
+  learning_rate_init: 0.001
+  max_iter: 250
+  tol: 0.0001
+  early_stopping: true
+  validation_fraction: 0.15
+  n_iter_no_change: 20
+  include_cell_type: true
+  include_perturbation_type: true
+
+reference_baselines:
+  - name: single_effect_additive_combo
+    missing_single_fallback: global_single_mean
+  - name: weighted_combo_additive
+    missing_single_fallback: global_single_mean
+    ridge_alpha: 1.0
+
+comparison_reference:
+  v014_output_dir: outputs/runs/v0.14-gears-aligned-baseline/gears_norman_scperturb_v013/20260625T014719Z/
+  note: v0.14 values are included only as same-split historical reference.
+  rows:
+    - baseline: single_effect_additive_combo
+      split: test
+      mae_delta: 0.5745
+      mse_delta: 6.7388
+      pearson_delta: 0.7684
+      spearman_logfc: 0.6443
+    - baseline: weighted_combo_additive
+      split: test
+      mae_delta: 0.5660
+      mse_delta: 6.6759
+      pearson_delta: 0.7599
+      spearman_logfc: 0.6390
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+
+reporting:
+  claim_boundary: v0.15 trains a fast sklearn MLP/PCA neural-style baseline on the public Norman/scPerturb GEARS-compatible internal split. It is not official GEARS, not leaderboard-comparable, not SOTA, not biological discovery, and not evidence of general neural superiority.
+  limitations:
+    - PyTorch and official GEARS dependencies are unavailable in the current environment.
+    - The split is internally generated, not the official GEARS split file.
+    - Hyperparameters are pre-specified and not tuned on test metrics.

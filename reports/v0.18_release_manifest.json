@@ -1,0 +1,47 @@
+{
+  "release_id": "v0.18-official-gears-reproduction-or-model-card-release",
+  "git_commit": "pending user-side commit",
+  "git_tag": "v0.18-official-gears-reproduction-or-model-card-release",
+  "source_commit_before_release": "adc93e7",
+  "dataset": {
+    "id": "gears_norman_scperturb_v013",
+    "file": "NormanWeissman2019_filtered.h5ad",
+    "checksum_md5": "c870e6967d91c017d9da827bab183cd6"
+  },
+  "primary_output": "outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/",
+  "official_gears_status": "import_ok_run_blocked",
+  "official_gears_status_output": "outputs/runs/v0.18-official-gears-reproduction/20260625T102255Z/official_gears_status.md",
+  "configs": [
+    "configs/data/gears_norman_v013.yaml",
+    "configs/experiment/gears_norman_v017_multiseed_residual.yaml",
+    "configs/experiment/gears_norman_v014_official_wrapper.yaml"
+  ],
+  "scripts": [
+    "scripts/run_norman_residual_multiseed.py",
+    "scripts/run_gears_norman_baseline.py",
+    "scripts/run_official_gears_wrapper.py"
+  ],
+  "metrics_files": [
+    "aggregate_metrics.csv",
+    "comparison_to_v014_v015_v016.csv",
+    "ablation_summary.csv",
+    "leakage_stress_checks.csv",
+    "per_class_metric_summary.csv"
+  ],
+  "docs": [
+    "docs/V18_RELEASE_MODEL_CARD.md",
+    "docs/V18_BENCHMARK_CARD.md",
+    "docs/V18_REPRODUCIBILITY_RUNBOOK.md",
+    "docs/V18_OFFICIAL_GEARS_REPRODUCTION_LOG.md",
+    "docs/V18_EXTERNAL_REVIEW_INDEX.md",
+    "docs/V17_EXTERNAL_RESULT_CARD.md"
+  ],
+  "not_included": [
+    "raw data",
+    "outputs",
+    "checkpoints",
+    "virtual environments",
+    "cache directories"
+  ],
+  "claim_boundary": "Internal GEARS-compatible Norman split only; not official GEARS, not leaderboard-comparable, not SOTA."
+}

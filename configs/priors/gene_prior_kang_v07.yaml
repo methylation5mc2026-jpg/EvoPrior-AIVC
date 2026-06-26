@@ -1,0 +1,11 @@
+prior_id: kang_engineering_placeholder_gene_prior_v07
+output_root: data/interim/gene_priors
+claim_boundary: Engineering-only placeholder generated from Kang gene symbols. Not a meaningful evolutionary annotation source.
+
+source:
+  mode: synthetic_gene_prior
+  source: synthetic_placeholder_for_kang_compatibility
+  source_version: v0.7-engineering-placeholder
+  data_config: configs/data/real_multicell_v06.yaml
+  missing_fraction: 0.1
+  seed: 717

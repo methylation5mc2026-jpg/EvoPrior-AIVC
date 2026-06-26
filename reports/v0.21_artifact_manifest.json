@@ -1,0 +1,195 @@
+{
+  "release_id": "v0.21-github-release-candidate-and-gears-docker-test",
+  "status": "pass",
+  "git_commit": "35e92cf",
+  "git_tag_expected": "v0.21-github-release-candidate-and-gears-docker-test",
+  "rollback_tag": "v0.20-github-release-or-official-gears-docker-env",
+  "dataset_md5": "c870e6967d91c017d9da827bab183cd6",
+  "primary_output": "outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z",
+  "primary_output_exists": true,
+  "release_bundle_latest": "outputs\\release\\v0.21\\20260625T233703Z",
+  "release_bundle_exists": true,
+  "required_files": [
+    {
+      "path": "README.md",
+      "exists": true
+    },
+    {
+      "path": "LICENSE",
+      "exists": true
+    },
+    {
+      "path": "CITATION.cff",
+      "exists": true
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "exists": true
+    },
+    {
+      "path": "SECURITY.md",
+      "exists": true
+    },
+    {
+      "path": ".env.example",
+      "exists": true
+    },
+    {
+      "path": "docs/V18_RELEASE_MODEL_CARD.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V18_BENCHMARK_CARD.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V18_REPRODUCIBILITY_RUNBOOK.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V18_EXTERNAL_REVIEW_INDEX.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V19_REPRODUCTION_SMOKE_TESTS.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V20_GITHUB_RELEASE_PLAN.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V20_RELEASE_CHECKLIST.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V20_GITHUB_ACTIONS_CI.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V20_PUBLIC_REVIEW_README_MAP.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V21_RELEASE_CANDIDATE_PLAN.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V21_DOCKER_GEARS_TEST_REPORT.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V21_GITHUB_RELEASE_NOTES.md",
+      "exists": true
+    },
+    {
+      "path": "docs/V21_CI_VALIDATION_REPORT.md",
+      "exists": true
+    },
+    {
+      "path": "reports/v0.21_release_notes.md",
+      "exists": true
+    },
+    {
+      "path": "configs/experiment/release_smoke_v019.yaml",
+      "exists": true
+    },
+    {
+      "path": "configs/release/v020_release_bundle.yaml",
+      "exists": true
+    },
+    {
+      "path": "configs/release/v021_release_bundle.yaml",
+      "exists": true
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "exists": true
+    },
+    {
+      "path": "docker/Dockerfile.gears",
+      "exists": true
+    },
+    {
+      "path": "docker/README_GEARS_ENV.md",
+      "exists": true
+    },
+    {
+      "path": "scripts/run_release_smoke.py",
+      "exists": true
+    },
+    {
+      "path": "scripts/diagnose_official_gears.py",
+      "exists": true
+    },
+    {
+      "path": "scripts/check_release_artifacts.py",
+      "exists": true
+    },
+    {
+      "path": "scripts/make_release_bundle.py",
+      "exists": true
+    },
+    {
+      "path": "scripts/check_ci_workflow.py",
+      "exists": true
+    }
+  ],
+  "metric_files": [
+    {
+      "path": "outputs\\runs\\v0.17-norman-validated-residual-baseline\\gears_norman_scperturb_v013\\20260625T100322Z\\aggregate_metrics.csv",
+      "exists": true
+    },
+    {
+      "path": "outputs\\runs\\v0.17-norman-validated-residual-baseline\\gears_norman_scperturb_v013\\20260625T100322Z\\comparison_to_v014_v015_v016.csv",
+      "exists": true
+    },
+    {
+      "path": "outputs\\runs\\v0.17-norman-validated-residual-baseline\\gears_norman_scperturb_v013\\20260625T100322Z\\ablation_summary.csv",
+      "exists": true
+    },
+    {
+      "path": "outputs\\runs\\v0.17-norman-validated-residual-baseline\\gears_norman_scperturb_v013\\20260625T100322Z\\leakage_stress_checks.csv",
+      "exists": true
+    },
+    {
+      "path": "outputs\\runs\\v0.17-norman-validated-residual-baseline\\gears_norman_scperturb_v013\\20260625T100322Z\\per_class_metric_summary.csv",
+      "exists": true
+    }
+  ],
+  "staged_files_checked": [],
+  "forbidden_staged_files": [],
+  "reproduction_commands": [
+    "python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml",
+    "python scripts/diagnose_official_gears.py",
+    "python scripts/check_release_artifacts.py",
+    "python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml",
+    "python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml"
+  ],
+  "not_included": [
+    "raw data",
+    "outputs",
+    "virtual environments",
+    "cache directories"
+  ]
+}

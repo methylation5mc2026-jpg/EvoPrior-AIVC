@@ -1,0 +1,10 @@
+experiment_id: v0.11-public-benchmark-ingestion-plan
+mode: public_benchmark_ingestion_plan
+registry_path: configs/benchmarks/public_benchmark_registry.example.yaml
+output_root: outputs/runs
+output_prefix: v0.11-external-public-benchmark-ingestion
+strict: false
+
+reporting:
+  title: v0.11 External Public Benchmark Ingestion Plan
+  claim_boundary: v0.11 registers benchmark metadata and blocked ingestion plans only. It does not import large external data, train models, produce performance evidence, or establish public benchmark superiority.

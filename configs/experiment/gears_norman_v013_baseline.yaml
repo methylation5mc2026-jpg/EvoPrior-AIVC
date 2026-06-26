@@ -1,0 +1,92 @@
+experiment_id: v0.13-gears-norman-baseline
+mode: gears_norman_baseline
+seed: 130
+output_root: outputs/runs
+output_prefix: v0.13-gears-norman-baseline
+benchmark_id: gears_norman_scperturb_v013
+dataset_id: gears_norman_scperturb_v013
+data_config: configs/data/gears_norman_v013.yaml
+
+benchmark:
+  selected_benchmark: NormanWeissman2019 filtered Perturb-seq from scPerturb
+  official_alignment_status: gears_compatible_internal
+  official_alignment_notes: Official GEARS split files are not imported. This run uses a GEARS-compatible internal combo split over the public Norman H5AD.
+  source: https://zenodo.org/records/13350497
+  source_version: scPerturb Zenodo record v1.4, NormanWeissman2019_filtered.h5ad
+  split_definition: internal GEARS-compatible seen0/seen1/seen2 combo split where available
+  metric_status: GEARS-compatible internal metrics, not official leaderboard metrics
+
+preprocessing:
+  seed: 130
+  max_cells:
+  min_cells_per_gene: 10
+  max_genes: 3000
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+  layer:
+  min_cells: 20
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+  control_fallback: global
+
+split:
+  mode: gears_compatible_combo
+  seed: 1300
+  seen_gene_fraction: 0.7
+  test_combo_fraction: 0.25
+  val_fraction: 0.1
+  min_test_combos_per_class: 1
+
+features:
+  allowed_feature_columns:
+    - control_expression
+    - perturbation
+    - perturbation_type
+    - perturbation_genes
+    - cell_type
+
+baselines:
+  - name: no_change
+  - name: control_mean
+  - name: mean_delta
+    fallback: global
+  - name: perturbation_mean_delta_v2
+    fallback: global
+  - name: single_effect_additive_combo
+    missing_single_fallback: global_single_mean
+  - name: ridge_cv
+    alphas:
+      - 0.1
+      - 1.0
+      - 10.0
+  - name: evoprior_additive_no_prior
+    use_gene_prior: false
+    use_lineage_prior: false
+    alpha_shrinkage: 1.0
+    min_groups_per_effect: 1
+
+evaluation:
+  metric_columns:
+    - mae_delta
+    - mse_delta
+    - pearson_delta
+    - spearman_logfc
+  de_ks:
+    - 20
+    - 50
+
+reporting:
+  claim_boundary: v0.13 executes a GEARS-compatible internal baseline run on public Norman/scPerturb data. It is not the official GEARS split, not leaderboard-comparable, not SOTA, and not a neural GEARS reproduction.
+  limitations:
+    - Official GEARS split files are not imported.
+    - Metrics are GEARS-compatible internal metrics.
+    - EvoPrior additive is run with lineage and gene priors disabled for this single-context Norman benchmark.

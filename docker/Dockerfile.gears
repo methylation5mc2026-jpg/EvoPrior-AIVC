@@ -1,0 +1,37 @@
+# Official GEARS feasibility environment for v0.20.
+#
+# This image is a documented route, not a claimed tested official reproduction.
+# It intentionally does not copy raw data or run training by default.
+
+FROM python:3.10-slim
+
+ARG TORCH_VERSION=2.2.2
+ARG TORCH_GEOMETRIC_VERSION=2.5.3
+ARG CELL_GEARS_VERSION=0.1.2
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /workspace
+
+RUN python -m pip install --upgrade pip
+
+# CPU-only PyTorch is used for environment validation. Official performance
+# reproduction should pin versions against the official GEARS instructions.
+RUN python -m pip install \
+    --index-url https://download.pytorch.org/whl/cpu \
+    "torch==${TORCH_VERSION}"
+
+RUN python -m pip install \
+    "torch-geometric==${TORCH_GEOMETRIC_VERSION}" \
+    "cell-gears==${CELL_GEARS_VERSION}"
+
+COPY pyproject.toml README.md ./
+COPY src ./src
+COPY scripts/diagnose_official_gears.py ./scripts/diagnose_official_gears.py
+COPY scripts/run_official_gears_wrapper.py ./scripts/run_official_gears_wrapper.py
+COPY configs/experiment/gears_norman_v014_official_wrapper.yaml ./configs/experiment/gears_norman_v014_official_wrapper.yaml
+
+RUN python -m pip install -e .
+
+CMD ["python", "-c", "import torch; import torch_geometric; import gears; print('official GEARS import check ok')"]

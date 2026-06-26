@@ -1,0 +1,44 @@
+experiment_id: v0.2-synthetic-baseline-smoke
+seed: 42
+output_root: outputs/runs
+output_prefix: v0.2-synthetic-baseline-smoke
+
+synthetic:
+  n_genes: 20
+  cells_per_group: 8
+  sparse_x: false
+
+pseudobulk:
+  groupby:
+    - cell_type
+    - perturbation
+    - donor
+  min_cells: 3
+  aggregation: mean
+
+delta:
+  control_label: control
+  match_columns:
+    - cell_type
+    - donor
+
+splits:
+  random_group:
+    val_fraction: 0.2
+    test_fraction: 0.2
+    seed: 101
+  heldout_perturbation:
+    holdout:
+      perturbation:
+        - pert_c
+    val_fraction: 0.2
+    seed: 102
+
+baselines:
+  - name: no_change
+  - name: mean_delta
+    fallback: global
+  - name: additive
+  - name: ridge
+    alpha: 1.0
+
