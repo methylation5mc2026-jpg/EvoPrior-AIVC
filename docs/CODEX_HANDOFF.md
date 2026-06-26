@@ -1,5 +1,48 @@
 # Codex Handoff
 
+## Current State: v0.26 Main Merge Release And Public Verification
+
+- Current branch: `feat/main-release-verification-v026`
+- Rollback point: `v0.25-github-publish-execution-and-final-link-package`
+- Latest completed source tag before this branch: `v0.25-github-publish-execution-and-final-link-package`
+- v0.26 target tag: `v0.26-main-merge-release-and-public-verification`
+- GitHub repo: `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`
+- Browser audit: root defaults to `main`, and `main` currently shows only minimal bootstrap files.
+- Full project is public on `feat/github-publish-execution-v025`.
+- Releases page currently has no releases.
+- Actions page shows one `ci` workflow run for commit `263b1c3`, but status is not fully readable from unauthenticated browser output.
+- Codex shell remote access is blocked by `schannel: AcquireCredentialsHandle failed: SEC_E_NO_CREDENTIALS`.
+- `gh` CLI is unavailable on PATH.
+
+## v0.26 Implemented So Far
+
+- Main/default verification: `docs/V26_MAIN_BRANCH_AND_RELEASE_VERIFICATION.md`
+- Release execution log: `docs/V26_GITHUB_RELEASE_EXECUTION_LOG.md`
+- Public repo final check: `docs/V26_PUBLIC_REPO_FINAL_CHECK.md`
+- Final share links: `docs/V26_FINAL_SHARE_LINKS.md`
+- Mentor-ready message: `docs/V26_MENTOR_READY_MESSAGE.md`
+
+## v0.26 Verification So Far
+
+- Plain `python -m pytest` failed because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; this is a host temp-permission issue.
+- Repo-local temp validation before v0.26 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v26` -> `164 passed, 4 warnings`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260626T033407Z/`, status `pass`.
+- Artifact check: `python scripts/check_release_artifacts.py` -> `reports/v0.24_artifact_manifest.json`, status `pass`.
+- Final repo-local full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v26` -> `164 passed, 4 warnings`.
+- Diff whitespace check: `git diff --check` -> passed with only expected LF-to-CRLF warnings.
+- Targeted ruff: not needed because v0.26 changed docs/README and release manifests only.
+
+## v0.26 Next Exact Command
+
+```powershell
+git status --short
+git add README.md docs reports/v0.24_artifact_manifest.json reports/v0.24_artifact_manifest.md
+git commit -m "docs: verify GitHub publication and main release path"
+git tag v0.26-main-merge-release-and-public-verification
+git push origin feat/main-release-verification-v026
+git push origin --tags
+```
+
 ## Current State: v0.25 GitHub Publish Execution And Final Link Package
 
 - Current branch: `feat/github-publish-execution-v025`

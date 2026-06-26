@@ -41,6 +41,9 @@ Claim boundary: this is a strong internal GEARS-compatible Norman result under a
 - v0.25 publish execution log: `docs/V25_GITHUB_PUBLISH_EXECUTION_LOG.md`
 - v0.25 final link package: `docs/V25_FINAL_LINK_PACKAGE.md`
 - v0.25 mentor email snippet: `docs/V25_MENTOR_EMAIL_SNIPPET.md`
+- v0.26 main/release verification: `docs/V26_MAIN_BRANCH_AND_RELEASE_VERIFICATION.md`
+- v0.26 final share links: `docs/V26_FINAL_SHARE_LINKS.md`
+- v0.26 mentor-ready message: `docs/V26_MENTOR_READY_MESSAGE.md`
 
 ## Quickstart
 
@@ -70,7 +73,7 @@ Latest public review bundle is refreshed by v0.24 under `outputs/release/v0.24/<
 
 v0.24 publication assets are documentation-only materials for GitHub publication, GitHub Release drafting, personal website integration, public link audit, and mentor review. They do not push to GitHub, update a website, or change the benchmark result.
 
-v0.25 records the intended GitHub target `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`, the exact manual publish commands, and the final link package. Local automation could not configure `origin` or push because `.git/config` is not writable from this environment and `gh` is unavailable.
+v0.25 pushed the complete project package to `feat/github-publish-execution-v025` at `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`. v0.26 records that the repository root still defaults to `main`, which currently has only the minimal bootstrap files; use the feature-branch URL until `main` is merged.
 
 ## With-Data Reproduction
 
@@ -121,6 +124,11 @@ python scripts/check_release_artifacts.py
 - v0.25 final link package: `docs/V25_FINAL_LINK_PACKAGE.md`
 - v0.25 mentor email snippet: `docs/V25_MENTOR_EMAIL_SNIPPET.md`
 - v0.25 post-publish verification: `docs/V25_POST_PUBLISH_VERIFICATION.md`
+- v0.26 main/default branch verification: `docs/V26_MAIN_BRANCH_AND_RELEASE_VERIFICATION.md`
+- v0.26 release execution log: `docs/V26_GITHUB_RELEASE_EXECUTION_LOG.md`
+- v0.26 public final check: `docs/V26_PUBLIC_REPO_FINAL_CHECK.md`
+- v0.26 final share links: `docs/V26_FINAL_SHARE_LINKS.md`
+- v0.26 mentor-ready message: `docs/V26_MENTOR_READY_MESSAGE.md`
 
 ## Data And GEARS Status
 

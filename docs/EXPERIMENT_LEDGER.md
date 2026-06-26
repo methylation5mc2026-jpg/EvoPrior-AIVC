@@ -653,3 +653,24 @@ Claim status:
 - Known risks: public URLs remain pending until owner runs publish commands and verifies GitHub/Release/CI.
 - Rollback note: rollback to tag `v0.24-github-push-and-release-or-website-integration` to remove v0.25 work.
 - Claim status: final publish package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.
+
+### EXP-0029: v0.26 main merge release and public verification
+
+- Experiment ID: `v0.26-main-merge-release-and-public-verification`
+- Date: 2026-06-26
+- Status: completed locally; browser audit, release smoke, artifact check, and repo-local full regression passed; commit/tag and owner-side `main` merge pending.
+- Role: MLOps / GitHub publication engineer / Documentation engineer / Security and privacy reviewer / Scientific reviewer / Outreach engineer
+- Objective: Verify GitHub root/default branch status, document release/CI status, prepare main-merge commands, and produce final share links and mentor-ready message.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Git commit: branch starts from v0.25 commit `263b1c3`; final v0.26 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- GitHub repo: `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`.
+- Browser audit: root/default branch is `main` with minimal files and one commit; full project branch `feat/github-publish-execution-v025` is public and complete; releases page has no releases; Actions page shows one `ci` run but status is not fully readable from unauthenticated browser output.
+- Commands: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python scripts/check_release_artifacts.py`; `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v26`.
+- Verification: release smoke passed at `outputs/runs/v0.19-release-smoke/20260626T033407Z/`; artifact check passed and refreshed `reports/v0.24_artifact_manifest.json`; full repo-local pytest passed with `164 passed, 4 warnings`; `git diff --check` passed with only expected LF-to-CRLF warnings.
+- Metrics: no new benchmark metrics; v0.26 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Known risks: root URL is not ready until `main` merge; release does not exist yet; CI status needs owner-side GitHub UI check or authenticated CLI.
+- Rollback note: rollback to tag `v0.25-github-publish-execution-and-final-link-package` to remove v0.26 work.
+- Claim status: public verification and main-merge package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.

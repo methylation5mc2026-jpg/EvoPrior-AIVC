@@ -94,6 +94,8 @@
 90. v0.23 GitHub publish and project-page assets are presentation materials only. They do not mean the repository was pushed, a GitHub Release was created, GitHub-hosted CI passed, or a personal website was updated.
 91. v0.24 publish execution remains blocked in this environment because no `origin` remote is configured and `gh` is unavailable on `PATH`; no GitHub push, GitHub Release creation, website update, or GitHub-hosted CI run is claimed.
 92. v0.25 cannot be pushed by Codex in this environment: adding `origin` failed with `.git/config: Permission denied`, and `gh` is unavailable. The owner must run the publish commands manually in PowerShell.
+93. v0.26 browser audit shows the GitHub repository root defaults to `main`, but `main` still contains only minimal bootstrap files. Share the feature-branch URL until the full project is merged into `main`.
+94. v0.26 release audit shows no GitHub Releases yet; create the release manually or with authenticated `gh` before claiming a release exists.
 
 ## 失败记录模板
 

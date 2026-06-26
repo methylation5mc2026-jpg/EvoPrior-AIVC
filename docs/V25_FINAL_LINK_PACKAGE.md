@@ -4,14 +4,15 @@
 
 | Purpose | Link | Status |
 | --- | --- | --- |
-| GitHub repository | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC` | pending push |
-| README | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC#readme` | pending push |
+| GitHub repository root | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC` | public, but default `main` is still minimal until merge |
+| Full project branch | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/tree/feat/github-publish-execution-v025` | public and complete |
+| README on full project branch | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/tree/feat/github-publish-execution-v025#readme` | public and complete |
 | v0.24 Release | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/releases/tag/v0.24-github-push-and-release-or-website-integration` | pending release creation |
-| Model card | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_RELEASE_MODEL_CARD.md` | pending push |
-| Benchmark card | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_BENCHMARK_CARD.md` | pending push |
-| Reproducibility runbook | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_REPRODUCIBILITY_RUNBOOK.md` | pending push |
-| Public data guide | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md` | pending push |
-| Final presentation summary | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V24_FINAL_PRESENTATION_SUMMARY.md` | pending push |
+| Model card | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_RELEASE_MODEL_CARD.md` | public on feature branch |
+| Benchmark card | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_BENCHMARK_CARD.md` | public on feature branch |
+| Reproducibility runbook | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V18_REPRODUCIBILITY_RUNBOOK.md` | public on feature branch |
+| Public data guide | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md` | public on feature branch |
+| Final presentation summary | `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC/blob/feat/github-publish-execution-v025/docs/V24_FINAL_PRESENTATION_SUMMARY.md` | public on feature branch |
 | Project website page | `<PROJECT_PAGE_URL>` | not created in v0.25 |
 
 ## Recommended Read Order
@@ -35,3 +36,7 @@ This can be shared as a public-review-ready internal GEARS-compatible Norman ben
 ## Website Link Fill-In
 
 After the personal website page is created, replace `<PROJECT_PAGE_URL>` with the final public page URL and verify that all GitHub links return HTTP 200.
+
+## v0.26 Status Note
+
+Until `feat/github-publish-execution-v025` is merged into `main`, share the full project branch URL rather than the repository root.

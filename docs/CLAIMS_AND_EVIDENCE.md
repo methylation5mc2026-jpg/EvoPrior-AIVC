@@ -43,6 +43,7 @@
 - `v0.23-github-publish-or-project-page-assets`: GitHub publish guide, GitHub release body, project page assets, mentor review brief, showcase index, final publication checklist, and lightweight Markdown/Mermaid visual assets are prepared for public presentation. This is presentation evidence only; the benchmark evidence remains v0.17.
 - `v0.24-github-push-and-release-or-website-integration`: GitHub publish status, owner-side publish commands, Release draft, website integration assets, public link audit, post-publish checklist, release bundle config, and final presentation summary are prepared. This is publication-readiness evidence only; no push, Release creation, website update, or new benchmark result is claimed.
 - `v0.25-github-publish-execution-and-final-link-package`: the intended GitHub URL, final publish commands, final link package, mentor email snippet, and post-publish verification checklist are prepared. Automation could not configure `origin` or create a Release, so actual publication remains owner-side.
+- `v0.26-main-merge-release-and-public-verification`: browser audit confirms the repository is public, the complete project is available on `feat/github-publish-execution-v025`, the default `main` branch remains minimal, and no GitHub Release exists yet. v0.26 prepares the main-merge command path and final share links.
 
 ## 消融提示
 
@@ -68,6 +69,7 @@
 - `v0.23-github-publish-or-project-page-assets`: publication assets do not create new metrics, official GEARS alignment, Docker validation, or broader scientific evidence.
 - `v0.24-github-push-and-release-or-website-integration`: publish commands and website assets do not prove that a remote repository, GitHub Release, GitHub-hosted CI run, or website page exists; those remain owner-side follow-up actions.
 - `v0.25-github-publish-execution-and-final-link-package`: link packages with pending URLs are not proof of public availability until push, Release creation, and URL checks complete.
+- `v0.26-main-merge-release-and-public-verification`: the root repository URL should not be treated as the final share link until `main` is merged and verified; use the full project branch link meanwhile.
 
 ## 推测/未来工作
 
@@ -99,6 +101,7 @@
 - Do not claim v0.23 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, or a new benchmark performance result.
 - Do not claim v0.24 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, a new benchmark performance result, or proof that the repo/website was published.
 - Do not claim v0.25 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, a new benchmark performance result, or proof that GitHub publishing succeeded before the owner verifies public URLs.
+- Do not claim v0.26 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, or proof that the root repository URL is ready before `main` is updated.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。
