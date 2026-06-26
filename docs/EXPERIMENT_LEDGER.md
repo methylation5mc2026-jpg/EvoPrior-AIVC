@@ -563,3 +563,25 @@ Claim status:
 - Known risks: no Docker build, no container import test, no official GEARS training, no official split import, no official metric output, and no GitHub-hosted Actions run in this environment.
 - Rollback note: rollback to tag `v0.20-github-release-or-official-gears-docker-env` to remove v0.21 work.
 - Claim status: release-candidate package only; no SOTA, official GEARS, leaderboard, biological discovery, new benchmark performance, or general model superiority claim.
+
+### EXP-0025: v0.22 public GitHub finalization
+
+- Experiment ID: `v0.22-public-github-finalization`
+- Date: 2026-06-26
+- Status: completed locally; full regression, bundle generation, artifact check, release smoke, targeted tests, and targeted ruff passed; commit/tag pending.
+- Role: MLOps / Public repo polish engineer / Reproducibility engineer / Security and privacy reviewer / Scientific reviewer / Documentation engineer
+- Objective: Finalize public-facing README, release notes, demo guide, repository profile copy, sanitization report, final checklist, release bundle config, and artifact checker without changing the v0.17 model result.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/release/v022_release_bundle.yaml`; smoke config `configs/experiment/release_smoke_v019.yaml`; primary model config remains `configs/experiment/gears_norman_v017_multiseed_residual.yaml`.
+- Git commit: branch starts from v0.21 commit `faac436`; final v0.22 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: `python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml`; `python scripts/check_release_artifacts.py`; `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v22`; targeted ruff on v0.22 modified Python/test files.
+- Outputs: `outputs/release/v0.22/20260626T000119Z/`; `reports/v0.22_artifact_manifest.md`; `outputs/runs/v0.19-release-smoke/20260626T000135Z/`.
+- Metrics: no new benchmark metrics; v0.22 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Sanitization: tracked-file audit found no raw H5AD or heavy generated outputs; historical user-specific Windows paths were generalized in public docs/configs.
+- Assumptions: v0.22 is public-readiness packaging and does not alter split, model, seed list, metrics, or official GEARS status.
+- Known risks: GitHub-hosted CI and Docker build/import are not executed here; official GEARS remains blocked.
+- Rollback note: rollback to tag `v0.21-github-release-candidate-and-gears-docker-test` to remove v0.22 work.
+- Claim status: public review package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.

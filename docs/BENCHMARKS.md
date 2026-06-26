@@ -1030,3 +1030,31 @@ Interpretation:
 
 - v0.21 is a release-candidate and reproducibility-packaging milestone.
 - It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, Docker validation, or general model superiority.
+
+## v0.22 Public GitHub finalization
+
+Experiment ID: `v0.22-public-github-finalization`
+
+Public package:
+
+- final release notes: `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`;
+- public demo guide: `docs/V22_PUBLIC_DEMO_GUIDE.md`;
+- repository profile copy: `docs/V22_GITHUB_REPO_PROFILE.md`;
+- final public checklist: `docs/V22_PUBLIC_GITHUB_FINAL_CHECK.md`;
+- sanitization report: `docs/V22_REPO_SANITIZATION_REPORT.md`.
+- release bundle: `outputs/release/v0.22/20260626T000119Z/`;
+- artifact manifest: `reports/v0.22_artifact_manifest.md`;
+- release smoke: `outputs/runs/v0.19-release-smoke/20260626T000135Z/`.
+
+Benchmark status:
+
+- no new model training or benchmark performance run;
+- no change to the v0.17 fixed internal GEARS-compatible Norman split;
+- no official GEARS split import or official metric script;
+- no leaderboard-comparable result.
+
+Interpretation:
+
+- v0.22 is a public-readiness and release-packaging milestone.
+- It keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
+- It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, clinical use, or general model superiority.

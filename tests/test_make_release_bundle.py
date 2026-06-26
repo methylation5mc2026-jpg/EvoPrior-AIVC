@@ -6,17 +6,17 @@ from scripts.make_release_bundle import build_manifest, build_release_bundle
 
 
 def test_release_bundle_manifest_tracks_claim_boundary():
-    config = _load_yaml(Path("configs/release/v020_release_bundle.yaml"))
+    config = _load_yaml(Path("configs/release/v022_release_bundle.yaml"))
     manifest = build_manifest(config)
 
-    assert manifest["release_id"] == "v0.20-github-release-or-official-gears-docker-env"
+    assert manifest["release_id"] == "v0.22-public-github-finalization"
     assert manifest["dataset_md5"] == "c870e6967d91c017d9da827bab183cd6"
     assert "Official GEARS result." in manifest["claim_boundary"]["forbidden"]
     assert all(not item["path"].startswith("data/raw/") for item in manifest["reference_files"])
 
 
 def test_release_bundle_writes_required_files(tmp_path):
-    config = _load_yaml(Path("configs/release/v020_release_bundle.yaml"))
+    config = _load_yaml(Path("configs/release/v022_release_bundle.yaml"))
     config["output_root"] = str(tmp_path / "release")
     config["include_zip"] = True
 

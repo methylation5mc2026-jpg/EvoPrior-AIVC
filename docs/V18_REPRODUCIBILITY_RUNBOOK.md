@@ -57,7 +57,7 @@ Expected v0.18 status: `import_ok_run_blocked`. The dependency stack imports in 
 
 ## Troubleshooting
 
-- `.git` permission issues: Codex may be unable to create `.git/index.lock`; run the printed `git add`, `git commit`, and `git tag` commands manually in PowerShell.
+- `.git` permission issues: constrained local automation may be unable to create `.git/index.lock`; run the printed `git add`, `git commit`, and `git tag` commands manually in PowerShell.
 - Raw data: do not commit `data/raw/NormanWeissman2019_filtered.h5ad`.
 - Outputs: do not commit `outputs/`; reports only reference output paths.
 - Official GEARS: do not treat wrapper feasibility artifacts as official GEARS metrics.

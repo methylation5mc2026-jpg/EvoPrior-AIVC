@@ -1,6 +1,11 @@
 # EvoPrior-AIVC
 
-Reproducible perturbation-response prediction benchmark pipeline with structured priors and a validated Norman/GEARS-compatible residual baseline.
+![Python](https://img.shields.io/badge/python-%3E%3D3.10-blue)
+![Tests](https://img.shields.io/badge/tests-164%20passed-brightgreen)
+![Release](https://img.shields.io/badge/release-v0.22%20public%20review%20candidate-informational)
+![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey)
+
+Reproducible single-cell perturbation-response prediction benchmark pipeline with structured priors and a validated residual baseline on a GEARS-compatible Norman split.
 
 ## Key Result
 
@@ -12,7 +17,18 @@ Public Norman/scPerturb H5AD, md5 `c870e6967d91c017d9da827bab183cd6`; fixed inte
 | v0.15 fast MLP/PCA | 0.5877 | 7.5517 | 0.7134 | 0.6317 | lightweight trained baseline |
 | v0.17 residual baseline | 0.430778 | 3.668870 | 0.869224 | 0.784976 | five-seed validated baseline |
 
-Claim boundary: this is a strong internal GEARS-compatible Norman result. It is not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.
+Claim boundary: this is a strong internal GEARS-compatible Norman result under a documented split and metric script. It is not official GEARS, not leaderboard-comparable, not SOTA, and not biological discovery.
+
+## Quick Links
+
+- Model card: `docs/V18_RELEASE_MODEL_CARD.md`
+- Benchmark card: `docs/V18_BENCHMARK_CARD.md`
+- Reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`
+- External result card: `docs/V17_EXTERNAL_RESULT_CARD.md`
+- Public data guide: `docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md`
+- Final release notes: `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`
+- Public demo guide: `docs/V22_PUBLIC_DEMO_GUIDE.md`
+- Repo profile copy: `docs/V22_GITHUB_REPO_PROFILE.md`
 
 ## Quickstart
 
@@ -23,33 +39,24 @@ python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v0
 python scripts/run_norman_residual_multiseed.py --config configs/experiment/gears_norman_v017_multiseed_residual.yaml
 ```
 
-## No-Data Review Path
+## No-Data Review
 
 This path is intended for GitHub reviewers without raw Norman data:
 
 ```powershell
 python -m pip install -e ".[dev]"
-python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local tests/test_release_smoke_config.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py
-python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
-python scripts/make_release_bundle.py --config configs/release/v020_release_bundle.yaml
-```
-
-Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V18_EXTERNAL_REVIEW_INDEX.md`, and `docs/V20_PUBLIC_REVIEW_README_MAP.md`.
-
-Latest v0.20 release bundle output: `outputs/release/v0.20/20260625T230630Z/`.
-
-Latest v0.21 release-candidate bundle output: `outputs/release/v0.21/20260625T233703Z/`.
-
-v0.21 no-data release-candidate commands:
-
-```powershell
+python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local tests/test_release_smoke_config.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py tests/test_ci_workflow_static.py
 python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml
 python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
-python scripts/make_release_bundle.py --config configs/release/v021_release_bundle.yaml
+python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml
 python scripts/check_release_artifacts.py
 ```
 
-## With-Local-Data Reproduction Path
+Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`, and `docs/V22_PUBLIC_DEMO_GUIDE.md`.
+
+Latest v0.22 public review bundle: `outputs/release/v0.22/20260626T000119Z/`.
+
+## With-Data Reproduction
 
 Place `NormanWeissman2019_filtered.h5ad` at `data/raw/NormanWeissman2019_filtered.h5ad`. Expected md5: `c870e6967d91c017d9da827bab183cd6`.
 
@@ -65,6 +72,10 @@ python scripts/check_release_artifacts.py
 - Benchmark card: `docs/V18_BENCHMARK_CARD.md`
 - Reproducibility runbook: `docs/V18_REPRODUCIBILITY_RUNBOOK.md`
 - External review index: `docs/V18_EXTERNAL_REVIEW_INDEX.md`
+- Final release notes: `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`
+- Public demo guide: `docs/V22_PUBLIC_DEMO_GUIDE.md`
+- Public final check: `docs/V22_PUBLIC_GITHUB_FINAL_CHECK.md`
+- Sanitization report: `docs/V22_REPO_SANITIZATION_REPORT.md`
 - Public repo checklist: `docs/V19_PUBLIC_REPO_REVIEW_CHECKLIST.md`
 - GEARS unblock plan: `docs/V19_OFFICIAL_GEARS_UNBLOCK_PLAN.md`
 - Portfolio summary: `docs/V19_APPLICATION_PORTFOLIO_SUMMARY.md`
@@ -86,7 +97,7 @@ Official GEARS status: `import_ok_run_blocked`. The isolated `.venv_gears` envir
 
 v0.20 adds a Docker/WSL environment route at `docs/V20_OFFICIAL_GEARS_DOCKER_ENV.md` and `docker/Dockerfile.gears`. This is an unblock path, not a claimed official GEARS result.
 
-v0.21 Docker status: `unavailable_docker`. Local `docker --version` and `docker info` failed because Docker is not installed or not on PATH, so no Docker image build, container import check, official GEARS training, official split import, or official metric output is claimed.
+v0.21 Docker status: `unavailable_docker`. Local Docker was not available on PATH, so no Docker image build, container import check, official GEARS training, official split import, or official metric output is claimed.
 
 ## v0.19 Review Smoke
 

@@ -1,5 +1,69 @@
 # Codex Handoff
 
+## Current State: v0.22 Public GitHub Finalization
+
+- Current branch: `feat/public-github-finalization-v022`
+- Rollback point: `v0.21-github-release-candidate-and-gears-docker-test`
+- Latest completed source tag before this branch: `v0.21-github-release-candidate-and-gears-docker-test`
+- v0.22 target tag: `v0.22-public-github-finalization`
+- Working tree: dirty with v0.22 public-readiness docs, README polish, release bundle config, artifact checker updates, and tests; local raw data, generated outputs, caches, virtualenvs, and Docker build cache must not be committed.
+
+## v0.22 Implemented So Far
+
+- README first-screen polish for public review.
+- Public sanitization report: `docs/V22_REPO_SANITIZATION_REPORT.md`
+- Final GitHub release notes: `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`
+- Repository profile copy: `docs/V22_GITHUB_REPO_PROFILE.md`
+- Public demo guide: `docs/V22_PUBLIC_DEMO_GUIDE.md`
+- Public final checklist: `docs/V22_PUBLIC_GITHUB_FINAL_CHECK.md`
+- v0.22 release bundle config: `configs/release/v022_release_bundle.yaml`
+- v0.22 artifact checker updates in `scripts/check_release_artifacts.py`
+
+## v0.22 Verification So Far
+
+- Plain `python -m pytest` failed because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; this is a host temp-permission issue.
+- Repo-local temp validation before v0.22 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v22` -> `164 passed, 4 warnings`.
+- Tracked-file audit: no raw H5AD, checkpoint, pickle, NumPy archive, parquet, generated run output, or generated release bundle is tracked.
+- Sensitive scan: no credential material or private agent paths found; historical user-specific Windows paths were generalized in public docs/configs.
+- Targeted v0.22 tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v22 tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py tests/test_release_smoke_config.py tests/test_ci_workflow_static.py` -> `7 passed, 2 warnings`.
+- Final full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v22` -> `164 passed, 4 warnings`.
+- Targeted ruff on v0.22 modified Python/test files: passed.
+- Release bundle: `python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml` -> `outputs/release/v0.22/20260626T000119Z/`.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.22_artifact_manifest.json`, status `pass`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260626T000135Z/`, status `pass`.
+
+## v0.22 Claim Boundary
+
+Allowed: public GitHub/mentor review finalization, sanitized README/docs, release notes, public demo guide, repo profile copy, no-data smoke path, and release bundle around the validated v0.17 Norman residual baseline.
+
+Forbidden: official GEARS result, Docker validation success, leaderboard comparability, SOTA, biological discovery, clinical claim, new benchmark performance result, or broad model superiority.
+
+## v0.22 Files Not To Commit
+
+- `data/raw/`
+- `outputs/runs/`
+- `outputs/data_reports/`
+- `outputs/release/*` except `outputs/release/.gitkeep`
+- `.venv/`
+- `.venv_gears/`
+- `.tmp_pytest_v22/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- Docker build cache
+
+## v0.22 Next Exact Command
+
+Codex attempted to stage v0.22 files, but `.git/index.lock` creation failed with `Permission denied`. Workspace files are ready; user-side commit/tag is required:
+
+```powershell
+git status --short
+git add README.md configs docs reports scripts tests src pyproject.toml LICENSE CITATION.cff CONTRIBUTING.md SECURITY.md .env.example .github docker .gitignore
+git commit -m "docs: finalize public GitHub review package"
+git tag v0.22-public-github-finalization
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.21 GitHub Release Candidate And GEARS Docker Test
 
 - Current branch: `feat/release-candidate-gears-docker-v021`
@@ -86,7 +150,7 @@ Make the project GitHub-release ready and create a robust official GEARS environ
 
 ## v0.20 Verification
 
-- Plain `python -m pytest` failed because Windows denied access to `C:\Users\HiC3C\AppData\Local\Temp\pytest-of-HiC3C`; repo-local temp validation passed.
+- Plain `python -m pytest` failed because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; repo-local temp validation passed.
 - Final v0.20 regression with repo-local temp: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v20` -> `162 passed, 4 warnings`.
 - Targeted v0.20 tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v20 tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py tests/test_release_smoke_config.py` -> `9 passed, 2 warnings`.
 - Targeted ruff on v0.20 Python files: passed.
@@ -538,7 +602,7 @@ Move the Norman benchmark package from GEARS-compatible/internal toward official
 - `python -m pip show torch_geometric`: not installed.
 - `python -c "import gears"`: `ModuleNotFoundError`.
 - `python -c "import torch"`: `ModuleNotFoundError`.
-- `python -m pip install cell-gears`: downloaded `cell_gears-0.1.2` and `torch-2.12.1`, then failed with `WinError 5` while writing `C:\Users\HiC3C\AppData\Roaming\Python`.
+- `python -m pip install cell-gears`: downloaded `cell_gears-0.1.2` and `torch-2.12.1`, then failed with `WinError 5` while writing `%APPDATA%\Python`.
 
 Decision: official GEARS wrapper is currently blocked by missing dependencies and user-site install permissions. v0.14 proceeds with an optional wrapper that writes a blocker report plus a tightened GEARS-compatible baseline.
 

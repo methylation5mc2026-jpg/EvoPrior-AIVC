@@ -39,6 +39,7 @@
 - `v0.19-public-repo-polish-and-official-gears-unblock`: public repo metadata, release smoke checks, official GEARS diagnostics, and artifact integrity checks are implemented for reviewer use. Smoke output: `outputs/runs/v0.19-release-smoke/20260625T223712Z/`; diagnostic output: `outputs/runs/v0.19-official-gears-diagnostics/20260625T223710Z/`; artifact manifest: `reports/v0.19_artifact_manifest.md`.
 - `v0.20-github-release-or-official-gears-docker-env`: CI smoke workflow, release bundle generator, Docker/WSL GEARS environment route, v0.20 diagnostic output, and v0.20 artifact manifest are implemented for release review. Bundle: `outputs/release/v0.20/20260625T230630Z/`; diagnostic output: `outputs/runs/v0.20-official-gears-diagnostics/20260625T230451Z/`; artifact manifest: `reports/v0.20_artifact_manifest.md`.
 - `v0.21-github-release-candidate-and-gears-docker-test`: a release-candidate package is generated around the validated v0.17 Norman residual baseline, static CI validation passes, no-data release smoke passes, Docker availability is honestly recorded as unavailable, and the v0.21 artifact manifest passes. Bundle: `outputs/release/v0.21/20260625T233703Z/`; smoke output: `outputs/runs/v0.19-release-smoke/20260625T233315Z/`; GEARS diagnostic output: `outputs/runs/v0.20-official-gears-diagnostics/20260625T233312Z/`; artifact manifest: `reports/v0.21_artifact_manifest.md`.
+- `v0.22-public-github-finalization`: README, public release notes, repository profile copy, public demo guide, sanitization report, and final public checklist are prepared for GitHub/mentor review. This is packaging and public-readiness evidence only; the benchmark evidence remains v0.17.
 
 ## 消融提示
 
@@ -60,6 +61,7 @@
 - `v0.19-public-repo-polish-and-official-gears-unblock`: release smoke and artifact checks support reproducibility review only. They do not create a new model result, official GEARS result, or leaderboard-comparable benchmark.
 - `v0.20-github-release-or-official-gears-docker-env`: Docker/WSL GEARS files are an environment route only. They are not evidence that official GEARS was built, trained, evaluated, or matched to official metrics.
 - `v0.21-github-release-candidate-and-gears-docker-test`: Docker is unavailable in the local PowerShell environment, so no Docker build/import result or official GEARS metric exists; static CI validation is not the same as a GitHub-hosted Actions run.
+- `v0.22-public-github-finalization`: public GitHub readiness does not create a new benchmark result. It does not change the split, model, metrics, or official GEARS status.
 
 ## 推测/未来工作
 
@@ -87,6 +89,7 @@
 - Do not claim v0.19 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
 - Do not claim v0.20 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
 - Do not claim v0.21 is an official GEARS result, a Docker-validated result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
+- Do not claim v0.22 is an official GEARS result, a Docker-validated result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, or a new benchmark performance result.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

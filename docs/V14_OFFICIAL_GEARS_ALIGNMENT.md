@@ -29,7 +29,7 @@ python -m pip install cell-gears
 downloaded `cell_gears-0.1.2` and `torch-2.12.1`, then failed:
 
 ```text
-OSError: [WinError 5] Permission denied: C:\Users\HiC3C\AppData\Roaming\Python
+OSError: [WinError 5] Permission denied: %APPDATA%\Python
 ```
 
 ## Alignment Status
@@ -57,4 +57,3 @@ Use a clean environment with writable user/site packages and install a pinned of
 ```powershell
 python scripts/run_official_gears_wrapper.py --config configs/experiment/gears_norman_v014_official_wrapper.yaml
 ```
-

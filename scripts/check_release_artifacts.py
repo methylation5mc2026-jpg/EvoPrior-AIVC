@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-EXPECTED_TAG = "v0.21-github-release-candidate-and-gears-docker-test"
-ROLLBACK_TAG = "v0.20-github-release-or-official-gears-docker-env"
+EXPECTED_TAG = "v0.22-public-github-finalization"
+ROLLBACK_TAG = "v0.21-github-release-candidate-and-gears-docker-test"
 PRIMARY_OUTPUT = (
     "outputs/runs/v0.17-norman-validated-residual-baseline/"
     "gears_norman_scperturb_v013/20260625T100322Z"
@@ -40,10 +40,16 @@ REQUIRED_FILES = [
     "docs/V21_PUBLIC_DATA_ACQUISITION_GUIDE.md",
     "docs/V21_GITHUB_RELEASE_NOTES.md",
     "docs/V21_CI_VALIDATION_REPORT.md",
+    "docs/V22_PUBLIC_GITHUB_FINAL_CHECK.md",
+    "docs/V22_REPO_SANITIZATION_REPORT.md",
+    "docs/V22_GITHUB_RELEASE_NOTES_FINAL.md",
+    "docs/V22_GITHUB_REPO_PROFILE.md",
+    "docs/V22_PUBLIC_DEMO_GUIDE.md",
     "reports/v0.21_release_notes.md",
     "configs/experiment/release_smoke_v019.yaml",
     "configs/release/v020_release_bundle.yaml",
     "configs/release/v021_release_bundle.yaml",
+    "configs/release/v022_release_bundle.yaml",
     ".github/workflows/ci.yml",
     "docker/Dockerfile.gears",
     "docker/README_GEARS_ENV.md",
@@ -76,15 +82,15 @@ def main() -> None:
     manifest = build_manifest()
     report_dir = Path("reports")
     report_dir.mkdir(exist_ok=True)
-    (report_dir / "v0.21_artifact_manifest.json").write_text(
+    (report_dir / "v0.22_artifact_manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
-    (report_dir / "v0.21_artifact_manifest.md").write_text(
+    (report_dir / "v0.22_artifact_manifest.md").write_text(
         _markdown_report(manifest),
         encoding="utf-8",
     )
-    print("reports/v0.21_artifact_manifest.json")
+    print("reports/v0.22_artifact_manifest.json")
     print(manifest["status"])
     if manifest["status"] != "pass":
         raise SystemExit(1)
@@ -137,7 +143,7 @@ def build_manifest() -> dict[str, Any]:
             "python scripts/check_release_artifacts.py",
             (
                 "python scripts/make_release_bundle.py --config "
-                "configs/release/v021_release_bundle.yaml"
+                "configs/release/v022_release_bundle.yaml"
             ),
             (
                 "python scripts/run_norman_residual_multiseed.py --config "
@@ -164,7 +170,7 @@ def _git(args: list[str]) -> str:
 
 
 def _latest_release_bundle() -> str:
-    root = Path("outputs/release/v0.21")
+    root = Path("outputs/release/v0.22")
     if not root.exists():
         return ""
     candidates = [
@@ -178,7 +184,7 @@ def _latest_release_bundle() -> str:
 
 def _markdown_report(manifest: dict[str, Any]) -> str:
     lines = [
-        "# v0.21 Artifact Manifest",
+        "# v0.22 Artifact Manifest",
         "",
         f"- Status: `{manifest['status']}`",
         f"- Git commit: `{manifest['git_commit']}`",

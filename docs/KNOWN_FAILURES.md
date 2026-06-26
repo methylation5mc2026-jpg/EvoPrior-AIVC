@@ -60,7 +60,7 @@
 56. v0.13 Norman has a limited single-context setting, so do not claim broad cell-type, donor, tissue, or biological generalization.
 57. v0.13 raw Norman H5AD is local data and must not be committed.
 58. v0.14 official GEARS wrapper is blocked because `cell-gears`, `gears`, `torch`, and `torch_geometric` are unavailable in the current environment.
-59. v0.14 `pip install cell-gears` failed with `WinError 5` while writing `C:\Users\HiC3C\AppData\Roaming\Python`.
+59. v0.14 `pip install cell-gears` failed with `WinError 5` while writing `%APPDATA%\Python`.
 60. v0.14 `weighted_combo_additive` has a narrow MAE/MSE gain under the internal split, but it is not official GEARS and not evidence of general superiority.
 61. v0.14 random_combo split category is internally generated; it is not proof of official GEARS split alignment.
 62. v0.15 uses sklearn `MLPRegressor` because PyTorch and official GEARS dependencies remain unavailable; it is not a GEARS neural reproduction.
@@ -85,10 +85,12 @@
 81. v0.20 Dockerfile is an environment recipe and was not treated as an official GEARS reproduction; no Docker build result, official training run, official split import, or official metric output is claimed.
 82. v0.20 CI is no-data smoke only; it intentionally does not run the heavy v0.17 multiseed benchmark or require local Norman raw data.
 83. v0.20 release bundle is a small review package under ignored `outputs/release/`; it is not a data archive and does not contain raw H5AD files or large benchmark outputs.
-84. Plain `python -m pytest` can fail on this Windows host if pytest uses `C:\Users\HiC3C\AppData\Local\Temp\pytest-of-HiC3C`; use `-p no:cacheprovider --basetemp .tmp_pytest_v20` for repo-local temp validation.
+84. Plain `python -m pytest` can fail on this Windows host if pytest uses `%LOCALAPPDATA%\Temp\pytest-of-<user>`; use `-p no:cacheprovider --basetemp .tmp_pytest_v20` for repo-local temp validation.
 85. v0.21 Docker availability test failed because `docker` is not installed or not on PATH in the current PowerShell environment; no Docker image build or container import test was completed.
 86. v0.21 CI evidence is static local validation only; GitHub-hosted Actions was not executed in this environment.
 87. v0.21 remains a release-candidate package around the v0.17 internal GEARS-compatible Norman result; it is not an official GEARS run, not leaderboard-comparable, not SOTA, and not a new benchmark performance result.
+88. v0.22 public GitHub finalization is documentation, sanitization, and release packaging only. It does not create new metrics, official GEARS alignment, Docker validation, or broader scientific evidence.
+89. `docs/CODEX_HANDOFF.md` remains tracked as internal operational context; it should not be treated as public-facing marketing or release evidence.
 
 ## 失败记录模板
 

@@ -18,7 +18,7 @@ official_wrapper:
     - torch_geometric
   install_command_attempted: python -m pip install cell-gears
   known_install_blockers:
-    - cell-gears install attempt failed with WinError 5 permission denied while writing C:\Users\HiC3C\AppData\Roaming\Python.
+    - cell-gears install attempt failed with WinError 5 permission denied while writing %APPDATA%\Python.
     - torch and torch_geometric are not importable in the current environment.
   run_policy: do_not_train_if_optional_dependencies_missing
 
@@ -29,4 +29,3 @@ benchmark:
   data_checksum: c870e6967d91c017d9da827bab183cd6
   split_definition: official GEARS split not imported; wrapper feasibility only
   claim_boundary: Official wrapper dry-run/blocker artifact only; not an official GEARS result.
-
