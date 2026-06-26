@@ -38,6 +38,9 @@ Claim boundary: this is a strong internal GEARS-compatible Norman result under a
 - v0.24 publish status: `docs/V24_GITHUB_PUBLISH_STATUS.md`
 - v0.24 release draft: `docs/V24_GITHUB_RELEASE_DRAFT.md`
 - v0.24 website assets: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`
+- v0.25 publish execution log: `docs/V25_GITHUB_PUBLISH_EXECUTION_LOG.md`
+- v0.25 final link package: `docs/V25_FINAL_LINK_PACKAGE.md`
+- v0.25 mentor email snippet: `docs/V25_MENTOR_EMAIL_SNIPPET.md`
 
 ## Quickstart
 
@@ -66,6 +69,8 @@ Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/
 Latest public review bundle is refreshed by v0.24 under `outputs/release/v0.24/<timestamp>/`.
 
 v0.24 publication assets are documentation-only materials for GitHub publication, GitHub Release drafting, personal website integration, public link audit, and mentor review. They do not push to GitHub, update a website, or change the benchmark result.
+
+v0.25 records the intended GitHub target `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`, the exact manual publish commands, and the final link package. Local automation could not configure `origin` or push because `.git/config` is not writable from this environment and `gh` is unavailable.
 
 ## With-Data Reproduction
 
@@ -111,6 +116,11 @@ python scripts/check_release_artifacts.py
 - v0.24 website integration assets: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`
 - v0.24 public link audit: `docs/V24_PUBLIC_LINK_AUDIT.md`
 - v0.24 final presentation summary: `docs/V24_FINAL_PRESENTATION_SUMMARY.md`
+- v0.25 GitHub publish execution log: `docs/V25_GITHUB_PUBLISH_EXECUTION_LOG.md`
+- v0.25 final publish commands: `docs/V25_GITHUB_FINAL_PUBLISH_COMMANDS.md`
+- v0.25 final link package: `docs/V25_FINAL_LINK_PACKAGE.md`
+- v0.25 mentor email snippet: `docs/V25_MENTOR_EMAIL_SNIPPET.md`
+- v0.25 post-publish verification: `docs/V25_POST_PUBLISH_VERIFICATION.md`
 
 ## Data And GEARS Status
 

@@ -1,5 +1,55 @@
 # Codex Handoff
 
+## Current State: v0.25 GitHub Publish Execution And Final Link Package
+
+- Current branch: `feat/github-publish-execution-v025`
+- Rollback point: `v0.24-github-push-and-release-or-website-integration`
+- Latest completed source tag before this branch: `v0.24-github-push-and-release-or-website-integration`
+- v0.25 target tag: `v0.25-github-publish-execution-and-final-link-package`
+- Intended GitHub URL: `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`
+- Working tree: dirty with v0.25 publish execution docs and link package.
+- Remote status: no `origin` configured from `git remote -v`.
+- Codex remote-add attempt: `git remote add origin https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC.git` failed because `.git/config` is not writable.
+- GitHub CLI status: `gh` is not installed or not on `PATH`.
+- Publish status: manual owner-side commands required; no push or GitHub Release was created by Codex.
+
+## v0.25 Implemented So Far
+
+- Publish execution log: `docs/V25_GITHUB_PUBLISH_EXECUTION_LOG.md`
+- Placeholder audit: `docs/V25_PUBLIC_URL_PLACEHOLDER_AUDIT.md`
+- Final publish commands: `docs/V25_GITHUB_FINAL_PUBLISH_COMMANDS.md`
+- Final link package: `docs/V25_FINAL_LINK_PACKAGE.md`
+- Mentor email snippet: `docs/V25_MENTOR_EMAIL_SNIPPET.md`
+- Post-publish verification checklist: `docs/V25_POST_PUBLISH_VERIFICATION.md`
+
+## v0.25 Verification So Far
+
+- Plain `python -m pytest` failed because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; this is a host temp-permission issue.
+- Repo-local temp validation before v0.25 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v25` -> `164 passed, 4 warnings`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260626T031329Z/`, status `pass`.
+- Artifact check: `python scripts/check_release_artifacts.py` -> `reports/v0.24_artifact_manifest.json`, status `pass`.
+- Final repo-local full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v25` -> `164 passed, 4 warnings`.
+- Targeted ruff: not needed because v0.25 changed docs/README only.
+
+## v0.25 Claim Boundary
+
+Allowed: final GitHub publish command package, final link package, mentor snippet, and post-publish verification checklist around the validated v0.17 internal GEARS-compatible Norman residual baseline.
+
+Forbidden: official GEARS result, leaderboard comparability, SOTA, biological discovery, clinical claim, new benchmark performance result, broad model superiority, or a claim that GitHub/website publishing already happened.
+
+## v0.25 Next Exact Command
+
+Codex cannot stage/commit/tag in this environment if `.git/index.lock` remains protected. User-side commit/tag is expected:
+
+```powershell
+git status --short
+git add README.md docs reports/v0.24_artifact_manifest.json reports/v0.24_artifact_manifest.md
+git commit -m "docs: add final GitHub publish package"
+git tag v0.25-github-publish-execution-and-final-link-package
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.24 GitHub Push And Release Or Website Integration
 
 - Current branch: `feat/github-push-release-website-v024`

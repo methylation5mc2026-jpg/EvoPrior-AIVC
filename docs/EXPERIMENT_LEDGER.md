@@ -630,3 +630,26 @@ Claim status:
 - Known risks: publication copy can be mistaken for a new result or public deployment; release docs must state that publishing remains owner-side and pending.
 - Rollback note: rollback to tag `v0.23-github-publish-or-project-page-assets` to remove v0.24 work.
 - Claim status: publish-ready package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.
+
+### EXP-0028: v0.25 GitHub publish execution and final link package
+
+- Experiment ID: `v0.25-github-publish-execution-and-final-link-package`
+- Date: 2026-06-26
+- Status: completed locally; publish docs, release smoke, artifact check, and repo-local full regression passed; commit/tag pending user-side git write.
+- Role: MLOps / GitHub publication engineer / Release engineer / Website and mentor package engineer / Security and privacy reviewer / Scientific reviewer / Documentation engineer
+- Objective: Record the GitHub target URL, attempt safe publish setup, and prepare a final manual publication/link package if automation cannot push.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Git commit: branch starts from v0.24 commit `86c44b9`; final v0.25 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Intended GitHub repo: `https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC`.
+- Command: `git remote add origin https://github.com/methylation5mc2026-jpg/EvoPrior-AIVC.git`; `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python scripts/check_release_artifacts.py`; `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v25`.
+- Outputs: v0.25 publish docs and link package are tracked source artifacts; smoke output `outputs/runs/v0.19-release-smoke/20260626T031329Z/`; artifact manifest `reports/v0.24_artifact_manifest.md`.
+- Metrics: no new benchmark metrics; v0.25 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Publish audit: `origin` was empty; Codex could not add it because `.git/config` is not writable; `gh` is unavailable.
+- Verification: release smoke passed, artifact check passed, and full repo-local pytest passed with `164 passed, 4 warnings`; ruff not needed because v0.25 is docs-only.
+- Assumptions: user intends to publish to the provided GitHub URL; actual push and Release creation remain owner-side.
+- Known risks: public URLs remain pending until owner runs publish commands and verifies GitHub/Release/CI.
+- Rollback note: rollback to tag `v0.24-github-push-and-release-or-website-integration` to remove v0.25 work.
+- Claim status: final publish package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.

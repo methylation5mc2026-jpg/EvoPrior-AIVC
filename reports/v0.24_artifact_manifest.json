@@ -1,7 +1,7 @@
 {
   "release_id": "v0.24-github-push-and-release-or-website-integration",
   "status": "pass",
-  "git_commit": "f61940f",
+  "git_commit": "86c44b9",
   "git_tag_expected": "v0.24-github-push-and-release-or-website-integration",
   "rollback_tag": "v0.23-github-publish-or-project-page-assets",
   "dataset_md5": "c870e6967d91c017d9da827bab183cd6",
