@@ -585,3 +585,25 @@ Claim status:
 - Known risks: GitHub-hosted CI and Docker build/import are not executed here; official GEARS remains blocked.
 - Rollback note: rollback to tag `v0.21-github-release-candidate-and-gears-docker-test` to remove v0.22 work.
 - Claim status: public review package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.
+
+### EXP-0026: v0.23 GitHub publish or project page assets
+
+- Experiment ID: `v0.23-github-publish-or-project-page-assets`
+- Date: 2026-06-26
+- Status: completed locally; publication assets, audit, artifact check, smoke, and full regression passed; commit/tag pending.
+- Role: MLOps / GitHub publication engineer / Project showcase engineer / Reproducibility engineer / Security and privacy reviewer / Scientific reviewer / Documentation engineer
+- Objective: Prepare GitHub publish guide, GitHub release body, project-page copy, mentor brief, showcase index, final publication checklist, and lightweight visual assets without changing the v0.17 model result.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: primary model config remains `configs/experiment/gears_norman_v017_multiseed_residual.yaml`.
+- Git commit: branch starts from v0.22 commit `ad2e36f`; final v0.23 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: sanitization scan; `python scripts/check_release_artifacts.py`; `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml`; `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v23`.
+- Outputs: `reports/v0.22_artifact_manifest.md`; `outputs/runs/v0.19-release-smoke/20260626T014302Z/`; `outputs/release/v0.22/20260626T014243Z/`; v0.23 docs are tracked source artifacts.
+- Metrics: no new benchmark metrics; v0.23 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Assumptions: v0.23 prepares publication copy only and does not push to GitHub or update a website.
+- Known risks: publication assets can be mistaken for a new result; the claim boundary must remain visible.
+- Verification: full regression passed with `164 passed, 4 warnings`; ruff not needed because no Python source changed in v0.23.
+- Rollback note: rollback to tag `v0.22-public-github-finalization` to remove v0.23 work.
+- Claim status: publication-preparation package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.

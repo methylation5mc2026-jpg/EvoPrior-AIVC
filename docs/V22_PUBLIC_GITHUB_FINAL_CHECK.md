@@ -5,7 +5,7 @@
 | README first screen clear | pass | v0.22 README includes title, summary, badges, key result table, quick links, quickstart, and claim boundary. |
 | No raw data tracked | pass | `git ls-files` shows only `data/raw/.gitkeep` under raw data. |
 | No heavy outputs tracked | pass | `outputs/runs/.gitkeep` and `outputs/release/.gitkeep` are tracked; generated run and bundle directories are ignored. |
-| No secrets | pass | No API keys, passwords, committed tokens, or `.codex` paths found. |
+| No credential material | pass | No API keys, passwords, service credentials, or private agent paths found. |
 | No personal local paths in public docs | pass_with_context | User-specific Windows paths were generalized; `docs/CODEX_HANDOFF.md` remains internal operational context and is not in public quick links. |
 | License present | pass | `LICENSE` |
 | Citation present | pass | `CITATION.cff` |

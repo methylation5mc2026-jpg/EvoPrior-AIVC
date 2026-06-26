@@ -91,6 +91,7 @@
 87. v0.21 remains a release-candidate package around the v0.17 internal GEARS-compatible Norman result; it is not an official GEARS run, not leaderboard-comparable, not SOTA, and not a new benchmark performance result.
 88. v0.22 public GitHub finalization is documentation, sanitization, and release packaging only. It does not create new metrics, official GEARS alignment, Docker validation, or broader scientific evidence.
 89. `docs/CODEX_HANDOFF.md` remains tracked as internal operational context; it should not be treated as public-facing marketing or release evidence.
+90. v0.23 GitHub publish and project-page assets are presentation materials only. They do not mean the repository was pushed, a GitHub Release was created, GitHub-hosted CI passed, or a personal website was updated.
 
 ## 失败记录模板
 

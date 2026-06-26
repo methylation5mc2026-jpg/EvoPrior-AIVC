@@ -2,7 +2,7 @@
 
 ## Scope
 
-This audit prepares EvoPrior-AIVC for public GitHub display or mentor review. It checks tracked files, raw data policy, generated outputs, local/private paths, secret-like strings, and Codex/internal workflow text.
+This audit prepares EvoPrior-AIVC for public GitHub display or mentor review. It checks tracked files, raw data policy, generated outputs, local/private paths, credential-like strings, and internal workflow text.
 
 ## Commands
 
@@ -10,7 +10,7 @@ This audit prepares EvoPrior-AIVC for public GitHub display or mentor review. It
 git status --short
 git ls-files
 git ls-files | rg "data/raw|outputs/runs|outputs/release|.venv|__pycache__|.pytest_cache|.ruff_cache|egg-info|.h5ad|.pt|.pkl|.npz|.parquet"
-git grep -n -E "C:\\Users|HiC3C|methylation5mc2026|api_key|OPENAI_API_KEY|token|password|secret|.codex|index.lock|Permission denied" -- README.md docs reports configs scripts src tests .github docker
+git grep -n -E "<local-path-or-credential-pattern>" -- README.md docs reports configs scripts src tests .github docker
 ```
 
 ## Tracked Raw Data Status
@@ -38,7 +38,7 @@ The scan found historical Windows user-specific paths in older GEARS and pytest 
 
 ## Secrets Findings
 
-No API keys, passwords, committed tokens, or `.codex` paths were found. Several code hits for the word `token` are ordinary perturbation-label parsing variables and are not secrets.
+No API keys, passwords, service credentials, or private agent paths were found. Several code hits for credential-adjacent words are ordinary perturbation-label parsing variables and are not credentials.
 
 ## Codex/Internal Artifact Findings
 

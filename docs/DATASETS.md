@@ -405,3 +405,15 @@ v0.22 introduces no new raw dataset.
 - Primary evidence output remains: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
 
 The v0.22 release bundle at `outputs/release/v0.22/20260626T000119Z/` is a review package only. It does not include raw data, large outputs, checkpoints, virtual environments, cache directories, or `.git`.
+
+## v0.23 publication assets data note
+
+v0.23 introduces no new raw dataset.
+
+- Primary dataset remains: `NormanWeissman2019_filtered.h5ad`
+- Local path: `data/raw/NormanWeissman2019_filtered.h5ad`
+- md5: `c870e6967d91c017d9da827bab183cd6`
+- Primary evidence output remains: `outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z/`
+- Publication assets: `docs/V23_PROJECT_PAGE_ASSETS.md`, `docs/V23_MENTOR_REVIEW_BRIEF.md`, and `docs/V23_SHOWCASE_INDEX.md`
+
+No raw data, large generated outputs, checkpoints, virtual environments, caches, or Docker build artifacts are part of v0.23.

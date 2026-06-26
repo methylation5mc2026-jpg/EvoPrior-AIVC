@@ -1,5 +1,68 @@
 # Codex Handoff
 
+## Current State: v0.23 GitHub Publish Or Project Page Assets
+
+- Current branch: `feat/github-publish-assets-v023`
+- Rollback point: `v0.22-public-github-finalization`
+- Latest completed source tag before this branch: `v0.22-public-github-finalization`
+- v0.23 target tag: `v0.23-github-publish-or-project-page-assets`
+- Working tree: dirty with v0.23 publication guides, release body, project page copy, mentor brief, showcase index, checklist, and Markdown/Mermaid assets.
+
+## v0.23 Implemented So Far
+
+- GitHub publish guide: `docs/V23_GITHUB_PUBLISH_GUIDE.md`
+- GitHub release body: `docs/V23_GITHUB_RELEASE_BODY.md`
+- Project page assets: `docs/V23_PROJECT_PAGE_ASSETS.md`
+- Mentor review brief: `docs/V23_MENTOR_REVIEW_BRIEF.md`
+- Mentor report copy: `reports/v0.23_mentor_review_brief.md`
+- Showcase index: `docs/V23_SHOWCASE_INDEX.md`
+- Final publication checklist: `docs/V23_FINAL_PUBLICATION_CHECKLIST.md`
+- Markdown/Mermaid assets: `docs/assets/evoprior_pipeline.mmd`, `docs/assets/residual_baseline_concept.mmd`, `docs/assets/result_summary_table.md`
+
+## v0.23 Verification So Far
+
+- Plain `python -m pytest` failed because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; this is a host temp-permission issue.
+- Repo-local temp validation before v0.23 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v23` -> `164 passed, 4 warnings`.
+- Tracked-file audit: only `data/raw/.gitkeep`, `outputs/release/.gitkeep`, and `outputs/runs/.gitkeep` matched raw/output patterns.
+- Sensitive scan: no API keys or service credentials found; remaining hits are internal git-permission notes and benign code variables.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.22_artifact_manifest.json`, status `pass`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260626T014302Z/`, status `pass`.
+- Release bundle refresh: `python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml` -> `outputs/release/v0.22/20260626T014243Z/`.
+- Final full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v23` -> `164 passed, 4 warnings`.
+- Targeted ruff: not needed for v0.23 because the change set is docs/reports/Markdown assets only.
+
+## v0.23 Claim Boundary
+
+Allowed: GitHub publication guide, release body, project-page copy, mentor brief, showcase index, and lightweight Markdown/Mermaid assets around the validated v0.17 internal GEARS-compatible Norman result.
+
+Forbidden: official GEARS result, leaderboard comparability, SOTA, biological discovery, clinical claim, new benchmark performance result, or broad model superiority.
+
+## v0.23 Files Not To Commit
+
+- `data/raw/`
+- `outputs/runs/`
+- `outputs/data_reports/`
+- `outputs/release/*` except `outputs/release/.gitkeep`
+- `.venv/`
+- `.venv_gears/`
+- `.tmp_pytest_v23/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- Docker build cache
+
+## v0.23 Next Exact Command
+
+Codex attempted to stage v0.23 files, but `.git/index.lock` creation failed with `Permission denied`. Workspace files are ready; user-side commit/tag is required:
+
+```powershell
+git status --short
+git add README.md docs reports configs scripts tests src pyproject.toml LICENSE CITATION.cff CONTRIBUTING.md SECURITY.md .env.example .github docker .gitignore
+git commit -m "docs: add GitHub publish and project showcase assets"
+git tag v0.23-github-publish-or-project-page-assets
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.22 Public GitHub Finalization
 
 - Current branch: `feat/public-github-finalization-v022`

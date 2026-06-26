@@ -1,13 +1,13 @@
 {
   "release_id": "v0.22-public-github-finalization",
   "status": "pass",
-  "git_commit": "faac436",
+  "git_commit": "ad2e36f",
   "git_tag_expected": "v0.22-public-github-finalization",
   "rollback_tag": "v0.21-github-release-candidate-and-gears-docker-test",
   "dataset_md5": "c870e6967d91c017d9da827bab183cd6",
   "primary_output": "outputs/runs/v0.17-norman-validated-residual-baseline/gears_norman_scperturb_v013/20260625T100322Z",
   "primary_output_exists": true,
-  "release_bundle_latest": "outputs\\release\\v0.22\\20260626T000119Z",
+  "release_bundle_latest": "outputs\\release\\v0.22\\20260626T014243Z",
   "release_bundle_exists": true,
   "required_files": [
     {

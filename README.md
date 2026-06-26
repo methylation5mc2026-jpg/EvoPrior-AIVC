@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-%3E%3D3.10-blue)
 ![Tests](https://img.shields.io/badge/tests-164%20passed-brightgreen)
-![Release](https://img.shields.io/badge/release-v0.22%20public%20review%20candidate-informational)
+![Release](https://img.shields.io/badge/release-v0.23%20publish%20assets-informational)
 ![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey)
 
 Reproducible single-cell perturbation-response prediction benchmark pipeline with structured priors and a validated residual baseline on a GEARS-compatible Norman split.
@@ -29,6 +29,12 @@ Claim boundary: this is a strong internal GEARS-compatible Norman result under a
 - Final release notes: `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`
 - Public demo guide: `docs/V22_PUBLIC_DEMO_GUIDE.md`
 - Repo profile copy: `docs/V22_GITHUB_REPO_PROFILE.md`
+- GitHub publish guide: `docs/V23_GITHUB_PUBLISH_GUIDE.md`
+- GitHub release body: `docs/V23_GITHUB_RELEASE_BODY.md`
+- Project page assets: `docs/V23_PROJECT_PAGE_ASSETS.md`
+- Mentor review brief: `docs/V23_MENTOR_REVIEW_BRIEF.md`
+- Showcase index: `docs/V23_SHOWCASE_INDEX.md`
+- Final publication checklist: `docs/V23_FINAL_PUBLICATION_CHECKLIST.md`
 
 ## Quickstart
 
@@ -54,7 +60,9 @@ python scripts/check_release_artifacts.py
 
 Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`, and `docs/V22_PUBLIC_DEMO_GUIDE.md`.
 
-Latest v0.22 public review bundle: `outputs/release/v0.22/20260626T000119Z/`.
+Latest v0.22 public review bundle: `outputs/release/v0.22/20260626T014243Z/`.
+
+v0.23 publication assets are documentation-only materials for GitHub publication, personal website integration, and mentor review. They do not change the benchmark result.
 
 ## With-Data Reproduction
 
@@ -88,6 +96,12 @@ python scripts/check_release_artifacts.py
 - v0.21 release notes: `docs/V21_GITHUB_RELEASE_NOTES.md`
 - v0.21 CI validation: `docs/V21_CI_VALIDATION_REPORT.md`
 - v0.21 Docker GEARS test report: `docs/V21_DOCKER_GEARS_TEST_REPORT.md`
+- v0.23 GitHub publish guide: `docs/V23_GITHUB_PUBLISH_GUIDE.md`
+- v0.23 GitHub release body: `docs/V23_GITHUB_RELEASE_BODY.md`
+- v0.23 project page assets: `docs/V23_PROJECT_PAGE_ASSETS.md`
+- v0.23 mentor review brief: `docs/V23_MENTOR_REVIEW_BRIEF.md`
+- v0.23 showcase index: `docs/V23_SHOWCASE_INDEX.md`
+- v0.23 final publication checklist: `docs/V23_FINAL_PUBLICATION_CHECKLIST.md`
 
 ## Data And GEARS Status
 

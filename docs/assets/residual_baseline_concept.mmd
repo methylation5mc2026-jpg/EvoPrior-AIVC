@@ -1,0 +1,9 @@
+flowchart TD
+    A["Single-gene and combo<br/>training perturbations"] --> B["Learn additive effects"]
+    B --> C["Predict combo additive response"]
+    C --> D["Compute training residuals"]
+    D --> E["Low-rank PCA residual space"]
+    E --> F["Ridge residual correction"]
+    C --> G["Final combo prediction"]
+    F --> G
+    G --> H["Evaluate on locked test split"]
