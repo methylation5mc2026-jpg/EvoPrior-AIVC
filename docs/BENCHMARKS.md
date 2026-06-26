@@ -1084,3 +1084,30 @@ Interpretation:
 - v0.23 is a publication and showcase-assets milestone.
 - It keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
 - It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, clinical use, or general model superiority.
+
+## v0.24 GitHub push and release or website integration
+
+Experiment ID: `v0.24-github-push-and-release-or-website-integration`
+
+Publication package:
+
+- publish status: `docs/V24_GITHUB_PUBLISH_STATUS.md`;
+- GitHub Release draft: `docs/V24_GITHUB_RELEASE_DRAFT.md`;
+- owner-side publish commands: `docs/V24_GITHUB_PUBLISH_COMMANDS.md`;
+- website integration assets: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`;
+- post-publish checklist: `docs/V24_POST_PUBLISH_CHECKLIST.md`;
+- public link audit: `docs/V24_PUBLIC_LINK_AUDIT.md`;
+- final presentation summary: `docs/V24_FINAL_PRESENTATION_SUMMARY.md`.
+
+Benchmark status:
+
+- no new model training or benchmark performance run;
+- no change to the v0.17 fixed internal GEARS-compatible Norman split;
+- no official GEARS split import or official metric script;
+- no GitHub push, GitHub Release creation, website update, or GitHub-hosted CI run was performed.
+
+Interpretation:
+
+- v0.24 is a publication-execution preparation milestone.
+- It keeps the v0.17 internal GEARS-compatible Norman result as the primary evidence.
+- It does not claim official GEARS, leaderboard comparability, SOTA, biological discovery, clinical use, public deployment completion, or general model superiority.

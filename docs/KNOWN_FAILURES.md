@@ -92,6 +92,7 @@
 88. v0.22 public GitHub finalization is documentation, sanitization, and release packaging only. It does not create new metrics, official GEARS alignment, Docker validation, or broader scientific evidence.
 89. `docs/CODEX_HANDOFF.md` remains tracked as internal operational context; it should not be treated as public-facing marketing or release evidence.
 90. v0.23 GitHub publish and project-page assets are presentation materials only. They do not mean the repository was pushed, a GitHub Release was created, GitHub-hosted CI passed, or a personal website was updated.
+91. v0.24 publish execution remains blocked in this environment because no `origin` remote is configured and `gh` is unavailable on `PATH`; no GitHub push, GitHub Release creation, website update, or GitHub-hosted CI run is claimed.
 
 ## 失败记录模板
 

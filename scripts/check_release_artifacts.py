@@ -7,8 +7,8 @@ import subprocess
 from pathlib import Path
 from typing import Any
 
-EXPECTED_TAG = "v0.22-public-github-finalization"
-ROLLBACK_TAG = "v0.21-github-release-candidate-and-gears-docker-test"
+EXPECTED_TAG = "v0.24-github-push-and-release-or-website-integration"
+ROLLBACK_TAG = "v0.23-github-publish-or-project-page-assets"
 PRIMARY_OUTPUT = (
     "outputs/runs/v0.17-norman-validated-residual-baseline/"
     "gears_norman_scperturb_v013/20260625T100322Z"
@@ -45,11 +45,26 @@ REQUIRED_FILES = [
     "docs/V22_GITHUB_RELEASE_NOTES_FINAL.md",
     "docs/V22_GITHUB_REPO_PROFILE.md",
     "docs/V22_PUBLIC_DEMO_GUIDE.md",
+    "docs/V23_GITHUB_PUBLISH_GUIDE.md",
+    "docs/V23_GITHUB_RELEASE_BODY.md",
+    "docs/V23_PROJECT_PAGE_ASSETS.md",
+    "docs/V23_MENTOR_REVIEW_BRIEF.md",
+    "docs/V23_SHOWCASE_INDEX.md",
+    "docs/V23_FINAL_PUBLICATION_CHECKLIST.md",
+    "docs/V24_GITHUB_PUBLISH_STATUS.md",
+    "docs/V24_GITHUB_RELEASE_DRAFT.md",
+    "docs/V24_GITHUB_PUBLISH_COMMANDS.md",
+    "docs/V24_WEBSITE_INTEGRATION_ASSETS.md",
+    "docs/V24_POST_PUBLISH_CHECKLIST.md",
+    "docs/V24_PUBLIC_LINK_AUDIT.md",
+    "docs/V24_FINAL_PRESENTATION_SUMMARY.md",
+    "reports/v0.24_final_presentation_summary.md",
     "reports/v0.21_release_notes.md",
     "configs/experiment/release_smoke_v019.yaml",
     "configs/release/v020_release_bundle.yaml",
     "configs/release/v021_release_bundle.yaml",
     "configs/release/v022_release_bundle.yaml",
+    "configs/release/v024_release_bundle.yaml",
     ".github/workflows/ci.yml",
     "docker/Dockerfile.gears",
     "docker/README_GEARS_ENV.md",
@@ -82,15 +97,15 @@ def main() -> None:
     manifest = build_manifest()
     report_dir = Path("reports")
     report_dir.mkdir(exist_ok=True)
-    (report_dir / "v0.22_artifact_manifest.json").write_text(
+    (report_dir / "v0.24_artifact_manifest.json").write_text(
         json.dumps(manifest, indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
-    (report_dir / "v0.22_artifact_manifest.md").write_text(
+    (report_dir / "v0.24_artifact_manifest.md").write_text(
         _markdown_report(manifest),
         encoding="utf-8",
     )
-    print("reports/v0.22_artifact_manifest.json")
+    print("reports/v0.24_artifact_manifest.json")
     print(manifest["status"])
     if manifest["status"] != "pass":
         raise SystemExit(1)
@@ -143,7 +158,7 @@ def build_manifest() -> dict[str, Any]:
             "python scripts/check_release_artifacts.py",
             (
                 "python scripts/make_release_bundle.py --config "
-                "configs/release/v022_release_bundle.yaml"
+                "configs/release/v024_release_bundle.yaml"
             ),
             (
                 "python scripts/run_norman_residual_multiseed.py --config "
@@ -170,7 +185,7 @@ def _git(args: list[str]) -> str:
 
 
 def _latest_release_bundle() -> str:
-    root = Path("outputs/release/v0.22")
+    root = Path("outputs/release/v0.24")
     if not root.exists():
         return ""
     candidates = [
@@ -184,7 +199,7 @@ def _latest_release_bundle() -> str:
 
 def _markdown_report(manifest: dict[str, Any]) -> str:
     lines = [
-        "# v0.22 Artifact Manifest",
+        "# v0.24 Artifact Manifest",
         "",
         f"- Status: `{manifest['status']}`",
         f"- Git commit: `{manifest['git_commit']}`",

@@ -41,6 +41,7 @@
 - `v0.21-github-release-candidate-and-gears-docker-test`: a release-candidate package is generated around the validated v0.17 Norman residual baseline, static CI validation passes, no-data release smoke passes, Docker availability is honestly recorded as unavailable, and the v0.21 artifact manifest passes. Bundle: `outputs/release/v0.21/20260625T233703Z/`; smoke output: `outputs/runs/v0.19-release-smoke/20260625T233315Z/`; GEARS diagnostic output: `outputs/runs/v0.20-official-gears-diagnostics/20260625T233312Z/`; artifact manifest: `reports/v0.21_artifact_manifest.md`.
 - `v0.22-public-github-finalization`: README, public release notes, repository profile copy, public demo guide, sanitization report, and final public checklist are prepared for GitHub/mentor review. This is packaging and public-readiness evidence only; the benchmark evidence remains v0.17.
 - `v0.23-github-publish-or-project-page-assets`: GitHub publish guide, GitHub release body, project page assets, mentor review brief, showcase index, final publication checklist, and lightweight Markdown/Mermaid visual assets are prepared for public presentation. This is presentation evidence only; the benchmark evidence remains v0.17.
+- `v0.24-github-push-and-release-or-website-integration`: GitHub publish status, owner-side publish commands, Release draft, website integration assets, public link audit, post-publish checklist, release bundle config, and final presentation summary are prepared. This is publication-readiness evidence only; no push, Release creation, website update, or new benchmark result is claimed.
 
 ## 消融提示
 
@@ -64,6 +65,7 @@
 - `v0.21-github-release-candidate-and-gears-docker-test`: Docker is unavailable in the local PowerShell environment, so no Docker build/import result or official GEARS metric exists; static CI validation is not the same as a GitHub-hosted Actions run.
 - `v0.22-public-github-finalization`: public GitHub readiness does not create a new benchmark result. It does not change the split, model, metrics, or official GEARS status.
 - `v0.23-github-publish-or-project-page-assets`: publication assets do not create new metrics, official GEARS alignment, Docker validation, or broader scientific evidence.
+- `v0.24-github-push-and-release-or-website-integration`: publish commands and website assets do not prove that a remote repository, GitHub Release, GitHub-hosted CI run, or website page exists; those remain owner-side follow-up actions.
 
 ## 推测/未来工作
 
@@ -93,6 +95,7 @@
 - Do not claim v0.21 is an official GEARS result, a Docker-validated result, a leaderboard-comparable result, SOTA, biological discovery, or a new benchmark performance result.
 - Do not claim v0.22 is an official GEARS result, a Docker-validated result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, or a new benchmark performance result.
 - Do not claim v0.23 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, or a new benchmark performance result.
+- Do not claim v0.24 is an official GEARS result, a leaderboard-comparable result, SOTA, biological discovery, clinical result, a new benchmark performance result, or proof that the repo/website was published.
 
 - 不声称任何真实公开数据集性能。
 - 不声称 SOTA 或 near-SOTA。

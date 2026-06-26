@@ -1,5 +1,75 @@
 # Codex Handoff
 
+## Current State: v0.24 GitHub Push And Release Or Website Integration
+
+- Current branch: `feat/github-push-release-website-v024`
+- Rollback point: `v0.23-github-publish-or-project-page-assets`
+- Latest completed source tag before this branch: `v0.23-github-publish-or-project-page-assets`
+- v0.24 target tag: `v0.24-github-push-and-release-or-website-integration`
+- Working tree: dirty with v0.24 publishing docs, website integration assets, release bundle config, artifact checker refresh, and release tests.
+- Remote status: no `origin` configured from `git remote -v`.
+- GitHub CLI status: `gh` is not installed or not on `PATH`.
+- Direct publish status: blocked by missing remote/CLI and no explicit push approval; v0.24 prepares owner-side commands only.
+
+## v0.24 Implemented So Far
+
+- Publish status: `docs/V24_GITHUB_PUBLISH_STATUS.md`
+- GitHub Release draft: `docs/V24_GITHUB_RELEASE_DRAFT.md`
+- Owner-side publish commands: `docs/V24_GITHUB_PUBLISH_COMMANDS.md`
+- Website integration copy: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`
+- Post-publish checklist: `docs/V24_POST_PUBLISH_CHECKLIST.md`
+- Public link audit: `docs/V24_PUBLIC_LINK_AUDIT.md`
+- Final presentation summary: `docs/V24_FINAL_PRESENTATION_SUMMARY.md`
+- Report copy: `reports/v0.24_final_presentation_summary.md`
+- Bundle config: `configs/release/v024_release_bundle.yaml`
+- Artifact checker now targets v0.24 manifest output.
+
+## v0.24 Verification So Far
+
+- Plain `python -m pytest` failed before v0.24 edits because Windows denied access to `%LOCALAPPDATA%\Temp\pytest-of-<user>`; this is a host temp-permission issue.
+- Repo-local temp validation before v0.24 edits: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v24` -> `164 passed, 4 warnings`.
+- Remote audit: no `origin`.
+- GitHub CLI audit: `gh` command not found.
+- Targeted v0.24 tests: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v24 tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py tests/test_release_smoke_config.py tests/test_ci_workflow_static.py` -> `7 passed, 2 warnings`.
+- Targeted ruff: `python -m ruff check scripts/check_release_artifacts.py tests/test_release_artifact_manifest.py tests/test_make_release_bundle.py` -> passed.
+- Release bundle: `python scripts/make_release_bundle.py --config configs/release/v024_release_bundle.yaml` -> `outputs/release/v0.24/20260626T024343Z/`.
+- Artifact manifest: `python scripts/check_release_artifacts.py` -> `reports/v0.24_artifact_manifest.json`, status `pass`.
+- Release smoke: `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml` -> `outputs/runs/v0.19-release-smoke/20260626T024213Z/`, status `pass`.
+- Final full regression: `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v24` -> `164 passed, 4 warnings`.
+- Diff check: `git diff --check` -> passed.
+
+## v0.24 Claim Boundary
+
+Allowed: publish-ready GitHub/Release/website/mentor package around the validated v0.17 internal GEARS-compatible Norman residual baseline.
+
+Forbidden: official GEARS result, leaderboard comparability, SOTA, biological discovery, clinical claim, new benchmark performance result, broad model superiority, or a claim that GitHub/website publishing already happened.
+
+## v0.24 Files Not To Commit
+
+- `data/raw/`
+- `outputs/runs/`
+- `outputs/data_reports/`
+- `outputs/release/*` except `outputs/release/.gitkeep`
+- `.venv/`
+- `.venv_gears/`
+- `.tmp_pytest_v24/`
+- `.pytest_cache/`
+- `.ruff_cache/`
+- Docker build cache
+
+## v0.24 Next Exact Command
+
+Codex attempted to stage v0.24 files, but `.git/index.lock` creation failed with `Permission denied`. Workspace files are ready; user-side commit/tag is required:
+
+```powershell
+git status --short
+git add README.md configs/release/v024_release_bundle.yaml docs reports/v0.24_artifact_manifest.json reports/v0.24_artifact_manifest.md reports/v0.24_final_presentation_summary.md scripts/check_release_artifacts.py tests/test_make_release_bundle.py tests/test_release_artifact_manifest.py
+git commit -m "docs: prepare GitHub publishing and website assets"
+git tag v0.24-github-push-and-release-or-website-integration
+git tag --points-at HEAD
+git status --short
+```
+
 ## Current State: v0.23 GitHub Publish Or Project Page Assets
 
 - Current branch: `feat/github-publish-assets-v023`

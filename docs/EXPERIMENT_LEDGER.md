@@ -607,3 +607,26 @@ Claim status:
 - Verification: full regression passed with `164 passed, 4 warnings`; ruff not needed because no Python source changed in v0.23.
 - Rollback note: rollback to tag `v0.22-public-github-finalization` to remove v0.23 work.
 - Claim status: publication-preparation package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.
+
+### EXP-0027: v0.24 GitHub push and release or website integration
+
+- Experiment ID: `v0.24-github-push-and-release-or-website-integration`
+- Date: 2026-06-26
+- Status: completed locally; targeted tests, targeted ruff, bundle generation, artifact check, release smoke, diff check, and full regression passed; commit/tag pending user-side git write.
+- Role: MLOps / GitHub publication engineer / Website integration engineer / Reproducibility engineer / Scientific reviewer / Documentation engineer
+- Objective: Prepare the final owner-side GitHub publish, GitHub Release, website integration, public link audit, and mentor presentation package without changing the v0.17 model result.
+- Dataset: `gears_norman_scperturb_v013`
+- Dataset version/checksum: scPerturb Zenodo record 13350497 / version 1.4, `NormanWeissman2019_filtered.h5ad`, md5 `c870e6967d91c017d9da827bab183cd6`.
+- Split ID: unchanged fixed v0.14-v0.17 internal GEARS-compatible seen0/seen1/seen2/random_combo split; not official GEARS split.
+- Config path: `configs/release/v024_release_bundle.yaml`; primary model config remains `configs/experiment/gears_norman_v017_multiseed_residual.yaml`.
+- Git commit: branch starts from v0.23 commit `f61940f`; final v0.24 commit pending.
+- Seed(s): no new model training; v0.17 model seeds remain `0`, `1`, `2`, `3`, `4`.
+- Command: `python scripts/make_release_bundle.py --config configs/release/v024_release_bundle.yaml`; `python scripts/check_release_artifacts.py`; `python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml`; `python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_v24`.
+- Outputs: `outputs/release/v0.24/20260626T024343Z/`; `outputs/runs/v0.19-release-smoke/20260626T024213Z/`; `reports/v0.24_artifact_manifest.md`; v0.24 source docs and reports are tracked.
+- Metrics: no new benchmark metrics; v0.24 relies on v0.17 metrics MAE 0.430778, MSE 3.668870, Pearson 0.869224, Spearman 0.784976.
+- Publish audit: no `origin` configured and `gh` is not available on `PATH`; no push, Release creation, or website update was performed.
+- Verification: targeted tests passed with `7 passed, 2 warnings`; targeted ruff passed; final full regression passed with `164 passed, 4 warnings`.
+- Assumptions: v0.24 is publication execution prep only and does not alter split, model, seed list, metrics, or official GEARS status.
+- Known risks: publication copy can be mistaken for a new result or public deployment; release docs must state that publishing remains owner-side and pending.
+- Rollback note: rollback to tag `v0.23-github-publish-or-project-page-assets` to remove v0.24 work.
+- Claim status: publish-ready package only; no SOTA, official GEARS, leaderboard, biological discovery, clinical claim, new benchmark performance, or general model superiority claim.

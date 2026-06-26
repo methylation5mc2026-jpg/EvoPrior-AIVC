@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-%3E%3D3.10-blue)
 ![Tests](https://img.shields.io/badge/tests-164%20passed-brightgreen)
-![Release](https://img.shields.io/badge/release-v0.23%20publish%20assets-informational)
+![Release](https://img.shields.io/badge/release-v0.24%20publish%20ready-informational)
 ![License](https://img.shields.io/badge/license-see%20LICENSE-lightgrey)
 
 Reproducible single-cell perturbation-response prediction benchmark pipeline with structured priors and a validated residual baseline on a GEARS-compatible Norman split.
@@ -35,6 +35,9 @@ Claim boundary: this is a strong internal GEARS-compatible Norman result under a
 - Mentor review brief: `docs/V23_MENTOR_REVIEW_BRIEF.md`
 - Showcase index: `docs/V23_SHOWCASE_INDEX.md`
 - Final publication checklist: `docs/V23_FINAL_PUBLICATION_CHECKLIST.md`
+- v0.24 publish status: `docs/V24_GITHUB_PUBLISH_STATUS.md`
+- v0.24 release draft: `docs/V24_GITHUB_RELEASE_DRAFT.md`
+- v0.24 website assets: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`
 
 ## Quickstart
 
@@ -54,15 +57,15 @@ python -m pip install -e ".[dev]"
 python -m pytest -p no:cacheprovider --basetemp .tmp_pytest_local tests/test_release_smoke_config.py tests/test_release_artifact_manifest.py tests/test_official_gears_diagnostics.py tests/test_ci_workflow_static.py
 python scripts/check_ci_workflow.py --workflow .github/workflows/ci.yml
 python scripts/run_release_smoke.py --config configs/experiment/release_smoke_v019.yaml
-python scripts/make_release_bundle.py --config configs/release/v022_release_bundle.yaml
+python scripts/make_release_bundle.py --config configs/release/v024_release_bundle.yaml
 python scripts/check_release_artifacts.py
 ```
 
 Then read `docs/V18_RELEASE_MODEL_CARD.md`, `docs/V18_BENCHMARK_CARD.md`, `docs/V22_GITHUB_RELEASE_NOTES_FINAL.md`, and `docs/V22_PUBLIC_DEMO_GUIDE.md`.
 
-Latest v0.22 public review bundle: `outputs/release/v0.22/20260626T014243Z/`.
+Latest public review bundle is refreshed by v0.24 under `outputs/release/v0.24/<timestamp>/`.
 
-v0.23 publication assets are documentation-only materials for GitHub publication, personal website integration, and mentor review. They do not change the benchmark result.
+v0.24 publication assets are documentation-only materials for GitHub publication, GitHub Release drafting, personal website integration, public link audit, and mentor review. They do not push to GitHub, update a website, or change the benchmark result.
 
 ## With-Data Reproduction
 
@@ -102,6 +105,12 @@ python scripts/check_release_artifacts.py
 - v0.23 mentor review brief: `docs/V23_MENTOR_REVIEW_BRIEF.md`
 - v0.23 showcase index: `docs/V23_SHOWCASE_INDEX.md`
 - v0.23 final publication checklist: `docs/V23_FINAL_PUBLICATION_CHECKLIST.md`
+- v0.24 publish status: `docs/V24_GITHUB_PUBLISH_STATUS.md`
+- v0.24 publish commands: `docs/V24_GITHUB_PUBLISH_COMMANDS.md`
+- v0.24 GitHub release draft: `docs/V24_GITHUB_RELEASE_DRAFT.md`
+- v0.24 website integration assets: `docs/V24_WEBSITE_INTEGRATION_ASSETS.md`
+- v0.24 public link audit: `docs/V24_PUBLIC_LINK_AUDIT.md`
+- v0.24 final presentation summary: `docs/V24_FINAL_PRESENTATION_SUMMARY.md`
 
 ## Data And GEARS Status
 
