@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -71,17 +70,7 @@ FORBIDDEN_STAGED_PREFIXES = (
 
 def main() -> None:
     manifest = build_manifest()
-    report_dir = Path("reports")
-    report_dir.mkdir(exist_ok=True)
-    (report_dir / "v0.24_artifact_manifest.json").write_text(
-        json.dumps(manifest, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-    (report_dir / "v0.24_artifact_manifest.md").write_text(
-        _markdown_report(manifest),
-        encoding="utf-8",
-    )
-    print("reports/v0.24_artifact_manifest.json")
+    print(manifest["release_id"])
     print(manifest["status"])
     if manifest["status"] != "pass":
         raise SystemExit(1)
