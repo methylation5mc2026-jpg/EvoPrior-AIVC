@@ -1,4 +1,6 @@
-from scripts.check_release_artifacts import build_manifest
+from scripts import check_release_artifacts
+
+build_manifest = check_release_artifacts.build_manifest
 
 
 def test_release_artifact_manifest_tracks_required_release_docs():
@@ -23,3 +25,19 @@ def test_release_artifact_manifest_tracks_required_release_docs():
     assert manifest["git_tag_expected"] == "public-technical-package"
     assert manifest["rollback_tag"] == "v0.26-main-merge-release-and-public-verification"
     assert all(not path.startswith("data/raw/") for path in manifest["staged_files_checked"])
+
+
+def test_release_artifact_check_does_not_rewrite_historical_reports(
+    tmp_path, monkeypatch, capsys
+):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(
+        check_release_artifacts,
+        "build_manifest",
+        lambda: {"release_id": "public-technical-package", "status": "pass"},
+    )
+
+    check_release_artifacts.main()
+
+    assert not (tmp_path / "reports").exists()
+    assert capsys.readouterr().out.splitlines() == ["public-technical-package", "pass"]
